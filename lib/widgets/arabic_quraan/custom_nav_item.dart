@@ -20,7 +20,7 @@ class CustomNavItem extends StatelessWidget {
       },
       child: CircleAvatar(
         radius: 30,
-        backgroundColor:kCustomsColor,
+        backgroundColor:kSecondaryColor,
         child: CircleAvatar(
           radius: 25,
           backgroundColor: currentIndex == id

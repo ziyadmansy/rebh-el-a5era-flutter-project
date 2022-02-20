@@ -89,7 +89,7 @@ class _AnimatedTextHeaderState extends State<AnimatedTextHeader>
               ),
               widget.isSocial ? Container() : Divider(
                 thickness: 1.5,
-                color: kCustomsColor,
+                color: kSecondaryColor,
               ),
               widget.isSocial ? Container()  : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -102,7 +102,7 @@ class _AnimatedTextHeaderState extends State<AnimatedTextHeader>
                 padding: const EdgeInsets.symmetric(horizontal: 35),
                 child: Divider(
                   thickness: 1.5,
-                  color: kCustomsColor,
+                  color: kSecondaryColor,
                 ),
               ),
               widget.isSocial ? Container() : Padding(

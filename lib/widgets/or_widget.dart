@@ -13,8 +13,8 @@ class OrWidget extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: new LinearGradient(
                   colors: [
-                    kCustomsColor,
-                    color2
+                    kSecondaryColor,
+                    primaryColor
                   ],
                   begin: const FractionalOffset(0.0, 0.0),
                   end: const FractionalOffset(1.0, 1.0),
@@ -38,8 +38,8 @@ class OrWidget extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: new LinearGradient(
                   colors: [
-                  kCustomsColor,
-                    color2
+                  kSecondaryColor,
+                    primaryColor
                   ],
                   begin: const FractionalOffset(0.0, 0.0),
                   end: const FractionalOffset(1.0, 1.0),

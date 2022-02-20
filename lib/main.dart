@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:muslim_dialy_guide/app_routes.dart';
+import 'package:muslim_dialy_guide/constants.dart';
 import 'package:muslim_dialy_guide/provides/morning_night_provider.dart';
 import 'package:muslim_dialy_guide/provides/theme_provider.dart';
 import 'package:muslim_dialy_guide/screens/home_app/home.dart';
 import 'package:muslim_dialy_guide/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,11 +34,28 @@ class MyApp extends StatelessWidget {
           builder: (context, value, child) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
-              theme: lightTheme,
-              darkTheme: darkTheme,
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              locale: const Locale('ar'),
+              supportedLocales: [
+                Locale('ar'),
+                Locale('en'),
+              ],
+              title: appName,
+              theme: ThemeData(
+                colorSchemeSeed: primaryColor,
+                useMaterial3: true,
+                brightness: Brightness.light,
+              ),
+              darkTheme: ThemeData(
+                colorSchemeSeed: primaryColor,
+                useMaterial3: true,
+                brightness: Brightness.dark,
+              ),
               themeMode: (value.theme) ? ThemeMode.dark : ThemeMode.light,
-             // home: QuranArabic()
               initialRoute: MuslimGuideHomePage.routeName,
               routes: appRoutes,
             );

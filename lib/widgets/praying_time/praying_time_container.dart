@@ -16,7 +16,7 @@ class PrayingTimeContainer extends StatelessWidget {
       child: Container(
         height: 70,
         width: 330,
-        color: color2,
+        color: primaryColor,
         child: Row(
           children: [
             SizedBox(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:muslim_dialy_guide/constants.dart';
 import 'package:muslim_dialy_guide/provides/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,19 +19,16 @@ class GlobalAppBar extends PreferredSize {
       title: Text(
         title,
         style: GoogleFonts.lilyScriptOne(
-          color: Theme.of(context).primaryColor,
           fontWeight: FontWeight.w300,
+          color: Theme.of(context).textTheme.titleLarge.color,
         ),
       ),
       centerTitle: true,
       elevation: 0.0,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Colors.transparent,
       actions: [
         _themeIcon(theme, context),
       ],
-      leading:  CupertinoNavigationBarBackButton(
-              color: Theme.of(context).accentColor,
-            ),
     );
   }
 
@@ -40,7 +38,7 @@ class GlobalAppBar extends PreferredSize {
         (theme.theme)
             ? Icons.brightness_7_outlined
             : Icons.brightness_4_outlined,
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).iconTheme.color,
       ),
       onPressed: () {
         theme.switchTheme();

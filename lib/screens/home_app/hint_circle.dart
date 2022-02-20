@@ -78,7 +78,7 @@ class _HintCircleState extends State<HintCircle>
               duration: const Duration(milliseconds: 700),
               curve: Curves.easeInOutBack,
               decoration: BoxDecoration(
-                color: color2.withOpacity(0.4),
+                color: primaryColor.withOpacity(0.4),
                 borderRadius: BorderRadius.circular(50),
               ),
               child: ScaleTransition(
@@ -123,7 +123,7 @@ class _HintCircleState extends State<HintCircle>
                 height: 60,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: kCustomsColor,
+                  color: kSecondaryColor,
                   shape: BoxShape.circle,
                 ),
               ),

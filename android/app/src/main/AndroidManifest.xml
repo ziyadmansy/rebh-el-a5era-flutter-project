@@ -1,8 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.samir.muslimdialyguide.muslim.quraan.muslim_dialy_guide">
+    package="com.maryamyehya.rebhelakhra">
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
-        android:label="muslim_dialy_guide"
+        android:label="ربح الآخرة"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

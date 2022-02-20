@@ -86,7 +86,7 @@ class _AzkarElmoslemMainPageState extends State<AzkarElmoslemMainPage> {
                             Navigator.pushNamed(context, AzkarElnom.routeName);
                           }
                         },
-                        splashColor: color2,
+                        splashColor: primaryColor,
                         borderRadius: (index == 1)
                             ? BorderRadius.only(
                                 topRight: Radius.circular(80),

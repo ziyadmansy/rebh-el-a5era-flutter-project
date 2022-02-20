@@ -125,7 +125,7 @@ class _SbhaScreenState extends State<SbhaScreen> {
                           height: 60.0,
                           width: 180.0,
                           decoration: BoxDecoration(
-                            color: kCustomsColor,
+                            color: kSecondaryColor,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Center(
@@ -144,7 +144,7 @@ class _SbhaScreenState extends State<SbhaScreen> {
                         height: 60.0,
                         width: 140.0,
                         decoration: BoxDecoration(
-                          color: color2,
+                          color: primaryColor,
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: Center(

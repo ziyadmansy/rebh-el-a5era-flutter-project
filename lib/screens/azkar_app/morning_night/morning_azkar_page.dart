@@ -23,7 +23,7 @@ class _AzkarElmorningState extends State<AzkarElmorning> {
                   fontFamily: 'Aref+Ruqaa:700',
                   fontSize: 25.0,
                   fontWeight: FontWeight.bold,
-                  color: color2,
+                  color: primaryColor,
                 ),
               ),
             ),

@@ -1,4 +1,4 @@
-package com.samir.muslimdialyguide.muslim.quraan.muslim_dialy_guide
+package com.maryamyehya.rebhelakhra
 
 import io.flutter.embedding.android.FlutterActivity
 
