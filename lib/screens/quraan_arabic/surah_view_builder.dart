@@ -21,7 +21,7 @@ class SurahViewBuilder extends StatefulWidget {
 
 class _SurahViewBuilderState extends State<SurahViewBuilder> {
   /// My Document
-  PDFDocument _document;
+  // PDFDocument _document;
   static const List<double> _doubleTapScales = <double>[1.0, 1.1];
   int currentPage;
   PageController pageController;
@@ -35,24 +35,24 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
   /*----------------------------- Load PDF Documents -----------------------*/
   /*-----------------------------------------------------------------------------------------------*/
   ///
-  Future<PDFDocument> _getDocument() async {
-    if (_document != null) {
-      return _document;
-    }
+  // Future<PDFDocument> _getDocument() async {
+  //   if (_document != null) {
+  //     return _document;
+  //   }
 
-    /*-----------------------------------------------------------------------------------------------*/
-    /*----------------------------- Check Compatibility's [Android 5.0+] -----------------------*/
-    /*-----------------------------------------------------------------------------------------------*/
-    if (await hasSupport()) {
-      _document = await PDFDocument.openAsset('assets/pdf/quran.pdf');
-      return _document;
-    } else {
-      throw Exception(
-        'المعذرة لا يمكن طباعة المحتوى'
-            'يرجي التحقق من أن جهازك يدعم نظام أندرويد بنسخته 5 على الأقل',
-      );
-    }
-  }
+  //   /*-----------------------------------------------------------------------------------------------*/
+  //   /*----------------------------- Check Compatibility's [Android 5.0+] -----------------------*/
+  //   /*-----------------------------------------------------------------------------------------------*/
+  //   if (await hasSupport()) {
+  //     _document = await PDFDocument.openAsset('assets/pdf/quran.pdf');
+  //     return _document;
+  //   } else {
+  //     throw Exception(
+  //       'المعذرة لا يمكن طباعة المحتوى'
+  //           'يرجي التحقق من أن جهازك يدعم نظام أندرويد بنسخته 5 على الأقل',
+  //     );
+  //   }
+  // }
 
 
   PageController _pageControllerBuilder() {
@@ -145,98 +145,98 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
           }
         ),
       ) : null,
-      body: FutureBuilder<PDFDocument>(
-        future: _getDocument(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SafeArea(
-              child: PDFView.builder(
-                scrollDirection: Axis.horizontal,
-                document: snapshot.data,
-                controller: pageController,
-                builder: (PDFPageImage pageImage, bool isCurrentIndex) {
-                  currentPage = pageImage.pageNumber;
-                  globals.currentPage = currentPage;
+      // body: FutureBuilder<PDFDocument>(
+      //   future: _getDocument(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.hasData) {
+      //       return SafeArea(
+      //         child: PDFView.builder(
+      //           scrollDirection: Axis.horizontal,
+      //           document: snapshot.data,
+      //           controller: pageController,
+      //           builder: (PDFPageImage pageImage, bool isCurrentIndex) {
+      //             currentPage = pageImage.pageNumber;
+      //             globals.currentPage = currentPage;
 
-                  /// Update lastViewedPage
-                  setLastViewedPage(currentPage);
+      //             /// Update lastViewedPage
+      //             setLastViewedPage(currentPage);
 
-                  if (currentPage == globals.bookmarkedPage) {
-                    isBookmarked = true;
-                  } else {
-                    isBookmarked = false;
-                  }
-                  print("$isBookmarked:$currentPage");
+      //             if (currentPage == globals.bookmarkedPage) {
+      //               isBookmarked = true;
+      //             } else {
+      //               isBookmarked = false;
+      //             }
+      //             print("$isBookmarked:$currentPage");
 
-                  if (isBookmarked) {
-                    _bookmarkWidget = Bookmark();
-                  } else {
-                    _bookmarkWidget = Container();
-                  }
+      //             if (isBookmarked) {
+      //               _bookmarkWidget = Bookmark();
+      //             } else {
+      //               _bookmarkWidget = Container();
+      //             }
 
-                  Widget image = Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      Container(
-                        child: ExtendedImage.memory(
-                          pageImage.bytes,
-                          mode: ExtendedImageMode.gesture,
-                          initGestureConfigHandler: (_) => GestureConfig(
-                            //minScale: 1,
-                            // animationMinScale:1,
-                            // maxScale: 1.1,
-                            //animationMaxScale: 1,
-                            speed: 1,
-                            inertialSpeed: 100,
-                            //inPageView: true,
-                            initialScale: 1,
-                            cacheGesture: false,
-                          ),
-                          onDoubleTap: (ExtendedImageGestureState state) {
-                            final pointerDownPosition =
-                                state.pointerDownPosition;
-                            final begin = state.gestureDetails.totalScale;
-                            double end;
-                            if (begin == _doubleTapScales[0]) {
-                              end = _doubleTapScales[1];
-                            } else {
-                              end = _doubleTapScales[0];
-                            }
-                            state.handleDoubleTap(
-                              scale: end,
-                              doubleTapPosition: pointerDownPosition,
-                            );
-                          },
-                        ),
-                      ),
-                      isBookmarked == true ? _bookmarkWidget : Container(),
-                    ],
-                  );
-                  if (isCurrentIndex) {
-                    //currentPage=pageImage.pageNumber.round().toInt();
-                    image = Hero(
-                      tag: pageImage.pageNumber.toString(),
-                      child: Container(child: image),
-                      transitionOnUserGestures: true,
-                    );
-                  }
-                  return image;
-                },
-                onPageChanged: (page) {},
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                'المعذرة لا يمكن طباعة المحتوى'
-                    'يرجي التحقق من أن جهازك يدعم نظام أندرويد بنسخته 5 على الأقل',
-              ),
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
+      //             Widget image = Stack(
+      //               fit: StackFit.expand,
+      //               children: <Widget>[
+      //                 Container(
+      //                   child: ExtendedImage.memory(
+      //                     pageImage.bytes,
+      //                     mode: ExtendedImageMode.gesture,
+      //                     initGestureConfigHandler: (_) => GestureConfig(
+      //                       //minScale: 1,
+      //                       // animationMinScale:1,
+      //                       // maxScale: 1.1,
+      //                       //animationMaxScale: 1,
+      //                       speed: 1,
+      //                       inertialSpeed: 100,
+      //                       //inPageView: true,
+      //                       initialScale: 1,
+      //                       cacheGesture: false,
+      //                     ),
+      //                     onDoubleTap: (ExtendedImageGestureState state) {
+      //                       final pointerDownPosition =
+      //                           state.pointerDownPosition;
+      //                       final begin = state.gestureDetails.totalScale;
+      //                       double end;
+      //                       if (begin == _doubleTapScales[0]) {
+      //                         end = _doubleTapScales[1];
+      //                       } else {
+      //                         end = _doubleTapScales[0];
+      //                       }
+      //                       state.handleDoubleTap(
+      //                         scale: end,
+      //                         doubleTapPosition: pointerDownPosition,
+      //                       );
+      //                     },
+      //                   ),
+      //                 ),
+      //                 isBookmarked == true ? _bookmarkWidget : Container(),
+      //               ],
+      //             );
+      //             if (isCurrentIndex) {
+      //               //currentPage=pageImage.pageNumber.round().toInt();
+      //               image = Hero(
+      //                 tag: pageImage.pageNumber.toString(),
+      //                 child: Container(child: image),
+      //                 transitionOnUserGestures: true,
+      //               );
+      //             }
+      //             return image;
+      //           },
+      //           onPageChanged: (page) {},
+      //         ),
+      //       );
+      //     } else if (snapshot.hasError) {
+      //       return Center(
+      //         child: Text(
+      //           'المعذرة لا يمكن طباعة المحتوى'
+      //               'يرجي التحقق من أن جهازك يدعم نظام أندرويد بنسخته 5 على الأقل',
+      //         ),
+      //       );
+      //     } else {
+      //       return Center(child: CircularProgressIndicator());
+      //     }
+      //   },
+      // ),
     );
   }
 
