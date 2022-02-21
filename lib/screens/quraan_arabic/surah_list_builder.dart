@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:muslim_dialy_guide/models/surah.dart';
 import 'package:muslim_dialy_guide/screens/quraan_arabic/surah_view_builder.dart';
@@ -15,8 +14,7 @@ class SurahListBuilder extends StatefulWidget {
 class _SurahListBuilderState extends State<SurahListBuilder> {
   TextEditingController editingController = TextEditingController();
 
-  // ignore: deprecated_member_use
-  List<Surah> surah = List<Surah>();
+  List<Surah> surah = [];
 
   void initSurahListView() {
     if (surah.isNotEmpty) {
@@ -42,7 +40,6 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
     if (query.isNotEmpty) {
       /// Loop all surah(s)
       searchList.forEach((item) {
-
         /*-----------------------------------------------------------------------------------------------*/
         /*----------------------------- Filter by (titleAr:exact,title:partial,pageIndex) -----------------------*/
         /*-----------------------------------------------------------------------------------------------*/
@@ -53,7 +50,6 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
         }
       });
 
-
       /*-----------------------------------------------------------------------------------------------*/
       /*----------------------------- Fill surah List with searched surah(s)-----------------------*/
       /*-----------------------------------------------------------------------------------------------*/
@@ -62,8 +58,6 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
         surah.addAll(listData);
       });
       return;
-
-
     }
     /*-----------------------------------------------------------------------------------------------*/
     /*------------------------------Show all surah list-------------------------*/
@@ -90,7 +84,6 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
     return Container(
       child: Column(
         children: <Widget>[
-
           /*-----------------------------------------------------------------------------------------------*/
           /*---------------------------------- Search field--------------------------------*/
           /*-----------------------------------------------------------------------------------------------*/
@@ -104,7 +97,7 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
               },
               controller: editingController,
               decoration: InputDecoration(
-                  labelText: "Search about sura",
+                  labelText: "إبحث عن سورة",
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)))),
@@ -117,23 +110,27 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
           Expanded(
             child: ListView.builder(
               itemCount: surah.length,
-              itemExtent: 80,
               itemBuilder: (BuildContext context, int index) => ListTile(
                   title: Text(surah[index].titleAr),
                   subtitle: Text(surah[index].title),
                   leading: Image(
-                      image:
-                      AssetImage("assets/arabic_quran/${surah[index].place}.png"),
-                      width: 30,
-                      height: 30),
+                    image: AssetImage(
+                        "assets/arabic_quran/${surah[index].place}.png"),
+                    width: 30,
+                    height: 30,
+                  ),
                   trailing: Text("${surah[index].pageIndex}"),
                   onTap: () {
                     /// Push to Quran view ([int pages] represent surah page(reversed index))
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                SurahViewBuilder(readingMode: true ,pages: surah[index].pages)));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SurahViewBuilder(
+                          readingMode: true,
+                          surah: surah[index],
+                        ),
+                      ),
+                    );
                   }),
             ),
           ),

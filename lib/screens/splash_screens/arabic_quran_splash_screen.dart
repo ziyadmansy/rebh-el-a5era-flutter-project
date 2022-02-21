@@ -18,7 +18,7 @@ class _ArabicQuranSplashScreenState extends State<ArabicQuranSplashScreen> {
   /*-----------------------------------------------------------------------------------------------*/
   /*---------------------------- get bookmarkPage from sharedPreferences ------------------------------*/
   /*-----------------------------------------------------------------------------------------------*/
-  getLastViewedPage() async {
+  Future<void> getLastViewedPage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(globals.LAST_VIEWED_PAGE)) {
       var _lastViewedPage = prefs.getInt(globals.LAST_VIEWED_PAGE);
@@ -31,7 +31,7 @@ class _ArabicQuranSplashScreenState extends State<ArabicQuranSplashScreen> {
   /*-----------------------------------------------------------------------------------------------*/
   /*------------ Get saved Brightness or the default value if Brightness level is not defined  ----*/
   /*-----------------------------------------------------------------------------------------------*/
-  getBrightnessLevel() async {
+  Future<void> getBrightnessLevel() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(globals.BRIGHTNESS_LEVEL)) {
       var _brightnessLevel = prefs.getDouble(globals.BRIGHTNESS_LEVEL);
@@ -46,7 +46,7 @@ class _ArabicQuranSplashScreenState extends State<ArabicQuranSplashScreen> {
   /*-----------------------------------------------------------------------------------------------*/
   /*---------------------------- get bookmarkPage from sharedPreferences ------------------------------*/
   /*-----------------------------------------------------------------------------------------------*/
-  getBookmark() async {
+  Future<void> getBookmark() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(globals.BOOKMARKED_PAGE)) {
       var bookmarkedPage = prefs.getInt(globals.BOOKMARKED_PAGE);
@@ -65,13 +65,20 @@ class _ArabicQuranSplashScreenState extends State<ArabicQuranSplashScreen> {
     /*-----------------------------------------------------------------------------------------------*/
     /*----------------------- get Saved preferences from sharedPreferences ------------------------------*/
     /*-----------------------------------------------------------------------------------------------*/
-    getBookmark();
-    getBrightnessLevel();
-    getLastViewedPage();
-    Timer(Duration(seconds: 3),
-            () => Navigator.pushReplacementNamed(context,QuranArabic.routeName),
-    );
+    getSavedPreferences();
     super.initState();
+  }
+
+  Future<void> getSavedPreferences() async {
+    await getBookmark();
+    await getBrightnessLevel();
+    await getLastViewedPage();
+    Future.delayed(
+      Duration(milliseconds: 500),
+      () {
+        Navigator.pushReplacementNamed(context, QuranArabic.routeName);
+      },
+    );
   }
 
   @override
@@ -94,14 +101,22 @@ class _ArabicQuranSplashScreenState extends State<ArabicQuranSplashScreen> {
             ),
           ),
           Center(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                "بِسْم اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ",
-                style: TextStyle(
-                  fontSize: 28,
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    "بِسْم اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ",
+                    style: TextStyle(
+                      fontSize: 28,
+                    ),
+                  ),
                 ),
-              ),
+                SizedBox(
+                  height: 15,
+                ),
+                CircularProgressIndicator.adaptive(),
+              ],
             ),
           ),
         ],

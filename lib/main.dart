@@ -4,11 +4,16 @@ import 'package:muslim_dialy_guide/constants.dart';
 import 'package:muslim_dialy_guide/provides/morning_night_provider.dart';
 import 'package:muslim_dialy_guide/provides/theme_provider.dart';
 import 'package:muslim_dialy_guide/screens/home_app/home.dart';
-import 'package:muslim_dialy_guide/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -21,12 +26,14 @@ class MyApp extends StatelessWidget {
         /*---------------------------------------  Theme Provider  --------------------------------------*/
         /*-----------------------------------------------------------------------------------------------*/
         ChangeNotifierProvider<MorningOrNightProvider>(
-            create: (context) => MorningOrNightProvider()),
+          create: (context) => MorningOrNightProvider(),
+        ),
         /*-----------------------------------------------------------------------------------------------*/
         /*---------------------------------------  Theme Provider  --------------------------------------*/
         /*-----------------------------------------------------------------------------------------------*/
         ChangeNotifierProvider<ThemeProvider>(
-            create: (context) => ThemeProvider()),
+          create: (context) => ThemeProvider(),
+        ),
       ],
       builder: (context, child) {
         /*---------------------------   theme provider  ----------------------------*/
@@ -47,13 +54,13 @@ class MyApp extends StatelessWidget {
               title: appName,
               theme: ThemeData(
                 colorSchemeSeed: primaryColor,
-                useMaterial3: true,
                 brightness: Brightness.light,
+                useMaterial3: true,
               ),
               darkTheme: ThemeData(
                 colorSchemeSeed: primaryColor,
-                useMaterial3: true,
                 brightness: Brightness.dark,
+                useMaterial3: true,
               ),
               themeMode: (value.theme) ? ThemeMode.dark : ThemeMode.light,
               initialRoute: MuslimGuideHomePage.routeName,

@@ -7,6 +7,7 @@ import 'package:muslim_dialy_guide/models/surah.dart';
 import 'package:muslim_dialy_guide/screens/quraan_arabic/surah_list_builder.dart';
 import 'package:muslim_dialy_guide/globals/globals.dart' as globals;
 import 'package:muslim_dialy_guide/screens/quraan_arabic/surah_view_builder.dart';
+import 'package:muslim_dialy_guide/widgets/app_bar.dart';
 import 'package:muslim_dialy_guide/widgets/arabic_quraan/custom_bottom_navigation_bar.dart';
 import 'package:muslim_dialy_guide/widgets/arabic_quraan/nav_bar.dart';
 import 'package:muslim_dialy_guide/widgets/arabic_quraan/slider_alert.dart';
@@ -35,7 +36,6 @@ class _QuranArabicState extends State<QuranArabic> {
     return parsed.map<Surah>((json) => new Surah.fromJson(json)).toList();
   }
 
-
   /*-----------------------------------------------------------------------------------------------*/
   /*-------------------------------- Getting Screen Brightness  -----------------------------------*/
   /*-----------------------------------------------------------------------------------------------*/
@@ -47,15 +47,12 @@ class _QuranArabicState extends State<QuranArabic> {
   void initState() {
     getScreenBrightness();
     if (globals.bookmarkedPage == null) {
-              globals.bookmarkedPage = globals.DEFAULT_BOOKMARKED_PAGE;
-            }
+      globals.bookmarkedPage = globals.DEFAULT_BOOKMARKED_PAGE;
+    }
     /*-----------------------------------------------------------------------------------------------*/
     /*---------------------- Prevent screen from going into sleep mode ------------------------------*/
     /*-----------------------------------------------------------------------------------------------*/
     Screen.keepOn(true);
-
-
-
 
     /*-----------------------------------------------------------------------------------------------*/
     /*----------------------    set saved Brightness level  ------------------------------*/
@@ -65,8 +62,6 @@ class _QuranArabicState extends State<QuranArabic> {
 
     super.initState();
   }
-
-
 
   /*-----------------------------------------------------------------------------------------------*/
   /*-------------------------------- Setting Screen Brightness  -----------------------------------*/
@@ -81,73 +76,31 @@ class _QuranArabicState extends State<QuranArabic> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Arabic Quraan",
-          style: GoogleFonts.lilyScriptOne(
-            color: Theme.of(context).primaryColor,
-            fontWeight: FontWeight.w300,
-          ),
-        ),
-        centerTitle: true,
-        elevation: 0.0,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.highlight,
-              color: Theme.of(context).accentColor,
-            ),
-            onPressed: () {
-              _setBrightness();
-            },
-          ),
-        ],
-        leading: CupertinoNavigationBarBackButton(
-          color: Theme.of(context).accentColor,
-        ),
+      appBar: GlobalAppBar(
+        title: 'القرآن الكريم',
       ),
-      body: Container(
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-
-          child: PageView(
-            physics: NeverScrollableScrollPhysics(),
-            controller: pageController,
-            children: <Widget>[
-              /*-----------------------------------------------------------------------------------------------*/
-              /*-------------------------------- Bookmarked page  -----------------------------------*/
-              /*-----------------------------------------------------------------------------------------------*/
-              SurahViewBuilder(pages: globals.bookmarkedPage - 1),
-              /*-----------------------------------------------------------------------------------------------*/
-              /*-------------------------------- last viewed page  -----------------------------------*/
-              /*-----------------------------------------------------------------------------------------------*/
-              globals.lastViewedPage !=null ? SurahViewBuilder(pages: globals.lastViewedPage - 1) :  SurahViewBuilder(pages: 569),
-              /*-----------------------------------------------------------------------------------------------*/
-              /*-------------------------------- Surah list future builder  -----------------------------------*/
-              /*-----------------------------------------------------------------------------------------------*/
-              new FutureBuilder(
-                  future: DefaultAssetBundle.of(context)
-                      .loadString('assets/json/surah.json'),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<Surah> surahList =
-                          parseJson(snapshot.data.toString());
-                      return surahList.isNotEmpty
-                          ? new SurahListBuilder(surah: surahList)
-                          : new Center(child: new CircularProgressIndicator());
-                    } else {
-                      return new Center(child: new CircularProgressIndicator());
-                    }
-                  }),
-            ],
-          ),
-        ),
+      body: FutureBuilder(
+        future:
+            DefaultAssetBundle.of(context).loadString('assets/json/surah.json'),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Surah> surahList = parseJson(snapshot.data.toString());
+            return surahList.isNotEmpty
+                ? SurahListBuilder(surah: surahList)
+                : Center(
+                    child: CircularProgressIndicator(),
+                  );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
       /*-----------------------------------------------------------------------------------------------*/
       /*-------------------------------- btn nav bar  -----------------------------------*/
       /*-----------------------------------------------------------------------------------------------*/
-      bottomNavigationBar: CustomBottomNavigationBar(),
+      // bottomNavigationBar: CustomBottomNavigationBar(),
     );
   }
 }
