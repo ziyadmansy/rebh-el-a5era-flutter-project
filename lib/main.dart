@@ -1,8 +1,11 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:muslim_dialy_guide/app_routes.dart';
 import 'package:muslim_dialy_guide/constants.dart';
-import 'package:muslim_dialy_guide/provides/morning_night_provider.dart';
-import 'package:muslim_dialy_guide/provides/theme_provider.dart';
+import 'package:muslim_dialy_guide/providers/azkar_provider.dart';
+import 'package:muslim_dialy_guide/providers/locationProvider.dart';
+import 'package:muslim_dialy_guide/providers/morning_night_provider.dart';
+import 'package:muslim_dialy_guide/providers/theme_provider.dart';
 import 'package:muslim_dialy_guide/screens/home_app/home.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,7 +17,40 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  initFCM();
   runApp(MyApp());
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.data}");
+}
+
+void initFCM() async {
+  final FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: false,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  print('User granted permission: ${settings.authorizationStatus}');
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true, // Required to display a heads up notification
+    badge: true,
+    sound: true,
+  );
+
+  // String deviceToken = await FirebaseMessaging.instance.getToken();
+  // if (deviceToken != null) {
+  //   FixedAssets.FCMToken = deviceToken;
+  //   print(deviceToken + " FCM token");
+  // }
 }
 
 class MyApp extends StatelessWidget {
@@ -33,6 +69,18 @@ class MyApp extends StatelessWidget {
         /*-----------------------------------------------------------------------------------------------*/
         ChangeNotifierProvider<ThemeProvider>(
           create: (context) => ThemeProvider(),
+        ),
+        /*-----------------------------------------------------------------------------------------------*/
+        /*---------------------------------------  Location Provider  --------------------------------------*/
+        /*-----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider<LocationProvider>(
+          create: (context) => LocationProvider(),
+        ),
+        /*-----------------------------------------------------------------------------------------------*/
+        /*---------------------------------------  Azkar Provider  --------------------------------------*/
+        /*-----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider<AzkarProvider>(
+          create: (context) => AzkarProvider(),
         ),
       ],
       builder: (context, child) {

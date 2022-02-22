@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:muslim_dialy_guide/constants.dart';
-import 'package:muslim_dialy_guide/provides/theme_provider.dart';
+import 'package:muslim_dialy_guide/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class GlobalAppBar extends PreferredSize {

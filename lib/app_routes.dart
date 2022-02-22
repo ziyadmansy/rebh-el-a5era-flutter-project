@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:muslim_dialy_guide/screens/azkar_app/azkar_items_screen.dart';
 import 'package:muslim_dialy_guide/screens/azkar_app/azkar_main_page.dart';
 import 'package:muslim_dialy_guide/screens/azkar_app/morning_night/home.dart';
 import 'package:muslim_dialy_guide/screens/azkar_app/salah_azkar.dart';
@@ -38,5 +39,7 @@ Map<String, Widget Function(BuildContext)> appRoutes = {
   /*------------------------ Sebha Screen  ----------------------------------*/
   SbhaScreen.routeName : (context) =>SbhaScreen(),
   /*------------------------ Coming Screen  ----------------------------------*/
-  ComingSoonSpinner.routeName : (context) =>ComingSoonSpinner()
+  ComingSoonSpinner.routeName : (context) =>ComingSoonSpinner(),
+  /*------------------------ Azkar Items  ----------------------------------*/
+  AzkarItemsScreen.routeName : (context) =>AzkarItemsScreen()
 };

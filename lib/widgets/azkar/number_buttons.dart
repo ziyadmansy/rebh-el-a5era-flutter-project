@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:muslim_dialy_guide/constants.dart';
 
 class PostBtn extends StatefulWidget {
+  int n;
 
-
-   int n;
-
-   PostBtn({
+  PostBtn({
     Key key,
     this.n,
   }) : super(key: key);
@@ -15,36 +14,33 @@ class PostBtn extends StatefulWidget {
 }
 
 class _PostBtnState extends State<PostBtn> {
-  onClick () {
-    if (widget.n>0)
-    setState(() {
-      widget.n = widget.n -1;
-    });
+  onClick() {
+    if (widget.n > 0)
+      setState(() {
+        widget.n = widget.n - 1;
+      });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: TextButton(
+    return SizedBox(
+      height: 48,
+      child: OutlinedButton(
         style: TextButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.pink[700], width: 2),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20)),
+            borderRadius: BorderRadius.circular(4),
           ),
-          backgroundColor: Colors.white.withOpacity(0.2),
         ),
-        child: widget.n == 0 ? Container(
-          height: 30,
-          child: Image.asset(
-            "assets/azkar/correct.gif",
-            fit: BoxFit.cover,
-          ),
-        ): Text (
-              "Remaining times: ${widget.n}"
-            ),
+        child: widget.n == 0
+            ? Container(
+                height: 30,
+                child: Image.asset(
+                  "assets/azkar/correct.gif",
+                  fit: BoxFit.cover,
+                ),
+              )
+            : Text("عدد المرات: ${widget.n}"),
         onPressed: onClick,
       ),
     );

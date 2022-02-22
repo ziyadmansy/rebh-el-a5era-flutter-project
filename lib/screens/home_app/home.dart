@@ -11,7 +11,7 @@ import 'package:muslim_dialy_guide/widgets/home_container.dart';
 import 'package:muslim_dialy_guide/constants.dart';
 import 'package:provider/provider.dart';
 
-import '../../provides/theme_provider.dart';
+import '../../providers/theme_provider.dart';
 import '../../widgets/app_bar.dart';
 import 'delayed_animation.dart';
 
@@ -75,61 +75,53 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
                       /*-----------------------------------------------------------------------------------------------*/
                       /*--------------------------------  Arabic Quraan Container  -----------------------------------*/
                       /*-----------------------------------------------------------------------------------------------*/
-                      GestureDetector(
-                        child: HomeContainer(
-                          image: "assets/quran.png",
-                          color: primaryColor,
-                          title: "القرآن الكريم",
-                        ),
-                        onTap: () => Navigator.pushNamed(
-                            context, ArabicQuranSplashScreen.routeName),
+                      HomeContainer(
+                        color: primaryColor,
+                        title: "القرآن الكريم",
+                        onPress: () {
+                          Navigator.pushNamed(
+                              context, ArabicQuranSplashScreen.routeName);
+                        },
                       ),
-                      /*-----------------------------------------------------------------------------------------------*/
-                      /*--------------------------------  Translated Quraan Container  -----------------------------------*/
-                      /*-----------------------------------------------------------------------------------------------*/
-                      // GestureDetector(
-                      //   child: HomeContainer(
-                      //       image: "assets/quran_ar.png",
-                      //       color: color2,
-                      //       title: "Translated Quraan",),
-                      //   onTap: () => Navigator.pushNamed(
-                      //       context, ComingSoonSpinner.routeName),
-                      // ),
                       /*-----------------------------------------------------------------------------------------------*/
                       /*--------------------------------  Azkar Elmoslem Container  -----------------------------------*/
                       /*-----------------------------------------------------------------------------------------------*/
-                      GestureDetector(
-                        child: HomeContainer(
-                          image: "assets/tasbeh.png",
-                          color: primaryColor,
-                          title: "الأذكار",
-                        ),
-                        onTap: () => Navigator.pushNamed(
-                            context, AzkarElmoslemMainPage.routeName),
+                      HomeContainer(
+                        color: primaryColor,
+                        title: "الأذكار",
+                        onPress: () {
+                          Navigator.pushNamed(
+                              context, AzkarElmoslemMainPage.routeName);
+                        },
                       ),
                       /*-----------------------------------------------------------------------------------------------*/
                       /*-------------------------------- Sebha App Container  -----------------------------------*/
                       /*-----------------------------------------------------------------------------------------------*/
-                      GestureDetector(
-                        child: HomeContainer(
-                          image: "assets/azkar.png",
-                          color: primaryColor,
-                          title: "السبحة",
-                        ),
-                        onTap: () =>
-                            Navigator.pushNamed(context, SbhaScreen.routeName),
+                      HomeContainer(
+                        color: primaryColor,
+                        title: "السبحة",
+                        onPress: () {
+                          Navigator.pushNamed(context, SbhaScreen.routeName);
+                        },
                       ),
                       /*-----------------------------------------------------------------------------------------------*/
                       /*-------------------------------- Praying time App Container  -----------------------------------*/
                       /*-----------------------------------------------------------------------------------------------*/
-                      GestureDetector(
-                        child: HomeContainer(
-                          image: "assets/praying.png",
-                          color: primaryColor,
-                          title: "مواقيت الصلاة",
-                        ),
-                        onTap: () =>
-                            Navigator.pushNamed(context, PrayingTime.routeName),
+                      HomeContainer(
+                        color: primaryColor,
+                        title: "مواقيت الصلاة",
+                        onPress: () {
+                          Navigator.of(context)
+                              .pushNamed(PrayingTime.routeName);
+                        },
+                      ),
+                      /*-----------------------------------------------------------------------------------------------*/
+                      /*-------------------------------- Daily Tasks Container  -----------------------------------*/
+                      /*-----------------------------------------------------------------------------------------------*/
+                      HomeContainer(
+                        color: primaryColor,
+                        title: "المهام اليومية",
+                        onPress: () {},
                       ),
                       /*-----------------------------------------------------------------------------------------------*/
                       /*-------------------------------- ElQibla App Container  -----------------------------------*/

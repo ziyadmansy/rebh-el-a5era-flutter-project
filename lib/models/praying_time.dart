@@ -121,15 +121,14 @@ class PrayerTime {
     this.setFloating(3); // floating point number
 
     // Time Names
-    // ignore: deprecated_member_use
-    _timeNames = new List<String>();
-    _timeNames.add("Fajr");
-    _timeNames.add("Sunrise");
-    _timeNames.add("Dhuhr");
-    _timeNames.add("Asr");
-    _timeNames.add("Sunset");
-    _timeNames.add("Maghrib");
-    _timeNames.add("Isha");
+    _timeNames = [];
+    _timeNames.add("الفجر");
+    _timeNames.add("الشروق");
+    _timeNames.add("الظهر");
+    _timeNames.add("العصر");
+    _timeNames.add("الغروب");
+    _timeNames.add("المغرب");
+    _timeNames.add("العشاء");
 
     _invalidTime = "-----"; // The string used for invalid times
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muslim_dialy_guide/provides/morning_night_provider.dart';
+import 'package:muslim_dialy_guide/providers/morning_night_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
@@ -31,7 +31,7 @@ class HomeSwitchTab extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.4,
                 height: 50,
                 decoration: BoxDecoration(
-                  color:Color(0xFFF1395E),
+                  color: Color(0xFFF1395E),
                   borderRadius: BorderRadius.circular(60),
                 ),
               ),
@@ -50,8 +50,6 @@ class HomeSwitchTab extends StatelessWidget {
   }
 }
 
-
-
 class SwitchBtn extends StatelessWidget {
   final String text;
   final CarouselType carouselType;
@@ -68,13 +66,13 @@ class SwitchBtn extends StatelessWidget {
       builder: (context, value, child) => TextButton(
         onPressed: (carouselType == CarouselType.Night)
             ? () {
-          value.setCarouselType(CarouselType.Morning);
-          value.switchFadeState(CrossFadeState.showFirst);
-        }
+                value.setCarouselType(CarouselType.Morning);
+                value.switchFadeState(CrossFadeState.showFirst);
+              }
             : () {
-          value.setCarouselType(CarouselType.Night);
-          value.switchFadeState(CrossFadeState.showSecond);
-        },
+                value.setCarouselType(CarouselType.Night);
+                value.switchFadeState(CrossFadeState.showSecond);
+              },
         child: Selector<MorningOrNightProvider, CarouselType>(
           selector: (context, carouselType) => carouselType.carouselType,
           builder: (context, value, child) => AnimatedDefaultTextStyle(
@@ -85,18 +83,18 @@ class SwitchBtn extends StatelessWidget {
                   : ((value == CarouselType.Night) ? 20 : 16),
               fontWeight: (carouselType == CarouselType.Morning)
                   ? ((value == CarouselType.Night)
-                  ? FontWeight.bold
-                  : FontWeight.normal)
+                      ? FontWeight.bold
+                      : FontWeight.normal)
                   : ((value == CarouselType.Night)
-                  ? FontWeight.bold
-                  : FontWeight.normal),
+                      ? FontWeight.bold
+                      : FontWeight.normal),
               color: (carouselType == CarouselType.Morning)
                   ? ((value == CarouselType.Night)
-                  ? Colors.white
-                  : Color(0xFF5117AC))
+                      ? Colors.white
+                      : Color(0xFF5117AC))
                   : ((value == CarouselType.Morning)
-                  ? Colors.white
-                  : Color(0xFF5117AC)),
+                      ? Colors.white
+                      : Color(0xFF5117AC)),
             ),
             duration: const Duration(milliseconds: 400),
             child: Text(text),

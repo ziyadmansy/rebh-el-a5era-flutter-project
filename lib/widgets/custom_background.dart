@@ -1,13 +1,11 @@
-
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:muslim_dialy_guide/provides/theme_provider.dart';
+import 'package:muslim_dialy_guide/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
 class CustomBackground extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     var theme = Provider.of<ThemeProvider>(context);
@@ -17,8 +15,8 @@ class CustomBackground extends StatelessWidget {
       children: [
         Container(
             child: Container(
-              height: 250,
-            )),
+          height: 250,
+        )),
         Positioned(
           top: -40,
           right: -50,
@@ -41,6 +39,7 @@ class CustomBackground extends StatelessWidget {
       ],
     );
   }
+
   _themeIcon(theme, context) {
     return IconButton(
       icon: Icon(
@@ -55,8 +54,7 @@ class CustomBackground extends StatelessWidget {
     );
   }
 
-
-  Widget _crearContenido( theme, BuildContext context) {
+  Widget _crearContenido(theme, BuildContext context) {
     return Container(
         height: 250,
         margin: EdgeInsets.only(right: 10, top: 30),
@@ -79,13 +77,11 @@ class CustomBackground extends StatelessWidget {
               "App theme",
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
-            _themeIcon (theme, context)
+            _themeIcon(theme, context)
           ],
         ));
   }
 }
-
-
 
 class CustomBox extends StatelessWidget {
   //variables

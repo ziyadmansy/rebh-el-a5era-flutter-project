@@ -17,30 +17,34 @@ class _SbhaScreenState extends State<SbhaScreen> {
   _dismissDialog() {
     Navigator.pop(context);
   }
+
   void _showMaterialDialog() {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Notification',textAlign: TextAlign.right,),
-            content: Text('Clear the history',textAlign: TextAlign.left,),
+            title: Text(
+              'تصفير العدد',
+            ),
+            content: Text(
+              'هل أنت متأكد من تصفير العدد؟',
+            ),
             actions: <Widget>[
-              // ignore: deprecated_member_use
-              FlatButton(
-                  onPressed: () {
-                    _dismissDialog();
-                  },
-                  child: Text('No')),
-              // ignore: deprecated_member_use
-              FlatButton(
+              TextButton(
+                onPressed: () {
+                  _dismissDialog();
+                },
+                child: Text('لا'),
+              ),
+              TextButton(
                 onPressed: () {
                   _dismissDialog();
                   removeCounter();
                   setState(() {
-                    _counter=0;
+                    _counter = 0;
                   });
                 },
-                child: Text('yes'),
+                child: Text('نعم'),
               )
             ],
           );
@@ -66,10 +70,11 @@ class _SbhaScreenState extends State<SbhaScreen> {
   /*-----------------------------------------------------------------------------------------------*/
   /*---------------------------- Set counter to shared preferences ------------------------------*/
   /*-----------------------------------------------------------------------------------------------*/
-  setCounter() async {
+  Future<void> setCounter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt("counter", _counter);
+    await prefs.setInt("counter", _counter);
   }
+
   /*-----------------------------------------------------------------------------------------------*/
   /*---------------------------- delete counter from shared preferences ------------------------------*/
   /*-----------------------------------------------------------------------------------------------*/
@@ -80,10 +85,17 @@ class _SbhaScreenState extends State<SbhaScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-            appBar: GlobalAppBar(
-              title: "sbha"
-            ),
-            body: ListView(
+        appBar: GlobalAppBar(title: "السبحة"),
+        body: InkWell(
+          onTap: () {
+            setState(() {
+              _counter++;
+            });
+            setCounter();
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+            child: Column(
               children: <Widget>[
                 Center(
                   child: Align(
@@ -100,67 +112,35 @@ class _SbhaScreenState extends State<SbhaScreen> {
                       ),
                       child: Center(
                           child: Text(
-                            '$_counter',
-                            style: TextStyle(fontSize: 40.0),
-                          )),
+                        '$_counter',
+                        style: TextStyle(fontSize: 40.0),
+                      )),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 60.0,
-                ),
+                Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: (){
-                          setState(() {
-                            _counter++;
-                          });
-                          setCounter();
-                        },
-                        child: Container(
-                          height: 60.0,
-                          width: 180.0,
-                          decoration: BoxDecoration(
-                            color: kSecondaryColor,
-                            borderRadius: BorderRadius.circular(10.0),
+                    Expanded(
+                      child: SizedBox(
+                        height: 48,
+                        child: ElevatedButton(
+                          child: Text('تصفير العدد'),
+                          style: ElevatedButton.styleFrom(
+                            primary: redColor,
                           ),
-                          child: Center(
-                              child: Text(
-                                'Press me',
-                                style: TextStyle(
-                                    fontSize: 25.0, fontWeight: FontWeight.bold,
-                                ),
-                              )),
+                          onPressed: () {
+                            _showMaterialDialog();
+                          },
                         ),
                       ),
                     ),
-                    InkWell(
-                      onTap: (){_showMaterialDialog();},
-                      child: Container(
-                        height: 60.0,
-                        width: 140.0,
-                        decoration: BoxDecoration(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Center(
-                          child: Text('Clear',style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
-                            //color: Colors.white,
-                          ),),
-                        ),
-
-                      ),
-                    )
                   ],
                 ),
               ],
-            )
-    );
+            ),
+          ),
+        ));
   }
 }

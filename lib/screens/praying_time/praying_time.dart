@@ -1,11 +1,14 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:muslim_dialy_guide/models/praying_time.dart';
+import 'package:muslim_dialy_guide/providers/locationProvider.dart';
 import 'package:muslim_dialy_guide/widgets/app_bar.dart';
 import 'package:muslim_dialy_guide/widgets/praying_time/praying_time_container.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../../exceptions.dart/location_exception.dart';
 
 class PrayingTime extends StatefulWidget {
   static const String routeName = 'prayingTime';
@@ -15,7 +18,7 @@ class PrayingTime extends StatefulWidget {
 }
 
 class _PrayingTimeState extends State<PrayingTime> {
-
+  bool isLoading = false;
   /*-----------------------------------------------------------------------------------------------*/
   /*-------------------------------- praying photos list  -----------------------------------*/
   /*-----------------------------------------------------------------------------------------------*/
@@ -31,16 +34,19 @@ class _PrayingTimeState extends State<PrayingTime> {
 
   List<String> _prayerTimes = [];
   List<String> _prayerNames = [];
-  String address = "Cairo, Egypt";
+  // String address = "Cairo, Egypt";
 
   /*-----------------------------------------------------------------------------------------------*/
-  /*-------------------------------- get prater times  -----------------------------------*/
+  /*-------------------------------- get prayer times  -----------------------------------*/
   /*-----------------------------------------------------------------------------------------------*/
-  getPrayerTimes() {
-    PrayerTime prayers = new PrayerTime();
+  Future<void> getPrayerTimes() async {
+    setState(() {
+      isLoading = true;
+    });
+    PrayerTime prayers = PrayerTime();
 
     prayers.setTimeFormat(prayers.getTime12());
-    prayers.setCalcMethod(prayers.getKarachi());
+    prayers.setCalcMethod(prayers.getEgypt());
     prayers.setAsrJuristic(prayers.getHanafi());
     prayers.setAdjustHighLats(prayers.getAdjustHighLats());
 
@@ -57,18 +63,52 @@ class _PrayingTimeState extends State<PrayingTime> {
 
     var currentTime = DateTime.now();
 
+    final latLng = await getLocation();
+
+    if (latLng != null) {
+      setState(() {
+        _prayerTimes = prayers.getPrayerTimes(
+          currentTime,
+          latLng.latitude,
+          latLng.longitude,
+          Constants.timeZone, // TODO: Fix this
+        );
+        _prayerNames = prayers.getTimeNames();
+      });
+    }
     setState(() {
-      _prayerTimes = prayers.getPrayerTimes(
-          currentTime, Constants.lat, Constants.long, Constants.timeZone);
-      _prayerNames = prayers.getTimeNames();
+      isLoading = false;
     });
   }
 
+  Future<LatLng> getLocation() async {
+    try {
+      final locationData =
+          Provider.of<LocationProvider>(context, listen: false);
+      await locationData.checkLocationPermissions();
+      LocationData position = await locationData.getLocationData();
+
+      print(position.longitude);
+      print(position.latitude);
+
+      if (position != null) {
+        return LatLng(position.latitude, position.longitude);
+      } else {
+        return null;
+      }
+    } on LocationException {
+      // Handle Service/Permission Exception here
+      // SharedWidgets.showToastMsg(e.msg, true);
+      return null;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-
     getPrayerTimes();
   }
 
@@ -76,57 +116,47 @@ class _PrayingTimeState extends State<PrayingTime> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GlobalAppBar(
-        title: "Praying time",
+        title: "مواقيت الصلاة",
       ),
-      body: SafeArea (
-        child: Center(
-          child: Container (
-            child: Column (
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // ignore: deprecated_member_use
-                FlatButton.icon(
-                    onPressed: (){},
-                    icon: Icon(Icons.location_on_outlined),
-                    label: Text (
-                      address
-                    ),
-                ),
-                Container(
-                  //width: double.infinity,
-                  child: Image.asset(
-                    'assets/mecca.png',
-                    width: 300,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                  //  height: MediaQuery.of(context).size.height * 0.2,
-                    child: ListView.builder(
-                      itemCount: _prayerNames.length,
-                      itemBuilder: (BuildContext context, position) {
-                        return Container(
-                          padding: EdgeInsets.all(5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              PrayingTimeContainer(
-                                icon: photos[position],
-                                title: _prayerNames[position],
-                                time: _prayerTimes[position],
-                              ),
-                            ],
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator.adaptive(),
+            )
+          : SafeArea(
+              child: Center(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+                  child: _prayerTimes.isEmpty
+                      ? Center(
+                          child: Text(
+                            'لم يستطع التقاط موقعك برجاء التأكد من تشغيل ال GPS و إعادة المحاولة',
+                            textAlign: TextAlign.center,
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        )
+                      : ListView.builder(
+                          itemCount: _prayerNames.length,
+                          itemBuilder: (BuildContext context, position) {
+                            return Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(kBorderRadius),
+                              ),
+                              color: Theme.of(context).primaryColor,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: PrayingTimeContainer(
+                                  icon: photos[position],
+                                  title: _prayerNames[position],
+                                  time: _prayerTimes[position],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }
