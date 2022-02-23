@@ -1,7 +1,8 @@
+import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
-import 'package:muslim_dialy_guide/models/praying_time.dart';
 import 'package:muslim_dialy_guide/providers/locationProvider.dart';
 import 'package:muslim_dialy_guide/widgets/app_bar.dart';
 import 'package:muslim_dialy_guide/widgets/praying_time/praying_time_container.dart';
@@ -32,8 +33,10 @@ class _PrayingTimeState extends State<PrayingTime> {
     "assets/praying_time/isyah.png",
   ];
 
-  List<String> _prayerTimes = [];
+  String timeZoneName = '';
+
   List<String> _prayerNames = [];
+  List<String> _prayerTimes = [];
   // String address = "Cairo, Egypt";
 
   /*-----------------------------------------------------------------------------------------------*/
@@ -43,39 +46,78 @@ class _PrayingTimeState extends State<PrayingTime> {
     setState(() {
       isLoading = true;
     });
-    PrayerTime prayers = PrayerTime();
-
-    prayers.setTimeFormat(prayers.getTime12());
-    prayers.setCalcMethod(prayers.getEgypt());
-    prayers.setAsrJuristic(prayers.getHanafi());
-    prayers.setAdjustHighLats(prayers.getAdjustHighLats());
-
-    List<int> offsets = [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ]; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
-    prayers.tune(offsets);
-
     var currentTime = DateTime.now();
 
     final latLng = await getLocation();
-
     if (latLng != null) {
-      setState(() {
-        _prayerTimes = prayers.getPrayerTimes(
-          currentTime,
-          latLng.latitude,
-          latLng.longitude,
-          Constants.timeZone, // TODO: Fix this
-        );
-        _prayerNames = prayers.getTimeNames();
-      });
+      print('My Prayer Times');
+      final myCoordinates = Coordinates(
+        latLng.latitude,
+        latLng.longitude,
+      );
+      final params = CalculationMethod.egyptian.getParameters();
+      params.madhab = Madhab.shafi;
+      final prayerTimes = PrayerTimes.today(myCoordinates, params);
+      timeZoneName = prayerTimes.fajr.timeZoneName;
+
+      print(
+          "---Today's Prayer Times in Your Local Timezone(${prayerTimes.fajr.timeZoneName})---");
+      print(DateFormat.jm().format(prayerTimes.fajr));
+      print(DateFormat.jm().format(prayerTimes.sunrise));
+      print(DateFormat.jm().format(prayerTimes.dhuhr));
+      print(DateFormat.jm().format(prayerTimes.asr));
+      print(DateFormat.jm().format(prayerTimes.maghrib));
+      print(DateFormat.jm().format(prayerTimes.isha));
+
+      // Prayer Names
+      _prayerNames = [
+        'الفجر',
+        'الشروق',
+        'الظهر',
+        'العصر',
+        'المغرب',
+        'العشاء',
+      ];
+
+      // Prayer Times
+      _prayerTimes = [
+        DateFormat.jm().format(prayerTimes.fajr),
+        DateFormat.jm().format(prayerTimes.sunrise),
+        DateFormat.jm().format(prayerTimes.dhuhr),
+        DateFormat.jm().format(prayerTimes.asr),
+        DateFormat.jm().format(prayerTimes.maghrib),
+        DateFormat.jm().format(prayerTimes.isha),
+      ];
+
+      print('---');
     }
+
+    // prayers.setTimeFormat(prayers.getTime12());
+    // prayers.setCalcMethod(prayers.getEgypt());
+    // prayers.setAsrJuristic(prayers.getShafii());
+    // prayers.setAdjustHighLats(prayers.getAdjustHighLats());
+
+    // List<int> offsets = [
+    //   0,
+    //   0,
+    //   0,
+    //   0,
+    //   0,
+    //   0,
+    //   0
+    // ]; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
+    // prayers.tune(offsets);
+
+    // setState(() {
+    // _prayerTimes = prayers.getPrayerTimes(
+    //   currentTime,
+    //   latLng.latitude,
+    //   latLng.longitude,
+    //   Constants.timeZone,
+    // );
+    // _prayerNames = prayers.getTimeNames();
+    // });
+
     setState(() {
       isLoading = false;
     });
