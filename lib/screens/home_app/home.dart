@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:muslim_dialy_guide/screens/azkar_app/azkar_main_page.dart';
 import 'package:muslim_dialy_guide/screens/comming%20soon/coming_home_spinner.dart';
+import 'package:muslim_dialy_guide/screens/daily_tasks/daily_tasks_screen.dart';
 import 'package:muslim_dialy_guide/screens/home_app/hint_circle.dart';
 import 'package:muslim_dialy_guide/screens/praying_time/praying_time.dart';
 import 'package:muslim_dialy_guide/screens/qiblat/qibla.dart';
@@ -48,18 +49,18 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
                   ),
                   delay: delayedAmount + 500,
                 ),
-                SizedBox(
-                  height: 15.0,
-                ),
-                DelayedAnimation(
-                  child: Text(
-                    "دليلك لدخول الجنة",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                  delay: delayedAmount + 1000,
-                ),
+                // SizedBox(
+                //   height: 15.0,
+                // ),
+                // DelayedAnimation(
+                //   child: Text(
+                //     "دليلك لدخول الجنة",
+                //     style: TextStyle(
+                //       fontSize: 20.0,
+                //     ),
+                //   ),
+                //   delay: delayedAmount + 1000,
+                // ),
                 SizedBox(
                   height: 15.0,
                 ),
@@ -121,7 +122,10 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
                       HomeContainer(
                         color: primaryColor,
                         title: "المهام اليومية",
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.of(context)
+                              .pushNamed(DailyTasksScreen.routeName);
+                        },
                       ),
                       /*-----------------------------------------------------------------------------------------------*/
                       /*-------------------------------- ElQibla App Container  -----------------------------------*/
@@ -140,10 +144,10 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
                 /*-----------------------------------------------------------------------------------------------*/
                 /*-------------------------------- Hint Circle  -----------------------------------*/
                 /*-----------------------------------------------------------------------------------------------*/
-                // DelayedAnimation(
-                //   delay: delayedAmount + 5000,
-                //   child: HintCircle(),
-                // ),
+                DelayedAnimation(
+                  delay: delayedAmount + 2000,
+                  child: HintCircle(),
+                ),
                 SizedBox(
                   height: 10,
                 ),

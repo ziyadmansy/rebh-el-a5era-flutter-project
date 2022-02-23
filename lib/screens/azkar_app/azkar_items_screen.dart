@@ -25,20 +25,24 @@ class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
       appBar: GlobalAppBar(
         title: zekr.title,
       ),
-      body: ListView.separated(
-        itemCount: zekr.ad3ya.length,
-        itemBuilder: (context, i) {
-          final doaa = zekr.ad3ya[i];
-          return AzkarPostDescription(
-            title: doaa.title,
-            description: doaa.description,
-            number: doaa.count,
-          );
-        },
-        separatorBuilder: (context, i) {
-          return Divider();
-        },
-      ),
+      body: zekr.ad3ya.isEmpty
+          ? Center(
+              child: Text('لا يوجد أذكار متاحة'),
+            )
+          : ListView.separated(
+              itemCount: zekr.ad3ya.length,
+              itemBuilder: (context, i) {
+                final doaa = zekr.ad3ya[i];
+                return AzkarPostDescription(
+                  title: doaa.title,
+                  description: doaa.description,
+                  number: doaa.count,
+                );
+              },
+              separatorBuilder: (context, i) {
+                return Divider();
+              },
+            ),
     );
   }
 }

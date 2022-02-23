@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:muslim_dialy_guide/app_routes.dart';
 import 'package:muslim_dialy_guide/constants.dart';
 import 'package:muslim_dialy_guide/providers/azkar_provider.dart';
+import 'package:muslim_dialy_guide/providers/daily_tasks_provider.dart';
 import 'package:muslim_dialy_guide/providers/locationProvider.dart';
 import 'package:muslim_dialy_guide/providers/morning_night_provider.dart';
 import 'package:muslim_dialy_guide/providers/theme_provider.dart';
@@ -61,9 +62,9 @@ class MyApp extends StatelessWidget {
         /*-----------------------------------------------------------------------------------------------*/
         /*---------------------------------------  Theme Provider  --------------------------------------*/
         /*-----------------------------------------------------------------------------------------------*/
-        ChangeNotifierProvider<MorningOrNightProvider>(
-          create: (context) => MorningOrNightProvider(),
-        ),
+        // ChangeNotifierProvider<MorningOrNightProvider>(
+        //   create: (context) => MorningOrNightProvider(),
+        // ),
         /*-----------------------------------------------------------------------------------------------*/
         /*---------------------------------------  Theme Provider  --------------------------------------*/
         /*-----------------------------------------------------------------------------------------------*/
@@ -81,6 +82,12 @@ class MyApp extends StatelessWidget {
         /*-----------------------------------------------------------------------------------------------*/
         ChangeNotifierProvider<AzkarProvider>(
           create: (context) => AzkarProvider(),
+        ),
+        /*-----------------------------------------------------------------------------------------------*/
+        /*---------------------------------------  Daily Tasks Provider  --------------------------------------*/
+        /*-----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider<DailyTasksProvider>(
+          create: (context) => DailyTasksProvider(),
         ),
       ],
       builder: (context, child) {
@@ -101,12 +108,12 @@ class MyApp extends StatelessWidget {
               ],
               title: appName,
               theme: ThemeData(
-                colorSchemeSeed: primaryColor,
+                colorSchemeSeed: kSecondaryColor,
                 brightness: Brightness.light,
                 useMaterial3: true,
               ),
               darkTheme: ThemeData(
-                colorSchemeSeed: primaryColor,
+                colorSchemeSeed: kSecondaryColor,
                 brightness: Brightness.dark,
                 useMaterial3: true,
               ),

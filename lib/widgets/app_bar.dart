@@ -25,7 +25,7 @@ class GlobalAppBar extends PreferredSize {
       ),
       centerTitle: true,
       elevation: 0.0,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       actions: [
         _themeIcon(theme, context),
       ],

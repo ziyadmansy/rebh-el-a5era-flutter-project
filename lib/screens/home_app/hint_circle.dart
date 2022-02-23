@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:muslim_dialy_guide/constants.dart';
 
-
 class HintCircle extends StatefulWidget {
   @override
   _HintCircleState createState() => _HintCircleState();
@@ -34,7 +33,7 @@ class _HintCircleState extends State<HintCircle>
 
     time = Timer.periodic(
       Duration(seconds: 1),
-          (timer) {
+      (timer) {
         if (timer.tick <= 5) {
           if (timer.tick == 1) {
             setState(() {
@@ -63,7 +62,6 @@ class _HintCircleState extends State<HintCircle>
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: kBottomNavigationBarHeight + 20,
       alignment: Alignment.center,
@@ -71,31 +69,31 @@ class _HintCircleState extends State<HintCircle>
         alignment: Alignment.centerRight,
         children: [
           AnimatedContainer(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 15),
-              width: animatedContainerWidth,
-              height: 40,
-              duration: const Duration(milliseconds: 700),
-              curve: Curves.easeInOutBack,
-              decoration: BoxDecoration(
-                color: primaryColor.withOpacity(0.4),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: ScaleTransition(
-                scale: animation,
-                child: AnimatedOpacity(
-                  opacity: animation2.value,
-                  duration: const Duration(milliseconds: 300),
-                  child: Text(
-                    "Muslim Guide to Jennah",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        .copyWith(color: Colors.white),
-                  ),
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(left: 15),
+            width: animatedContainerWidth,
+            height: 40,
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.easeInOutBack,
+            decoration: BoxDecoration(
+              color: primaryColor.withOpacity(0.4),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: ScaleTransition(
+              scale: animation,
+              child: AnimatedOpacity(
+                opacity: animation2.value,
+                duration: const Duration(milliseconds: 300),
+                child: Text(
+                  "دليلك لدخول الجنة",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ),
+          ),
           GestureDetector(
             onTap: () {
               if (!isClicked) {
@@ -117,7 +115,7 @@ class _HintCircleState extends State<HintCircle>
               turns: animation,
               alignment: Alignment.center,
               child: Container(
-                child: Image.asset('assets/icon.png'),
+                child: Image.asset('assets/quran_ar.png'),
                 padding: const EdgeInsets.all(5.0),
                 width: 60,
                 height: 60,
