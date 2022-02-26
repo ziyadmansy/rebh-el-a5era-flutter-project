@@ -1,4 +1,9 @@
+import 'dart:developer';
+
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:muslim_dialy_guide/providers/device_info_provider.dart';
 import 'package:muslim_dialy_guide/screens/azkar_app/azkar_main_page.dart';
 import 'package:muslim_dialy_guide/screens/comming%20soon/coming_home_spinner.dart';
 import 'package:muslim_dialy_guide/screens/daily_tasks/daily_tasks_screen.dart';
@@ -25,6 +30,18 @@ class MuslimGuideHomePage extends StatefulWidget {
 
 class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
   final int delayedAmount = 500;
+
+  @override
+  void initState() {
+    super.initState();
+    getDeviceInfo();
+  }
+
+  Future<void> getDeviceInfo() async {
+    final deviceInfoData =
+        Provider.of<DeviceInfoProvider>(context, listen: false);
+    await deviceInfoData.getDeviceInfo();
+  }
 
   @override
   Widget build(BuildContext context) {

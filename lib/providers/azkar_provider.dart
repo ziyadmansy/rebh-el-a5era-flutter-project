@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
+import 'package:muslim_dialy_guide/constants.dart';
 import 'package:muslim_dialy_guide/models/zekr_cat.dart';
 import 'package:muslim_dialy_guide/utils/api_routes.dart';
 
@@ -17,6 +18,7 @@ class AzkarProvider with ChangeNotifier {
         headers: {
           'Content-Type': 'application/json',
           'accept': 'application/json; charset=UTF-8',
+          'Authorization': apiKey,
         },
       );
 

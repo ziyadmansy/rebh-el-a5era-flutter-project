@@ -6,6 +6,7 @@ import 'package:muslim_dialy_guide/models/daily_task.dart';
 import 'package:muslim_dialy_guide/models/zekr_cat.dart';
 import 'package:muslim_dialy_guide/utils/api_routes.dart';
 
+import '../constants.dart';
 import '../models/zekr_item.dart';
 
 class DailyTasksProvider with ChangeNotifier {
@@ -20,6 +21,7 @@ class DailyTasksProvider with ChangeNotifier {
         headers: {
           'Content-Type': 'application/json',
           'accept': 'application/json; charset=UTF-8',
+          'Authorization': apiKey,
         },
       );
 

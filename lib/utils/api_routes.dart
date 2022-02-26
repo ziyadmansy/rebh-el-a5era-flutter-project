@@ -3,4 +3,5 @@ class ApiRoutes {
 
   static const String azkar = '$apiUrl/quran/aqsam/';
   static const String dailyTasks = '$apiUrl/quran/alarms/';
+  static const String deviceInfo = '$apiUrl/quran/notifications/';
 }

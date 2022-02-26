@@ -4,6 +4,7 @@ import 'package:muslim_dialy_guide/app_routes.dart';
 import 'package:muslim_dialy_guide/constants.dart';
 import 'package:muslim_dialy_guide/providers/azkar_provider.dart';
 import 'package:muslim_dialy_guide/providers/daily_tasks_provider.dart';
+import 'package:muslim_dialy_guide/providers/device_info_provider.dart';
 import 'package:muslim_dialy_guide/providers/locationProvider.dart';
 import 'package:muslim_dialy_guide/providers/morning_night_provider.dart';
 import 'package:muslim_dialy_guide/providers/theme_provider.dart';
@@ -88,6 +89,12 @@ class MyApp extends StatelessWidget {
         /*-----------------------------------------------------------------------------------------------*/
         ChangeNotifierProvider<DailyTasksProvider>(
           create: (context) => DailyTasksProvider(),
+        ),
+        /*-----------------------------------------------------------------------------------------------*/
+        /*---------------------------------------  Device Info Provider  --------------------------------------*/
+        /*-----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider<DeviceInfoProvider>(
+          create: (context) => DeviceInfoProvider(),
         ),
       ],
       builder: (context, child) {

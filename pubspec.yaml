@@ -47,6 +47,7 @@ dependencies:
 
   adhan: ^1.1.16
   intl: ^0.17.0
+  device_info_plus: ^3.2.2
   #####-----------------------------  Firebase  ----------------------------#####
   firebase_core: ^1.12.0
   firebase_messaging: ^11.2.6
