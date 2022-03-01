@@ -40,15 +40,18 @@ class _AzkarPostDescriptionState extends State<AzkarPostDescription> {
                       children: [
                         Text(
                           widget.title,
-                          style: Theme.of(context).textTheme.subtitle1.copyWith(
-                                fontSize: 16,
-                              ),
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
                           widget.description ?? '',
-                          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                fontSize: 16,
-                              ),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
                         ),
                       ],
                     ),

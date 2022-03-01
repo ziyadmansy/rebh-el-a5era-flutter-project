@@ -23,7 +23,7 @@ class ThemeProvider extends ChangeNotifier {
 /*---------------------------------------------------------------------------------------------*/
   _loadPrefs() async {
     await initPrefs();
-    isDarkTheme = preferences.getBool('theme') ?? false;
+    isDarkTheme = preferences.getBool('theme') ?? true;
     notifyListeners();
   }
 

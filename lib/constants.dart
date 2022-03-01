@@ -10,8 +10,7 @@ class Constants {
 /*---------------------------------------------------------------------------------------------*/
 /*---------------------------------- App Custom Colors ----------------------------------------*/
 /*---------------------------------------------------------------------------------------------*/
-final Color primaryColor = Colors.blue[900];
-final Color kSecondaryColor = Color.fromARGB(255, 130, 196, 250);
+final Color primaryColor = Colors.teal;
 
 /*---------------------------------------------------------------------------------------------*/
 /*---------------------------------- App Carousel type ----------------------------------------*/
@@ -33,4 +32,4 @@ const String webText = 'web';
 
 const String fcmKey = 'FCMToken';
 
-const String apiKey = 'Api-Key K1LFyvI1.ci3qSMgEXFspWomP5rJN5DyI5TmB2waM';
+const String apiKey = ''; // TODO: make api key

@@ -115,12 +115,12 @@ class MyApp extends StatelessWidget {
               ],
               title: appName,
               theme: ThemeData(
-                colorSchemeSeed: kSecondaryColor,
+                colorSchemeSeed: primaryColor,
                 brightness: Brightness.light,
                 useMaterial3: true,
               ),
               darkTheme: ThemeData(
-                colorSchemeSeed: kSecondaryColor,
+                colorSchemeSeed: primaryColor,
                 brightness: Brightness.dark,
                 useMaterial3: true,
               ),

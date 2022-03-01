@@ -30,7 +30,7 @@ class CustomBackground extends StatelessWidget {
           right: -60,
           child: CustomBox(
             angulo: 1.2,
-            color: kSecondaryColor,
+            color: primaryColor,
           ),
         ),
         Positioned(

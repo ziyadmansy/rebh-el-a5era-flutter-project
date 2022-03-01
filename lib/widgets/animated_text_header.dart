@@ -10,9 +10,12 @@ class AnimatedTextHeader extends StatefulWidget {
   final bool isSocial;
   final double paddingHeight;
 
-
   const AnimatedTextHeader(
-      {Key key, this.firstWord = "Azkar ", this.secondWord = "Elmoslem", this.isSocial = true, this.paddingHeight=25.0})
+      {Key key,
+      this.firstWord = "Azkar ",
+      this.secondWord = "Elmoslem",
+      this.isSocial = true,
+      this.paddingHeight = 25.0})
       : super(key: key);
 
   @override
@@ -21,7 +24,6 @@ class AnimatedTextHeader extends StatefulWidget {
 
 class _AnimatedTextHeaderState extends State<AnimatedTextHeader>
     with SingleTickerProviderStateMixin {
-
   AnimationController _controller;
   Animation animation1, animation2;
   Timer timer;
@@ -39,7 +41,7 @@ class _AnimatedTextHeaderState extends State<AnimatedTextHeader>
         curve: Interval(0.3, 0.7, curve: Curves.easeOutBack)));
     timer = Timer(
       const Duration(milliseconds: 1300),
-          () => _controller.forward(),
+      () => _controller.forward(),
     );
   }
 
@@ -64,7 +66,7 @@ class _AnimatedTextHeaderState extends State<AnimatedTextHeader>
                 children: [
                   ScaleTransition(
                     scale: animation1,
-                    child:Text(
+                    child: Text(
                       widget.firstWord,
                       style: GoogleFonts.cookie(
                         color: Colors.redAccent,
@@ -74,7 +76,7 @@ class _AnimatedTextHeaderState extends State<AnimatedTextHeader>
                   ),
                   ScaleTransition(
                     scale: animation2,
-                    child:Text(
+                    child: Text(
                       widget.secondWord,
                       style: GoogleFonts.cookie(
                         color: Colors.redAccent,
@@ -87,31 +89,39 @@ class _AnimatedTextHeaderState extends State<AnimatedTextHeader>
               const SizedBox(
                 height: 10,
               ),
-              widget.isSocial ? Container() : Divider(
-                thickness: 1.5,
-                color: kSecondaryColor,
-              ),
-              widget.isSocial ? Container()  : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Divider(
-                  thickness: 1.5,
-                  color: Colors.pink[700],
-                ),
-              ),
-              widget.isSocial ? Container() : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 35),
-                child: Divider(
-                  thickness: 1.5,
-                  color: kSecondaryColor,
-                ),
-              ),
-              widget.isSocial ? Container() : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: Divider(
-                  thickness: 1.5,
-                  color: Colors.pink[700],
-                ),
-              ),
+              widget.isSocial
+                  ? Container()
+                  : Divider(
+                      thickness: 1.5,
+                      color: primaryColor,
+                    ),
+              widget.isSocial
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Divider(
+                        thickness: 1.5,
+                        color: Colors.pink[700],
+                      ),
+                    ),
+              widget.isSocial
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      child: Divider(
+                        thickness: 1.5,
+                        color: primaryColor,
+                      ),
+                    ),
+              widget.isSocial
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      child: Divider(
+                        thickness: 1.5,
+                        color: Colors.pink[700],
+                      ),
+                    ),
             ],
           ),
         ),

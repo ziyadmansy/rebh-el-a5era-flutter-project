@@ -121,7 +121,7 @@ class _HintCircleState extends State<HintCircle>
                 height: 60,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: kSecondaryColor,
+                  color: primaryColor,
                   shape: BoxShape.circle,
                 ),
               ),
