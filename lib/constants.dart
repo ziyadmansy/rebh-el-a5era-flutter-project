@@ -32,4 +32,4 @@ const String webText = 'web';
 
 const String fcmKey = 'FCMToken';
 
-const String apiKey = ''; // TODO: make api key
+const String apiKey = 'Api-Key cACdHw0T.HCtfSOwHenMTpMKQkuiVujPfeyvuAfYz';

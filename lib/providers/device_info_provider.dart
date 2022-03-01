@@ -19,7 +19,6 @@ class DeviceInfoProvider with ChangeNotifier {
       if (savedFcmToken != fcmToken) {
         // The registered FCM Token has changed
         savedFcmToken = fcmToken;
-        await prefs.setString(fcmKey, savedFcmToken);
       } else {
         // The registered FCM Token hasn't changed
         // No need to send the request to admin panel
@@ -29,7 +28,6 @@ class DeviceInfoProvider with ChangeNotifier {
       // First time user login
       // savedFcmToken = null
       savedFcmToken = fcmToken;
-      await prefs.setString(fcmKey, savedFcmToken);
     }
 
     final deviceInfoPlugin = DeviceInfoPlugin();
@@ -78,19 +76,28 @@ class DeviceInfoProvider with ChangeNotifier {
     @required String fcmToken,
   }) async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       print(ApiRoutes.deviceInfo);
       Response response = await post(
         Uri.parse(ApiRoutes.deviceInfo),
-        body: {},
+        body: {
+          'registration_id': fcmToken,
+          'device_id': deviceIdentifier,
+          'type': deviceType
+        },
         headers: {
-          'Content-Type': 'application/json',
-          'accept': 'application/json; charset=UTF-8',
           'Authorization': apiKey,
         },
       );
       final decodedResponseBody = json.decode(response.body);
+
       print(response.body);
       print(response.statusCode);
-    } catch (e) {}
+      if (response.statusCode == 201) {
+        await prefs.setString(fcmKey, fcmToken);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

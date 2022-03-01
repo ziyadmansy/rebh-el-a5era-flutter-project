@@ -25,7 +25,9 @@ void main() async {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.data}");
+  print("Handling a background title: ${message.notification.title}");
+  print("Handling a background body: ${message.notification.body}");
+  print("Handling a background additional data: ${message.data}");
 }
 
 void initFCM() async {
