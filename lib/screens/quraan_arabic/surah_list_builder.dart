@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_dialy_guide/models/surah.dart';
 import 'package:muslim_dialy_guide/screens/quraan_arabic/surah_view_builder.dart';
+
+import '../../common/shared.dart';
+import '../../constants.dart';
 
 class SurahListBuilder extends StatefulWidget {
   final List<Surah> surah;
@@ -13,6 +17,10 @@ class SurahListBuilder extends StatefulWidget {
 
 class _SurahListBuilderState extends State<SurahListBuilder> {
   TextEditingController editingController = TextEditingController();
+
+  BannerAd myBanner;
+  InterstitialAd _interstitialAd;
+  AdWidget adWidget;
 
   List<Surah> surah = [];
 
@@ -76,7 +84,45 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
     /*------------------------------Init listView with all surah(s)-------------------------*/
     /*-----------------------------------------------------------------------------------------------*/
     initSurahListView();
+    Future.delayed(
+      Duration.zero,
+      () async {
+        initAds();
+      },
+    );
     super.initState();
+  }
+
+  Future<void> initAds() async {
+    myBanner =
+        await Shared.getBannerAd(MediaQuery.of(context).size.width.toInt());
+    await myBanner.load();
+    adWidget = AdWidget(ad: myBanner);
+    setState(() {});
+
+    await InterstitialAd.load(
+      adUnitId: interstitialAdId,
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          // Keep a reference to the ad so you can show it later.
+          this._interstitialAd = ad;
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          print('InterstitialAd failed to load: $error');
+        },
+      ),
+    );
+    // _interstitialAd.show();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myBanner.dispose();
+    if (_interstitialAd != null) {
+      _interstitialAd.dispose();
+    }
   }
 
   @override
@@ -134,6 +180,13 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
                   }),
             ),
           ),
+          if (adWidget != null)
+            Container(
+              alignment: Alignment.center,
+              child: adWidget,
+              width: myBanner.size.width.toDouble(),
+              height: myBanner.size.height.toDouble(),
+            ),
         ],
       ),
     );

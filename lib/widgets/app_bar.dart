@@ -19,13 +19,11 @@ class GlobalAppBar extends PreferredSize {
       title: Text(
         title,
         style: GoogleFonts.lilyScriptOne(
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.bold,
           color: Theme.of(context).textTheme.titleLarge.color,
         ),
       ),
       centerTitle: true,
-      elevation: 0.0,
-      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       actions: [
         _themeIcon(theme, context),
       ],
@@ -36,9 +34,10 @@ class GlobalAppBar extends PreferredSize {
     return IconButton(
       icon: Icon(
         (theme.theme)
-            ? Icons.brightness_7_outlined
-            : Icons.brightness_4_outlined,
+            ? Icons.nightlight_round_rounded
+            : Icons.light_mode_rounded,
         color: Theme.of(context).iconTheme.color,
+        semanticLabel: 'وضع التطبيق',
       ),
       onPressed: () {
         theme.switchTheme();

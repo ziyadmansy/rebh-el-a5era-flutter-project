@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_dialy_guide/app_routes.dart';
 import 'package:muslim_dialy_guide/constants.dart';
 import 'package:muslim_dialy_guide/providers/azkar_provider.dart';
@@ -16,6 +17,7 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -117,10 +119,12 @@ class MyApp extends StatelessWidget {
               ],
               title: appName,
               theme: ThemeData(
-                colorSchemeSeed: primaryColor,
-                brightness: Brightness.light,
-                useMaterial3: true,
-              ),
+                  brightness: Brightness.dark,
+                  useMaterial3: true,
+                  colorSchemeSeed: primaryColor,
+                  appBarTheme: AppBarTheme(
+                    backgroundColor: primaryColor,
+                  )),
               darkTheme: ThemeData(
                 colorSchemeSeed: primaryColor,
                 brightness: Brightness.dark,

@@ -25,14 +25,28 @@ class HomeContainer extends StatelessWidget {
         child: InkWell(
           onTap: onPress,
           borderRadius: BorderRadius.circular(kBorderRadius),
-          child: Center(
-            child: Text(
-              title,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white,
+                  Color(0xff6DD5FA),
+                  Color(0xff2980B9),
+                ],
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
               ),
-              textAlign: TextAlign.center,
+              borderRadius: BorderRadius.circular(kBorderRadius),
+            ),
+            child: Center(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),

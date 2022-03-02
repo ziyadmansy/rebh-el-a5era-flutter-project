@@ -4,7 +4,6 @@ import 'package:muslim_dialy_guide/screens/azkar_app/azkar_main_page.dart';
 import 'package:muslim_dialy_guide/screens/azkar_app/morning_night/home.dart';
 import 'package:muslim_dialy_guide/screens/azkar_app/salah_azkar.dart';
 import 'package:muslim_dialy_guide/screens/azkar_app/sleep_azkar.dart';
-import 'package:muslim_dialy_guide/screens/comming%20soon/coming_home_spinner.dart';
 import 'package:muslim_dialy_guide/screens/daily_tasks/daily_tasks_screen.dart';
 import 'package:muslim_dialy_guide/screens/home_app/home.dart';
 import 'package:muslim_dialy_guide/screens/praying_time/praying_time.dart';
@@ -37,8 +36,6 @@ Map<String, Widget Function(BuildContext)> appRoutes = {
   // MorningNightHome.routeName :(context) => MorningNightHome(),
   /*------------------------ Sebha Screen  ----------------------------------*/
   SbhaScreen.routeName: (context) => SbhaScreen(),
-  /*------------------------ Coming Screen  ----------------------------------*/
-  ComingSoonSpinner.routeName: (context) => ComingSoonSpinner(),
   /*------------------------ Azkar Items  ----------------------------------*/
   AzkarItemsScreen.routeName: (context) => AzkarItemsScreen(),
   /*------------------------ Daily Tasks Items  ----------------------------------*/

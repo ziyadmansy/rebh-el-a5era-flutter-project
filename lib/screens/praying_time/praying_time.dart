@@ -1,6 +1,7 @@
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:muslim_dialy_guide/providers/locationProvider.dart';
@@ -8,8 +9,10 @@ import 'package:muslim_dialy_guide/widgets/app_bar.dart';
 import 'package:muslim_dialy_guide/widgets/praying_time/praying_time_container.dart';
 import 'package:provider/provider.dart';
 
+import '../../common/shared.dart';
 import '../../constants.dart';
 import '../../exceptions.dart/location_exception.dart';
+import '../../providers/theme_provider.dart';
 
 class PrayingTime extends StatefulWidget {
   static const String routeName = 'prayingTime';
@@ -32,6 +35,10 @@ class _PrayingTimeState extends State<PrayingTime> {
     "assets/praying_time/magrib.png",
     "assets/praying_time/isyah.png",
   ];
+
+  BannerAd myBanner;
+  InterstitialAd _interstitialAd;
+  AdWidget adWidget;
 
   String timeZoneName = '';
 
@@ -152,53 +159,124 @@ class _PrayingTimeState extends State<PrayingTime> {
   void initState() {
     super.initState();
     getPrayerTimes();
+    Future.delayed(
+      Duration.zero,
+      () async {
+        initAds();
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myBanner.dispose();
+    if (_interstitialAd != null) {
+      _interstitialAd.dispose();
+    }
+  }
+
+  Future<void> initAds() async {
+    myBanner =
+        await Shared.getBannerAd(MediaQuery.of(context).size.width.toInt());
+    await myBanner.load();
+    adWidget = AdWidget(ad: myBanner);
+    setState(() {});
+
+    await InterstitialAd.load(
+      adUnitId: interstitialAdId,
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          // Keep a reference to the ad so you can show it later.
+          this._interstitialAd = ad;
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          print('InterstitialAd failed to load: $error');
+        },
+      ),
+    );
+    // _interstitialAd.show();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: GlobalAppBar(
-        title: "مواقيت الصلاة",
-      ),
-      body: isLoading
-          ? Center(
-              child: CircularProgressIndicator.adaptive(),
-            )
-          : SafeArea(
-              child: Center(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-                  child: _prayerTimes.isEmpty
-                      ? Center(
-                          child: Text(
-                            'لم يستطع التقاط موقعك برجاء التأكد من تشغيل ال GPS و إعادة المحاولة',
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      : ListView.builder(
-                          itemCount: _prayerNames.length,
-                          itemBuilder: (BuildContext context, position) {
-                            return Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(kBorderRadius),
+    var theme = Provider.of<ThemeProvider>(context);
+    return WillPopScope(
+      onWillPop: () async {
+        return await Shared.onPopEventHandler(_interstitialAd);
+      },
+      child: Scaffold(
+        appBar: GlobalAppBar(
+          title: "مواقيت الصلاة",
+        ),
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            gradient: theme.isDarkTheme
+                ? null
+                : LinearGradient(
+                    colors: gradColors,
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                  ),
+          ),
+          child: isLoading
+              ? Center(
+                  child: CircularProgressIndicator.adaptive(),
+                )
+              : SafeArea(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 16),
+                      child: _prayerTimes.isEmpty
+                          ? Center(
+                              child: Text(
+                                'لم يستطع التقاط موقعك برجاء التأكد من تشغيل ال GPS و إعادة المحاولة',
+                                textAlign: TextAlign.center,
                               ),
-                              color: Theme.of(context).primaryColor,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: PrayingTimeContainer(
-                                  icon: photos[position],
-                                  title: _prayerNames[position],
-                                  time: _prayerTimes[position],
+                            )
+                          : Column(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: _prayerNames.length,
+                                    itemBuilder:
+                                        (BuildContext context, position) {
+                                      return Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              kBorderRadius),
+                                        ),
+                                        color: Theme.of(context).primaryColor,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: PrayingTimeContainer(
+                                            icon: photos[position],
+                                            title: _prayerNames[position],
+                                            time: _prayerTimes[position],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
+                                if (adWidget != null)
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: adWidget,
+                                    width: myBanner.size.width.toDouble(),
+                                    height: myBanner.size.height.toDouble(),
+                                  )
+                              ],
+                            ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
+        ),
+      ),
     );
   }
 }
