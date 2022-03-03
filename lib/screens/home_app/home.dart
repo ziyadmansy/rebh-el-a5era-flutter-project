@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_dialy_guide/providers/device_info_provider.dart';
+import 'package:muslim_dialy_guide/providers/notifications.dart';
 import 'package:muslim_dialy_guide/screens/azkar_app/azkar_main_page.dart';
 import 'package:muslim_dialy_guide/screens/daily_tasks/daily_tasks_screen.dart';
 import 'package:muslim_dialy_guide/screens/home_app/hint_circle.dart';
@@ -34,6 +35,11 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
   BannerAd myBanner;
   InterstitialAd _interstitialAd;
   AdWidget adWidget;
+
+  final notificationFormKey = GlobalKey<FormState>();
+
+  TextEditingController notificationTitle = TextEditingController();
+  TextEditingController notificationBody = TextEditingController();
 
   @override
   void initState() {
@@ -116,7 +122,86 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
             ),
             Divider(),
             TextButton(
-              onPressed: () {},
+              onPressed: () async {
+                final notificationsData =
+                    Provider.of<Notifications>(context, listen: false);
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('إرسال إشعار'),
+                      content: Form(
+                        key: notificationFormKey,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              TextFormField(
+                                controller: notificationTitle,
+                                decoration: InputDecoration(
+                                  hintText: 'عنوان الإشعار',
+                                  labelText: 'عنوان الإشعار',
+                                ),
+                                validator: (text) {
+                                  if (text.isEmpty) {
+                                    return 'برجاء إدخال عنوان';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              TextFormField(
+                                controller: notificationBody,
+                                decoration: InputDecoration(
+                                  hintText: 'محتوى الإشعار',
+                                  labelText: 'محتوى الإشعار',
+                                ),
+                                validator: (text) {
+                                  if (text.isEmpty) {
+                                    return 'برجاء إدخال محتوى';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('إلغاء'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            if (notificationFormKey.currentState.validate() ??
+                                false) {
+                              Shared.showToast('جارى التحميل');
+                              await notificationsData.getFcmTokens();
+                              await notificationsData.sendNotification(
+                                title: notificationTitle.text,
+                                body: notificationBody.text,
+                                tokens: notificationsData.devicesTokens,
+                              );
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: Text('إرسال'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
               style: TextButton.styleFrom(
                 primary: Colors.white,
               ),

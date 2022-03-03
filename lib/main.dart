@@ -8,6 +8,7 @@ import 'package:muslim_dialy_guide/providers/daily_tasks_provider.dart';
 import 'package:muslim_dialy_guide/providers/device_info_provider.dart';
 import 'package:muslim_dialy_guide/providers/locationProvider.dart';
 import 'package:muslim_dialy_guide/providers/morning_night_provider.dart';
+import 'package:muslim_dialy_guide/providers/notifications.dart';
 import 'package:muslim_dialy_guide/providers/theme_provider.dart';
 import 'package:muslim_dialy_guide/screens/home_app/home.dart';
 import 'package:provider/provider.dart';
@@ -57,6 +58,17 @@ void initFCM() async {
   //   FixedAssets.FCMToken = deviceToken;
   //   print(deviceToken + " FCM token");
   // }
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Notification: $message');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+      print('Message title: ${message.notification.title}');
+      print('Message body: ${message.notification.body}');
+    }
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -99,6 +111,12 @@ class MyApp extends StatelessWidget {
         /*-----------------------------------------------------------------------------------------------*/
         ChangeNotifierProvider<DeviceInfoProvider>(
           create: (context) => DeviceInfoProvider(),
+        ),
+        /*-----------------------------------------------------------------------------------------------*/
+        /*---------------------------------------  Notifications Provider  --------------------------------------*/
+        /*-----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider<Notifications>(
+          create: (context) => Notifications(),
         ),
       ],
       builder: (context, child) {
