@@ -25,7 +25,7 @@ class SurahViewBuilder extends StatefulWidget {
 }
 
 class _SurahViewBuilderState extends State<SurahViewBuilder> {
-  var quranPdfController;
+  PdfControllerPinch quranPdfController;
 
   /// My Document
   // PDFDocument _document;
@@ -89,11 +89,12 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
   /*-----------------------------------------------------------------------------------------------*/
   /*-----------------------------  set lastViewedPage in sharedPreferences  -----------------------*/
   /*-----------------------------------------------------------------------------------------------*/
-  void setLastViewedPage(int _currentPage) async {
+  Future<void> setLastViewedPage(int _currentPage) async {
     prefs = await SharedPreferences.getInstance();
     if (_currentPage != null && !_currentPage.isNaN) {
-      prefs.setInt(globals.LAST_VIEWED_PAGE, _currentPage);
+      await prefs.setInt(globals.LAST_VIEWED_PAGE, _currentPage);
       globals.lastViewedPage = prefs.getInt(globals.LAST_VIEWED_PAGE);
+      print('current page: $_currentPage');
     }
   }
 
@@ -129,35 +130,6 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
       appBar: GlobalAppBar(
         title: 'المصحف الشريف',
       ),
-      // appBar: widget.readingMode == true
-      //     ? AppBar(
-      //         title: Text(
-      //           "Arabic Quraan",
-      //           style: GoogleFonts.lilyScriptOne(
-      //             fontWeight: FontWeight.w300,
-      //           ),
-      //         ),
-      //         centerTitle: true,
-      //         elevation: 0.0,
-      //         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      //         actions: [
-      //           IconButton(
-      //             icon: Icon(
-      //               Icons.bookmark,
-      //               color: Theme.of(context).accentColor,
-      //             ),
-      //             onPressed: () {
-      //               _saveToBookMark();
-      //             },
-      //           )
-      //         ],
-      //         leading: CupertinoNavigationBarBackButton(
-      //             color: Theme.of(context).accentColor,
-      //             onPressed: () {
-      //               Navigator.of(context).pop();
-      //             }),
-      //       )
-      //     : null,
       body: quranPdfController == null
           ? Center(
               child: CircularProgressIndicator.adaptive(),
@@ -171,9 +143,6 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
 
                 onDocumentLoaded: (doc) {
                   globals.currentPage = currentPage;
-
-                  /// Update lastViewedPage
-                  setLastViewedPage(currentPage);
 
                   if (currentPage == globals.bookmarkedPage) {
                     isBookmarked = true;
@@ -237,6 +206,8 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
                 },
                 onPageChanged: (page) {
                   // globals.lastViewedPage = page;
+                  /// Update lastViewedPage
+                  setLastViewedPage(page);
                 },
               ),
             ),

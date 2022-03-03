@@ -13,7 +13,7 @@ int currentPage;
 int bookmarkedPage;
 
 /*---------------------------  last page ------------------------------------*/
-int lastViewedPage;
+int lastViewedPage = 1;
 
 /*----------------------  brightness of the device ------------------------------------*/
 double brightnessLevel;

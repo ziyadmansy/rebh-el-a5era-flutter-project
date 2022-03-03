@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_dialy_guide/models/surah.dart';
 import 'package:muslim_dialy_guide/screens/quraan_arabic/surah_view_builder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:muslim_dialy_guide/globals/globals.dart' as globals;
 
 import '../../common/shared.dart';
 import '../../constants.dart';
@@ -83,6 +85,7 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
     /*-----------------------------------------------------------------------------------------------*/
     /*------------------------------Init listView with all surah(s)-------------------------*/
     /*-----------------------------------------------------------------------------------------------*/
+    getLastViewedPage();
     initSurahListView();
     Future.delayed(
       Duration.zero,
@@ -116,6 +119,11 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
     // _interstitialAd.show();
   }
 
+  Future<void> getLastViewedPage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    globals.lastViewedPage = prefs.getInt(globals.LAST_VIEWED_PAGE) ?? 1;
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -129,6 +137,7 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           /*-----------------------------------------------------------------------------------------------*/
           /*---------------------------------- Search field--------------------------------*/
@@ -147,6 +156,29 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 48,
+              child: OutlinedButton(
+                onPressed: () {
+                  /// Push to Quran view ([int pages] represent surah page(reversed index))
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SurahViewBuilder(
+                        readingMode: true,
+                        surah: Surah(
+                          reversedPageIndex: globals.lastViewedPage,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Text('إستكمال القراءة'),
+              ),
             ),
           ),
 
