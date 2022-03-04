@@ -97,7 +97,7 @@ class _ArabicQuranSplashScreenState extends State<ArabicQuranSplashScreen> {
             child: Container(
               width: 144,
               height: 144,
-              child: Image.asset("assets/quran_ar.png"),
+              child: Image.asset("assets/treasure.png"),
             ),
           ),
           Center(

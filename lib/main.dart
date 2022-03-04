@@ -9,6 +9,7 @@ import 'package:muslim_dialy_guide/providers/device_info_provider.dart';
 import 'package:muslim_dialy_guide/providers/locationProvider.dart';
 import 'package:muslim_dialy_guide/providers/morning_night_provider.dart';
 import 'package:muslim_dialy_guide/providers/notifications.dart';
+import 'package:muslim_dialy_guide/providers/prophit_words.dart';
 import 'package:muslim_dialy_guide/providers/theme_provider.dart';
 import 'package:muslim_dialy_guide/screens/home_app/home.dart';
 import 'package:provider/provider.dart';
@@ -117,6 +118,12 @@ class MyApp extends StatelessWidget {
         /*-----------------------------------------------------------------------------------------------*/
         ChangeNotifierProvider<Notifications>(
           create: (context) => Notifications(),
+        ),
+        /*-----------------------------------------------------------------------------------------------*/
+        /*---------------------------------------  Hadith Provider  --------------------------------------*/
+        /*-----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider<ProphitWords>(
+          create: (context) => ProphitWords(),
         ),
       ],
       builder: (context, child) {

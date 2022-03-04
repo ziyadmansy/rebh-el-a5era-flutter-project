@@ -115,7 +115,7 @@ class _HintCircleState extends State<HintCircle>
               turns: animation,
               alignment: Alignment.center,
               child: Container(
-                child: Image.asset('assets/quran_ar.png'),
+                child: Image.asset('assets/treasure.png'),
                 padding: const EdgeInsets.all(5.0),
                 width: 60,
                 height: 60,

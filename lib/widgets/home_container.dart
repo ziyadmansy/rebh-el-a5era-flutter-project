@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:muslim_dialy_guide/constants.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/theme_provider.dart';
 
 class HomeContainer extends StatelessWidget {
-  final Color color;
   final String title;
   final VoidCallback onPress;
 
   const HomeContainer({
     Key key,
-    @required this.color,
     @required this.title,
     @required this.onPress,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var theme = Provider.of<ThemeProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(

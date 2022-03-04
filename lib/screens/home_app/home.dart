@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_dialy_guide/providers/device_info_provider.dart';
 import 'package:muslim_dialy_guide/providers/notifications.dart';
+import 'package:muslim_dialy_guide/providers/prophit_words.dart';
 import 'package:muslim_dialy_guide/screens/azkar_app/azkar_main_page.dart';
 import 'package:muslim_dialy_guide/screens/daily_tasks/daily_tasks_screen.dart';
 import 'package:muslim_dialy_guide/screens/home_app/hint_circle.dart';
@@ -17,10 +19,14 @@ import 'package:muslim_dialy_guide/widgets/custom_background.dart';
 import 'package:muslim_dialy_guide/widgets/home_container.dart';
 import 'package:muslim_dialy_guide/constants.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/shared.dart';
+import '../../providers/azkar_provider.dart';
 import '../../providers/theme_provider.dart';
 import '../../widgets/app_bar.dart';
+import '../azkar_app/azkar_items_screen.dart';
 import 'delayed_animation.dart';
 
 class MuslimGuideHomePage extends StatefulWidget {
@@ -31,6 +37,9 @@ class MuslimGuideHomePage extends StatefulWidget {
 }
 
 class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
+  bool isLoading = false;
+  bool hasCrashed = false;
+
   final int delayedAmount = 500;
   BannerAd myBanner;
   InterstitialAd _interstitialAd;
@@ -44,14 +53,37 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
   @override
   void initState() {
     super.initState();
+    getAzkarData();
     Future.delayed(
       Duration.zero,
       () async {
+        showRandomProphetWordsDialog();
         initAds();
       },
     );
 
     getDeviceInfo();
+  }
+
+  Future<void> getAzkarData() async {
+    try {
+      setState(() {
+        isLoading = true;
+        hasCrashed = false;
+      });
+      final azkarData = Provider.of<AzkarProvider>(context, listen: false);
+      await azkarData.getAzkar();
+      setState(() {
+        isLoading = false;
+        hasCrashed = false;
+      });
+    } catch (e) {
+      print(e);
+      setState(() {
+        isLoading = false;
+        hasCrashed = true;
+      });
+    }
   }
 
   Future<void> initAds() async {
@@ -84,6 +116,72 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
     await deviceInfoData.getDeviceInfo();
   }
 
+  Future<void> showRandomProphetWordsDialog() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final hadithData = Provider.of<ProphitWords>(context, listen: false);
+    final canShowHadith = prefs.getBool(prophitWordsDialogKey) ?? true;
+    if (canShowHadith) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            title: Center(
+              child: Text(
+                'حديث شريف',
+              ),
+            ),
+            content: Text(
+              hadithData.getRandomHadith(),
+              textAlign: TextAlign.center,
+            ),
+            contentTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('إغلاق'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> setHadithDialog() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: Text('خدمة الأحاديث الشريفة'),
+          children: [
+            SimpleDialogOption(
+              child: Text('تفعيل الخدمة'),
+              onPressed: () async {
+                await prefs.setBool(prophitWordsDialogKey, true);
+                Navigator.of(context).pop();
+              },
+            ),
+            SimpleDialogOption(
+              child: Text('إلغاء الخدمة'),
+              onPressed: () async {
+                await prefs.setBool(prophitWordsDialogKey, false);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -95,14 +193,20 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
     }
   }
 
-  // Scaffold background gradient
-//     android:endColor="#030357"
-//     android:centerColor="#1CB5E0"
-//     android:startColor="#C2ECF3"
+  Future<void> _launchInBrowser(String url) async {
+    if (!await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+    )) {
+      Shared.showToast('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var theme = Provider.of<ThemeProvider>(context);
+    final azkarData = Provider.of<AzkarProvider>(context);
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: GlobalAppBar(
@@ -113,15 +217,59 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         child: ListView(
           children: [
-            SizedBox(
-              height: 16,
+            DrawerHeader(
+              child: Image.asset(
+                'assets/treasure.png',
+                height: 150,
+              ),
             ),
-            Image.asset(
-              'assets/quran_ar.png',
-              height: 150,
+            Text(
+              appName,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
+              ),
+              textAlign: TextAlign.center,
             ),
-            Divider(),
-            TextButton(
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+              child: Text(
+                'خدمات',
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            TextButton.icon(
+              onPressed: setHadithDialog,
+              icon: Icon(Icons.message),
+              label: Row(
+                children: [
+                  Text(
+                    'رسائل الأحادث الشريفة',
+                  ),
+                ],
+              ),
+              style: TextButton.styleFrom(
+                primary: Colors.white,
+              ),
+            ),
+            // TextButton.icon(
+            //   onPressed: () {},
+            //   icon: Icon(Icons.battery_saver),
+            //   label: Row(
+            //     children: [
+            //       Text(
+            //         'وضع حفظ الطاقة',
+            //       ),
+            //     ],
+            //   ),
+            //   style: TextButton.styleFrom(
+            //     primary: Colors.white,
+            //   ),
+            // ),
+            TextButton.icon(
               onPressed: () async {
                 final notificationsData =
                     Provider.of<Notifications>(context, listen: false);
@@ -202,18 +350,59 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
                   },
                 );
               },
+              icon: Icon(Icons.notifications),
               style: TextButton.styleFrom(
                 primary: Colors.white,
               ),
-              child: Row(
+              label: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'إرسال إشعار',
-                    ),
+                  Text(
+                    'إرسال إشعار',
                   ),
                 ],
+              ),
+            ),
+            Divider(),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+              child: Text(
+                'أخرى',
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            TextButton.icon(
+              onPressed: () async {
+                await _launchInBrowser(appPlayStoreUrl);
+              },
+              icon: Icon(Icons.star),
+              label: Row(
+                children: [
+                  Text(
+                    'ضع تقييمك',
+                  ),
+                ],
+              ),
+              style: TextButton.styleFrom(
+                primary: Colors.white,
+              ),
+            ),
+            TextButton.icon(
+              onPressed: () {
+                SystemNavigator.pop();
+              },
+              icon: Icon(Icons.exit_to_app),
+              label: Row(
+                children: [
+                  Text(
+                    'خروج',
+                  ),
+                ],
+              ),
+              style: TextButton.styleFrom(
+                primary: Colors.white,
               ),
             ),
           ],
@@ -232,141 +421,186 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
                 ),
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Center(
-                    child: Column(
+          child: isLoading
+              ? Center(
+                  child: CircularProgressIndicator.adaptive(),
+                )
+              : hasCrashed
+                  ? Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.warning_outlined,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
+                          Text(
+                            errorMsg,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
+                          TextButton(
+                            onPressed: getAzkarData,
+                            child: Text(
+                              'إعادة المحاولة',
+                              style: TextStyle(
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Column(
                       children: [
-                        DelayedAnimation(
-                          child: Text(
-                            appName,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 35.0,
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  DelayedAnimation(
+                                    child: Text(
+                                      appName,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 35.0,
+                                      ),
+                                    ),
+                                    delay: delayedAmount + 500,
+                                  ),
+                                  // SizedBox(
+                                  //   height: 15.0,
+                                  // ),
+                                  // DelayedAnimation(
+                                  //   child: Text(
+                                  //     "دليلك لدخول الجنة",
+                                  //     style: TextStyle(
+                                  //       fontSize: 20.0,
+                                  //     ),
+                                  //   ),
+                                  //   delay: delayedAmount + 1000,
+                                  // ),
+                                  SizedBox(
+                                    height: 15.0,
+                                  ),
+                                  GridView(
+                                    shrinkWrap: true,
+                                    physics: BouncingScrollPhysics(),
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                    ),
+                                    children: [
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      /*--------------------------------  Arabic Quraan Container  -----------------------------------*/
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      HomeContainer(
+                                        title: "القرآن الكريم",
+                                        onPress: () {
+                                          Navigator.pushNamed(
+                                              context,
+                                              ArabicQuranSplashScreen
+                                                  .routeName);
+                                        },
+                                      ),
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      /*-------------------------------- Praying time App Container  -----------------------------------*/
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      HomeContainer(
+                                        title: "مواقيت الصلاة",
+                                        onPress: () {
+                                          Navigator.of(context)
+                                              .pushNamed(PrayingTime.routeName);
+                                        },
+                                      ),
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      /*-------------------------------- Sebha App Container  -----------------------------------*/
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      HomeContainer(
+                                        title: "السبحة",
+                                        onPress: () {
+                                          Navigator.pushNamed(
+                                              context, SbhaScreen.routeName);
+                                        },
+                                      ),
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      /*-------------------------------- Daily Tasks Container  -----------------------------------*/
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      HomeContainer(
+                                        title: "المهام اليومية",
+                                        onPress: () {
+                                          Navigator.of(context).pushNamed(
+                                              DailyTasksScreen.routeName);
+                                        },
+                                      ),
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      /*--------------------------------  Azkar Elmoslem Container  -----------------------------------*/
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      // HomeContainer(
+                                      //   title: "الأذكار",
+                                      //   onPress: () {
+                                      //     Navigator.pushNamed(
+                                      //         context,
+                                      //         AzkarElmoslemMainPage
+                                      //             .routeName);
+                                      //   },
+                                      // ),
+                                      ...azkarData.azkar
+                                          .map<HomeContainer>((zekr) =>
+                                              HomeContainer(
+                                                title: zekr.title,
+                                                onPress: () {
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                    AzkarItemsScreen.routeName,
+                                                    arguments: zekr,
+                                                  );
+                                                },
+                                              ))
+                                          .toList(),
+
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      /*-------------------------------- ElQibla App Container  -----------------------------------*/
+                                      /*-----------------------------------------------------------------------------------------------*/
+                                      // GestureDetector(
+                                      //   child: HomeContainer(
+                                      //       image: "assets/mecca.png",
+                                      //       color: color2,
+                                      //       title: "El-Qibla"),
+                                      //   onTap: () =>
+                                      //       Navigator.pushNamed(context, QiblaPage.routeName),
+                                      // ),
+                                    ],
+                                  ),
+                                  /*-----------------------------------------------------------------------------------------------*/
+                                  /*-------------------------------- Hint Circle  -----------------------------------*/
+                                  /*-----------------------------------------------------------------------------------------------*/
+                                  DelayedAnimation(
+                                    delay: delayedAmount + 2000,
+                                    child: HintCircle(),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          delay: delayedAmount + 500,
                         ),
-                        // SizedBox(
-                        //   height: 15.0,
-                        // ),
-                        // DelayedAnimation(
-                        //   child: Text(
-                        //     "دليلك لدخول الجنة",
-                        //     style: TextStyle(
-                        //       fontSize: 20.0,
-                        //     ),
-                        //   ),
-                        //   delay: delayedAmount + 1000,
-                        // ),
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        DelayedAnimation(
-                          delay: delayedAmount + 1500,
-                          child: GridView(
-                            shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                            ),
-                            children: [
-                              /*-----------------------------------------------------------------------------------------------*/
-                              /*--------------------------------  Arabic Quraan Container  -----------------------------------*/
-                              /*-----------------------------------------------------------------------------------------------*/
-                              HomeContainer(
-                                color: primaryColor,
-                                title: "القرآن الكريم",
-                                onPress: () {
-                                  Navigator.pushNamed(context,
-                                      ArabicQuranSplashScreen.routeName);
-                                },
-                              ),
-                              /*-----------------------------------------------------------------------------------------------*/
-                              /*--------------------------------  Azkar Elmoslem Container  -----------------------------------*/
-                              /*-----------------------------------------------------------------------------------------------*/
-                              HomeContainer(
-                                color: primaryColor,
-                                title: "الأذكار",
-                                onPress: () {
-                                  Navigator.pushNamed(
-                                      context, AzkarElmoslemMainPage.routeName);
-                                },
-                              ),
-                              /*-----------------------------------------------------------------------------------------------*/
-                              /*-------------------------------- Sebha App Container  -----------------------------------*/
-                              /*-----------------------------------------------------------------------------------------------*/
-                              HomeContainer(
-                                color: primaryColor,
-                                title: "السبحة",
-                                onPress: () {
-                                  Navigator.pushNamed(
-                                      context, SbhaScreen.routeName);
-                                },
-                              ),
-                              /*-----------------------------------------------------------------------------------------------*/
-                              /*-------------------------------- Praying time App Container  -----------------------------------*/
-                              /*-----------------------------------------------------------------------------------------------*/
-                              HomeContainer(
-                                color: primaryColor,
-                                title: "مواقيت الصلاة",
-                                onPress: () {
-                                  Navigator.of(context)
-                                      .pushNamed(PrayingTime.routeName);
-                                },
-                              ),
-                              /*-----------------------------------------------------------------------------------------------*/
-                              /*-------------------------------- Daily Tasks Container  -----------------------------------*/
-                              /*-----------------------------------------------------------------------------------------------*/
-                              HomeContainer(
-                                color: primaryColor,
-                                title: "المهام اليومية",
-                                onPress: () {
-                                  Navigator.of(context)
-                                      .pushNamed(DailyTasksScreen.routeName);
-                                },
-                              ),
-                              /*-----------------------------------------------------------------------------------------------*/
-                              /*-------------------------------- ElQibla App Container  -----------------------------------*/
-                              /*-----------------------------------------------------------------------------------------------*/
-                              // GestureDetector(
-                              //   child: HomeContainer(
-                              //       image: "assets/mecca.png",
-                              //       color: color2,
-                              //       title: "El-Qibla"),
-                              //   onTap: () =>
-                              //       Navigator.pushNamed(context, QiblaPage.routeName),
-                              // ),
-                            ],
-                          ),
-                        ),
-                        /*-----------------------------------------------------------------------------------------------*/
-                        /*-------------------------------- Hint Circle  -----------------------------------*/
-                        /*-----------------------------------------------------------------------------------------------*/
-                        DelayedAnimation(
-                          delay: delayedAmount + 2000,
-                          child: HintCircle(),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        if (adWidget != null)
+                          Container(
+                            alignment: Alignment.center,
+                            child: adWidget,
+                            width: myBanner.size.width.toDouble(),
+                            height: myBanner.size.height.toDouble(),
+                          )
                       ],
                     ),
-                  ),
-                ),
-              ),
-              if (adWidget != null)
-                Container(
-                  alignment: Alignment.center,
-                  child: adWidget,
-                  width: myBanner.size.width.toDouble(),
-                  height: myBanner.size.height.toDouble(),
-                )
-            ],
-          ),
         ),
       ),
     );

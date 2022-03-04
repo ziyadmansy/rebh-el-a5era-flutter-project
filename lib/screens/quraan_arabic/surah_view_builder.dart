@@ -92,8 +92,8 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
   Future<void> setLastViewedPage(int _currentPage) async {
     prefs = await SharedPreferences.getInstance();
     if (_currentPage != null && !_currentPage.isNaN) {
-      await prefs.setInt(globals.LAST_VIEWED_PAGE, _currentPage);
-      globals.lastViewedPage = prefs.getInt(globals.LAST_VIEWED_PAGE);
+      globals.lastViewedPage = _currentPage;
+      prefs.setInt(globals.LAST_VIEWED_PAGE, _currentPage);
       print('current page: $_currentPage');
     }
   }
@@ -115,7 +115,7 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
       globals.currentPage = widget.surah.reversedPageIndex;
       quranPdfController = PdfControllerPinch(
         document: PdfDocument.openAsset('assets/pdf/quran.pdf'),
-        initialPage: globals.currentPage,
+        initialPage: globals.currentPage ?? 1,
       );
       // pageController = _pageControllerBuilder();
     });
@@ -137,25 +137,34 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
           : SafeArea(
               child: PdfViewPinch(
                 controller: quranPdfController,
-                scrollDirection: Axis.horizontal,
+                scrollDirection: Axis.vertical,
                 // document: snapshot.data,
                 // controller: pageController,
-
+                documentLoader: Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+                pageLoader: Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+                onDocumentError: (e) {
+                  print(e);
+                  Navigator.of(context).pop();
+                },
                 onDocumentLoaded: (doc) {
-                  globals.currentPage = currentPage;
+                  // globals.currentPage = currentPage;
 
-                  if (currentPage == globals.bookmarkedPage) {
-                    isBookmarked = true;
-                  } else {
-                    isBookmarked = false;
-                  }
-                  print("$isBookmarked:$currentPage");
+                  // if (currentPage == globals.bookmarkedPage) {
+                  //   isBookmarked = true;
+                  // } else {
+                  //   isBookmarked = false;
+                  // }
+                  // print("$isBookmarked:$currentPage");
 
-                  if (isBookmarked) {
-                    _bookmarkWidget = Bookmark();
-                  } else {
-                    _bookmarkWidget = Container();
-                  }
+                  // if (isBookmarked) {
+                  //   _bookmarkWidget = Bookmark();
+                  // } else {
+                  //   _bookmarkWidget = Container();
+                  // }
 
                   // Widget image = Stack(
                   //   fit: StackFit.expand,
