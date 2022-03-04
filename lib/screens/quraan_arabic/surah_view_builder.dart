@@ -26,6 +26,7 @@ class SurahViewBuilder extends StatefulWidget {
 
 class _SurahViewBuilderState extends State<SurahViewBuilder> {
   PdfControllerPinch quranPdfController;
+  // PdfController quranPdfController;
 
   /// My Document
   // PDFDocument _document;
@@ -117,7 +118,10 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
         document: PdfDocument.openAsset('assets/pdf/quran.pdf'),
         initialPage: globals.currentPage ?? 1,
       );
-      // pageController = _pageControllerBuilder();
+      // quranPdfController = PdfController(
+      //   document: PdfDocument.openAsset('assets/pdf/quran.pdf'),
+      //   initialPage: globals.currentPage ?? 1,
+      // );
     });
 
     super.initState();
@@ -130,6 +134,15 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
       appBar: GlobalAppBar(
         title: 'المصحف الشريف',
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     quranPdfController.nextPage(
+      //       duration: Duration(milliseconds: 500),
+      //       curve: Curves.ease,
+      //     );
+      //   },
+      //   child: Icon(Icons.next_plan),
+      // ),
       body: quranPdfController == null
           ? Center(
               child: CircularProgressIndicator.adaptive(),
@@ -218,6 +231,8 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
                   /// Update lastViewedPage
                   setLastViewedPage(page);
                 },
+                // loaderSwitchDuration: Duration(seconds: 3),
+                // pageSnapping: false,
               ),
             ),
     );

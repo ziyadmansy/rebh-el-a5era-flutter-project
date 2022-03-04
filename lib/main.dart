@@ -13,6 +13,7 @@ import 'package:muslim_dialy_guide/providers/prophit_words.dart';
 import 'package:muslim_dialy_guide/providers/sbha_provider.dart';
 import 'package:muslim_dialy_guide/providers/theme_provider.dart';
 import 'package:muslim_dialy_guide/screens/home_app/home.dart';
+import 'package:muslim_dialy_guide/screens/splash_Screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -164,7 +165,7 @@ class MyApp extends StatelessWidget {
                 useMaterial3: true,
               ),
               themeMode: (value.theme) ? ThemeMode.dark : ThemeMode.light,
-              initialRoute: MuslimGuideHomePage.routeName,
+              initialRoute: SplashScreen.routeName,
               routes: appRoutes,
             );
           },

@@ -10,6 +10,7 @@ import 'package:muslim_dialy_guide/screens/praying_time/praying_time.dart';
 import 'package:muslim_dialy_guide/screens/qiblat/qibla.dart';
 import 'package:muslim_dialy_guide/screens/quraan_arabic/quraan_arabic.dart';
 import 'package:muslim_dialy_guide/screens/sbha/sbha.dart';
+import 'package:muslim_dialy_guide/screens/splash_Screen.dart';
 import 'package:muslim_dialy_guide/screens/splash_screens/arabic_quran_splash_screen.dart';
 
 /*---------------------------------------------------------------------------------------------*/
@@ -39,5 +40,7 @@ Map<String, Widget Function(BuildContext)> appRoutes = {
   /*------------------------ Azkar Items  ----------------------------------*/
   AzkarItemsScreen.routeName: (context) => AzkarItemsScreen(),
   /*------------------------ Daily Tasks Items  ----------------------------------*/
-  DailyTasksScreen.routeName: (context) => DailyTasksScreen()
+  DailyTasksScreen.routeName: (context) => DailyTasksScreen(),
+  /*------------------------ Daily Tasks Items  ----------------------------------*/
+  SplashScreen.routeName: (context) => SplashScreen()
 };
