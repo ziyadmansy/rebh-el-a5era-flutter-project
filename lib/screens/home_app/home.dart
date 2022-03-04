@@ -362,7 +362,6 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
                 ],
               ),
             ),
-            Divider(),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),

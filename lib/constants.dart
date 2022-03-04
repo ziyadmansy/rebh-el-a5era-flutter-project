@@ -22,7 +22,7 @@ const String appPlayStoreUrl = 'https://play.google.com/store/apps/details?id=co
 const String errorMsg =
     'حدث خطأ برجاء التأكد من شبكة الإنترنت و إعادة المحاولة';
 
-const double kBorderRadius = 30.0;
+const double kBorderRadius = 24.0;
 
 final Color redColor = Colors.red[600];
 final Color greenColor = Colors.greenAccent[700];
@@ -38,6 +38,7 @@ const String webText = 'web';
 
 const String fcmKey = 'FCMToken';
 const String prophitWordsDialogKey = 'prophitWordsDialog';
+const String totalSebhaCountKey = 'totalSebhaCount';
 
 const String apiKey = 'Api-Key KGAWYWYU.yidSuXC8xudXlbPo0PO26UritiQVRH8y';
 const String firebaseServerKey =

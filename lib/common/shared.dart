@@ -17,9 +17,9 @@ class Shared {
   }
 
   static Future<bool> onPopEventHandler(InterstitialAd ad) async {
-    // if (ad != null) {
-    //   ad.show();
-    // }
+    if (ad != null) {
+      ad.show();
+    }
     return true;
   }
 

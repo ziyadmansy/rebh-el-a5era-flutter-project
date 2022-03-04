@@ -10,6 +10,7 @@ import 'package:muslim_dialy_guide/providers/locationProvider.dart';
 import 'package:muslim_dialy_guide/providers/morning_night_provider.dart';
 import 'package:muslim_dialy_guide/providers/notifications.dart';
 import 'package:muslim_dialy_guide/providers/prophit_words.dart';
+import 'package:muslim_dialy_guide/providers/sbha_provider.dart';
 import 'package:muslim_dialy_guide/providers/theme_provider.dart';
 import 'package:muslim_dialy_guide/screens/home_app/home.dart';
 import 'package:provider/provider.dart';
@@ -125,6 +126,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ProphitWords>(
           create: (context) => ProphitWords(),
         ),
+        /*-----------------------------------------------------------------------------------------------*/
+        /*---------------------------------------  Sbha Provider  --------------------------------------*/
+        /*-----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider<SbhaProvider>(
+          create: (context) => SbhaProvider(),
+        ),
       ],
       builder: (context, child) {
         /*---------------------------   theme provider  ----------------------------*/
@@ -144,12 +151,13 @@ class MyApp extends StatelessWidget {
               ],
               title: appName,
               theme: ThemeData(
-                  brightness: Brightness.dark,
-                  useMaterial3: true,
-                  colorSchemeSeed: primaryColor,
-                  appBarTheme: AppBarTheme(
-                    backgroundColor: primaryColor,
-                  )),
+                brightness: Brightness.dark,
+                useMaterial3: true,
+                colorSchemeSeed: primaryColor,
+                appBarTheme: AppBarTheme(
+                  backgroundColor: primaryColor,
+                ),
+              ),
               darkTheme: ThemeData(
                 colorSchemeSeed: primaryColor,
                 brightness: Brightness.dark,

@@ -18,9 +18,9 @@ class HomeContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Provider.of<ThemeProvider>(context);
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(4.0),
       child: Card(
-        elevation: 0,
+        elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kBorderRadius),
         ),
@@ -30,16 +30,19 @@ class HomeContainer extends StatelessWidget {
           borderRadius: BorderRadius.circular(kBorderRadius),
           child: Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white,
-                  Color(0xff6DD5FA),
-                  Color(0xff2980B9),
-                ],
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-              ),
+              gradient: theme.isDarkTheme
+                  ? null
+                  : LinearGradient(
+                      colors: [
+                        Colors.white,
+                        Color(0xff6DD5FA),
+                        Color(0xff2980B9),
+                      ],
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                    ),
               borderRadius: BorderRadius.circular(kBorderRadius),
+              color: !theme.isDarkTheme ? null : Colors.black26,
             ),
             child: Center(
               child: Text(
