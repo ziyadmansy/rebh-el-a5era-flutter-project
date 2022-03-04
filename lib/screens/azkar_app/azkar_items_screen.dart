@@ -61,21 +61,12 @@ class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
     var theme = Provider.of<ThemeProvider>(context);
     ZekrCategory zekr = ModalRoute.of(context).settings.arguments;
     return Scaffold(
+      backgroundColor: theme.isDarkTheme ? null : Colors.white,
       appBar: GlobalAppBar(
         title: zekr.title,
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          gradient: theme.isDarkTheme
-              ? null
-              : LinearGradient(
-                  colors: gradColors,
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                ),
-        ),
+      body: Theme(
+        data: theme.isDarkTheme ? ThemeData.dark() : ThemeData.light(),
         child: zekr.ad3ya.isEmpty
             ? Center(
                 child: Text('لا يوجد أذكار متاحة'),

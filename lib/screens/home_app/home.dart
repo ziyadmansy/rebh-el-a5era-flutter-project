@@ -420,186 +420,142 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
                 ),
         ),
         child: SafeArea(
-          child: isLoading
-              ? Center(
-                  child: CircularProgressIndicator.adaptive(),
-                )
-              : hasCrashed
-                  ? Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.warning_outlined,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Text(
-                            errorMsg,
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          TextButton(
-                            onPressed: getAzkarData,
-                            child: Text(
-                              'إعادة المحاولة',
-                              style: TextStyle(
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : Column(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Center(
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  DelayedAnimation(
-                                    child: Text(
-                                      appName,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 35.0,
-                                      ),
-                                    ),
-                                    delay: delayedAmount + 500,
-                                  ),
-                                  // SizedBox(
-                                  //   height: 15.0,
-                                  // ),
-                                  // DelayedAnimation(
-                                  //   child: Text(
-                                  //     "دليلك لدخول الجنة",
-                                  //     style: TextStyle(
-                                  //       fontSize: 20.0,
-                                  //     ),
-                                  //   ),
-                                  //   delay: delayedAmount + 1000,
-                                  // ),
-                                  SizedBox(
-                                    height: 15.0,
-                                  ),
-                                  GridView(
-                                    shrinkWrap: true,
-                                    physics: BouncingScrollPhysics(),
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                    ),
-                                    children: [
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      /*--------------------------------  Arabic Quraan Container  -----------------------------------*/
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      HomeContainer(
-                                        title: "القرآن الكريم",
-                                        onPress: () {
-                                          Navigator.pushNamed(
-                                              context,
-                                              ArabicQuranSplashScreen
-                                                  .routeName);
-                                        },
-                                      ),
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      /*-------------------------------- Praying time App Container  -----------------------------------*/
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      HomeContainer(
-                                        title: "مواقيت الصلاة",
-                                        onPress: () {
-                                          Navigator.of(context)
-                                              .pushNamed(PrayingTime.routeName);
-                                        },
-                                      ),
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      /*-------------------------------- Sebha App Container  -----------------------------------*/
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      HomeContainer(
-                                        title: "السبحة",
-                                        onPress: () {
-                                          Navigator.pushNamed(
-                                              context, SbhaScreen.routeName);
-                                        },
-                                      ),
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      /*-------------------------------- Daily Tasks Container  -----------------------------------*/
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      HomeContainer(
-                                        title: "المهام اليومية",
-                                        onPress: () {
-                                          Navigator.of(context).pushNamed(
-                                              DailyTasksScreen.routeName);
-                                        },
-                                      ),
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      /*--------------------------------  Azkar Elmoslem Container  -----------------------------------*/
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      // HomeContainer(
-                                      //   title: "الأذكار",
-                                      //   onPress: () {
-                                      //     Navigator.pushNamed(
-                                      //         context,
-                                      //         AzkarElmoslemMainPage
-                                      //             .routeName);
-                                      //   },
-                                      // ),
-                                      ...azkarData.azkar
-                                          .map<HomeContainer>((zekr) =>
-                                              HomeContainer(
-                                                title: zekr.title,
-                                                onPress: () {
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                    AzkarItemsScreen.routeName,
-                                                    arguments: zekr,
-                                                  );
-                                                },
-                                              ))
-                                          .toList(),
-
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      /*-------------------------------- ElQibla App Container  -----------------------------------*/
-                                      /*-----------------------------------------------------------------------------------------------*/
-                                      // GestureDetector(
-                                      //   child: HomeContainer(
-                                      //       image: "assets/mecca.png",
-                                      //       color: color2,
-                                      //       title: "El-Qibla"),
-                                      //   onTap: () =>
-                                      //       Navigator.pushNamed(context, QiblaPage.routeName),
-                                      // ),
-                                    ],
-                                  ),
-                                  /*-----------------------------------------------------------------------------------------------*/
-                                  /*-------------------------------- Hint Circle  -----------------------------------*/
-                                  /*-----------------------------------------------------------------------------------------------*/
-                                  DelayedAnimation(
-                                    delay: delayedAmount + 2000,
-                                    child: HintCircle(),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
+                        Text(
+                          appName,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 35.0,
                           ),
                         ),
-                        if (adWidget != null)
-                          Container(
-                            alignment: Alignment.center,
-                            child: adWidget,
-                            width: myBanner.size.width.toDouble(),
-                            height: myBanner.size.height.toDouble(),
-                          )
+                        // SizedBox(
+                        //   height: 15.0,
+                        // ),
+                        // DelayedAnimation(
+                        //   child: Text(
+                        //     "دليلك لدخول الجنة",
+                        //     style: TextStyle(
+                        //       fontSize: 20.0,
+                        //     ),
+                        //   ),
+                        //   delay: delayedAmount + 1000,
+                        // ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        GridView(
+                          shrinkWrap: true,
+                          physics: BouncingScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                          children: [
+                            /*-----------------------------------------------------------------------------------------------*/
+                            /*--------------------------------  Arabic Quraan Container  -----------------------------------*/
+                            /*-----------------------------------------------------------------------------------------------*/
+                            HomeContainer(
+                              title: "القرآن الكريم",
+                              onPress: () {
+                                Navigator.pushNamed(
+                                    context, ArabicQuranSplashScreen.routeName);
+                              },
+                            ),
+                            /*-----------------------------------------------------------------------------------------------*/
+                            /*-------------------------------- Praying time App Container  -----------------------------------*/
+                            /*-----------------------------------------------------------------------------------------------*/
+                            HomeContainer(
+                              title: "مواقيت الصلاة",
+                              onPress: () {
+                                Navigator.of(context)
+                                    .pushNamed(PrayingTime.routeName);
+                              },
+                            ),
+                            /*-----------------------------------------------------------------------------------------------*/
+                            /*-------------------------------- Sebha App Container  -----------------------------------*/
+                            /*-----------------------------------------------------------------------------------------------*/
+                            HomeContainer(
+                              title: "السبحة",
+                              onPress: () {
+                                Navigator.pushNamed(
+                                    context, SbhaScreen.routeName);
+                              },
+                            ),
+                            /*-----------------------------------------------------------------------------------------------*/
+                            /*-------------------------------- Daily Tasks Container  -----------------------------------*/
+                            /*-----------------------------------------------------------------------------------------------*/
+                            HomeContainer(
+                              title: "المهام اليومية",
+                              onPress: () {
+                                Navigator.of(context)
+                                    .pushNamed(DailyTasksScreen.routeName);
+                              },
+                            ),
+                            /*-----------------------------------------------------------------------------------------------*/
+                            /*--------------------------------  Azkar Elmoslem Container  -----------------------------------*/
+                            /*-----------------------------------------------------------------------------------------------*/
+                            // HomeContainer(
+                            //   title: "الأذكار",
+                            //   onPress: () {
+                            //     Navigator.pushNamed(
+                            //         context,
+                            //         AzkarElmoslemMainPage
+                            //             .routeName);
+                            //   },
+                            // ),
+                            if (!isLoading && !hasCrashed)
+                              ...azkarData.azkar
+                                  .map<HomeContainer>((zekr) => HomeContainer(
+                                        title: zekr.title,
+                                        onPress: () {
+                                          Navigator.of(context).pushNamed(
+                                            AzkarItemsScreen.routeName,
+                                            arguments: zekr,
+                                          );
+                                        },
+                                      ))
+                                  .toList(),
+
+                            /*-----------------------------------------------------------------------------------------------*/
+                            /*-------------------------------- ElQibla App Container  -----------------------------------*/
+                            /*-----------------------------------------------------------------------------------------------*/
+                            // GestureDetector(
+                            //   child: HomeContainer(
+                            //       image: "assets/mecca.png",
+                            //       color: color2,
+                            //       title: "El-Qibla"),
+                            //   onTap: () =>
+                            //       Navigator.pushNamed(context, QiblaPage.routeName),
+                            // ),
+                          ],
+                        ),
+                        /*-----------------------------------------------------------------------------------------------*/
+                        /*-------------------------------- Hint Circle  -----------------------------------*/
+                        /*-----------------------------------------------------------------------------------------------*/
+                        HintCircle(),
+                        SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
+                  ),
+                ),
+              ),
+              if (adWidget != null)
+                Container(
+                  alignment: Alignment.center,
+                  child: adWidget,
+                  width: myBanner.size.width.toDouble(),
+                  height: myBanner.size.height.toDouble(),
+                )
+            ],
+          ),
         ),
       ),
     );

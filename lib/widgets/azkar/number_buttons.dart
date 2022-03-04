@@ -25,7 +25,7 @@ class _PostBtnState extends State<PostBtn> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 48,
-      child: OutlinedButton(
+      child: ElevatedButton(
         style: TextButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           shape: RoundedRectangleBorder(
@@ -40,7 +40,9 @@ class _PostBtnState extends State<PostBtn> {
                   fit: BoxFit.cover,
                 ),
               )
-            : Text("عدد المرات: ${widget.n}"),
+            : Text(
+                "عدد المرات: ${widget.n}",
+              ),
         onPressed: onClick,
       ),
     );

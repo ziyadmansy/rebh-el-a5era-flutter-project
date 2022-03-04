@@ -8,7 +8,7 @@ class Surah {
   String title;
   String titleAr;
   String index;
-  int reversedPageIndex;
+  // int reversedPageIndex;
   int pageIndex;
   String juzIndex;
 
@@ -19,7 +19,7 @@ class Surah {
         this.title,
         this.titleAr,
         this.index,
-        this.reversedPageIndex,
+        // this.reversedPageIndex,
         this.pageIndex,
         this.juzIndex});
 
@@ -35,7 +35,7 @@ class Surah {
       titleAr: json['titleAr'] as String,
       index: json['index'] as String,
       // reversed pages
-      reversedPageIndex: 570 - int.parse(json['pages']),
+      // reversedPageIndex: 570 - int.parse(json['pages']),
       pageIndex: int.parse(json['pages']),
       juzIndex: json['juzIndex'] as String,
     );

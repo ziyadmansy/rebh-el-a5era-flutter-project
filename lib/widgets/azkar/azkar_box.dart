@@ -28,6 +28,7 @@ class _AzkarPostDescriptionState extends State<AzkarPostDescription> {
         children: [
           Card(
             margin: const EdgeInsets.all(0),
+            elevation: 8,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -36,6 +37,7 @@ class _AzkarPostDescriptionState extends State<AzkarPostDescription> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(

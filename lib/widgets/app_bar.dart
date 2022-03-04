@@ -7,9 +7,11 @@ import 'package:provider/provider.dart';
 
 class GlobalAppBar extends PreferredSize {
   final String title;
+  List<Widget> actions = [];
 
-  const GlobalAppBar({
+  GlobalAppBar({
     this.title,
+    this.actions,
   });
 
   @override
@@ -25,6 +27,7 @@ class GlobalAppBar extends PreferredSize {
       ),
       centerTitle: true,
       actions: [
+        if (actions != null) ...actions,
         _themeIcon(theme, context),
       ],
     );

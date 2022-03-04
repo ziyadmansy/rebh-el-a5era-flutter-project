@@ -171,7 +171,8 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
                       builder: (context) => SurahViewBuilder(
                         readingMode: true,
                         surah: Surah(
-                          reversedPageIndex: globals.lastViewedPage,
+                          // reversedPageIndex: globals.lastViewedPage,
+                          pageIndex: globals.lastViewedPage,
                         ),
                       ),
                     ),

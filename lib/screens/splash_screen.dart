@@ -14,9 +14,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(
-      Duration(seconds: 1),
+      Duration(milliseconds: 500),
       () {
-        Navigator.of(context).pushNamed(MuslimGuideHomePage.routeName);
+        Navigator.of(context).pushReplacementNamed(MuslimGuideHomePage.routeName);
       },
     );
   }
