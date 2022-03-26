@@ -7,7 +7,6 @@ import 'package:muslim_dialy_guide/widgets/app_bar.dart';
 import 'package:muslim_dialy_guide/widgets/arabic_quraan/bookmarks.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 
-import 'package:screen/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:muslim_dialy_guide/globals/globals.dart' as globals;
 
@@ -108,7 +107,7 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
     /*-----------------------------------------------------------------------------------------------*/
     /*---------------------- Prevent screen from going into sleep mode ------------------------------*/
     /*-----------------------------------------------------------------------------------------------*/
-    Screen.keepOn(true);
+    // Screen.keepOn(true);
     setState(() {
       /*-----------------------------------------------------------------------------------------------*/
       /*--------------------------------- init current page ------------------------------*/
@@ -142,7 +141,7 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
         actions: [
           IconButton(
             onPressed: () {
-              if (globals.currentPage < 570) {
+              if (globals.currentPage < 569) {
                 quranPdfController.nextPage(
                   duration: Duration(
                     milliseconds: 500,
@@ -174,6 +173,9 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
           : PdfView(
               controller: quranPdfController,
               scrollDirection: Axis.vertical,
+              backgroundDecoration: BoxDecoration(
+                color: Colors.white,
+              ),
               documentLoader: Center(
                 child: CircularProgressIndicator.adaptive(),
               ),
@@ -190,9 +192,9 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
               //   format: PdfPageImageFormat.jpeg,
               //   backgroundColor: '#FFFFFF',
               // ),
-              onDocumentLoaded: (doc) {
-                // globals.currentPage = currentPage;
-
+              onDocumentLoaded: (PdfDocument doc) {
+                globals.lastViewedPage = widget.surah.pageIndex;
+                setLastViewedPage(globals.lastViewedPage);
                 // if (currentPage == globals.bookmarkedPage) {
                 //   isBookmarked = true;
                 // } else {

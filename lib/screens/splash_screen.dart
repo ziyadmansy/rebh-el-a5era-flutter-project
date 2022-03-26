@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(
-      Duration(milliseconds: 500),
+      Duration(seconds: 1),
       () {
         Navigator.of(context).pushReplacementNamed(MuslimGuideHomePage.routeName);
       },
@@ -32,6 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Spacer(),
             Image.asset(
               'assets/treasure.png',
+              height: width / 2,
               width: width / 2,
             ),
             Spacer(),

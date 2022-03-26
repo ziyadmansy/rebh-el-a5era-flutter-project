@@ -3,7 +3,7 @@ description: A new Flutter application.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 2.1.1+7
 
 environment:
   sdk: ">=2.9.0 <3.0.0"
@@ -23,13 +23,13 @@ dependencies:
   #####-------------------------------- device info  ----------------------------#####
   device_info: ^2.0.3
   #####--------------------------------  screen  ----------------------------#####
-  screen: ^0.0.5
+  # screen: ^0.0.5
   #####------------------------------- Flutter toast  ----------------------------#####
   fluttertoast: ^8.0.8
   #####--------------------------------  lottie  ----------------------------#####
   lottie: ^1.2.2
   #####----------------------------  Flutter Qiblah  ----------------------------#####
-  flutter_qiblah: ^2.0.2
+  # flutter_qiblah: ^2.0.2
   #####--------------------------------  SVG  ----------------------------#####
   flutter_svg: ^1.0.3
   #####------------------------------- Google Maps  ----------------------------#####
@@ -37,9 +37,7 @@ dependencies:
   #####-----------------------------  Google Fonts  ----------------------------#####
   google_fonts: ^2.3.1
   #####--------------------------------  linkwell  ----------------------------#####
-  linkwell: ^2.0.6
-  #####-----------------------------  auto_direction  ----------------------------#####
-  auto_direction: ^0.0.5
+  # linkwell: ^2.0.6
   #####-----------------------------  Location  ----------------------------#####
   location: ^4.3.0
   #####-----------------------------  HTTP  ----------------------------#####
@@ -49,6 +47,11 @@ dependencies:
   intl: ^0.17.0
   device_info_plus: ^3.2.2
   url_launcher: ^6.0.20
+  overlay_support: ^1.2.1
+  # android_alarm_manager_plus: ^2.0.5
+  # workmanager: ^0.4.1
+  flutter_local_notifications: ^9.4.0
+  flutter_native_timezone: ^2.0.0
 
   #####-----------------------------  Ads  ----------------------------#####
   google_mobile_ads: ^1.1.0

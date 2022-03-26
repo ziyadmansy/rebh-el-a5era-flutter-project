@@ -13,7 +13,6 @@ import 'package:muslim_dialy_guide/widgets/arabic_quraan/custom_bottom_navigatio
 import 'package:muslim_dialy_guide/widgets/arabic_quraan/nav_bar.dart';
 import 'package:muslim_dialy_guide/widgets/arabic_quraan/slider_alert.dart';
 import 'package:provider/provider.dart';
-import 'package:screen/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../common/shared.dart';
@@ -49,9 +48,9 @@ class _QuranArabicState extends State<QuranArabic> {
   /*-----------------------------------------------------------------------------------------------*/
   /*-------------------------------- Getting Screen Brightness  -----------------------------------*/
   /*-----------------------------------------------------------------------------------------------*/
-  void getScreenBrightness() async {
-    globals.brightnessLevel = await Screen.brightness;
-  }
+  // void getScreenBrightness() async {
+  //   globals.brightnessLevel = await Screen.brightness;
+  // }
 
   @override
   void initState() {
@@ -61,20 +60,20 @@ class _QuranArabicState extends State<QuranArabic> {
         initAds();
       },
     );
-    getScreenBrightness();
+    // getScreenBrightness();
     if (globals.bookmarkedPage == null) {
       globals.bookmarkedPage = globals.DEFAULT_BOOKMARKED_PAGE;
     }
     /*-----------------------------------------------------------------------------------------------*/
     /*---------------------- Prevent screen from going into sleep mode ------------------------------*/
     /*-----------------------------------------------------------------------------------------------*/
-    Screen.keepOn(true);
+    // Screen.keepOn(true);
 
     /*-----------------------------------------------------------------------------------------------*/
     /*----------------------    set saved Brightness level  ------------------------------*/
     /*-----------------------------------------------------------------------------------------------*/
-    Screen.setBrightness(globals.brightnessLevel);
-    Screen.keepOn(true);
+    // Screen.setBrightness(globals.brightnessLevel);
+    // Screen.keepOn(true);
 
     super.initState();
   }
@@ -93,6 +92,7 @@ class _QuranArabicState extends State<QuranArabic> {
         onAdLoaded: (InterstitialAd ad) {
           // Keep a reference to the ad so you can show it later.
           this._interstitialAd = ad;
+          print('Interstitial Ad Loaded');
         },
         onAdFailedToLoad: (LoadAdError error) {
           print('InterstitialAd failed to load: $error');
@@ -116,7 +116,7 @@ class _QuranArabicState extends State<QuranArabic> {
   /*-----------------------------------------------------------------------------------------------*/
   _setBrightness() {
     if (globals.brightnessLevel == null) {
-      getScreenBrightness();
+      // getScreenBrightness();
     }
     showDialog(context: this.context, builder: (context) => SliderAlert());
   }
@@ -126,7 +126,10 @@ class _QuranArabicState extends State<QuranArabic> {
     var theme = Provider.of<ThemeProvider>(context);
     return WillPopScope(
       onWillPop: () async {
-        return await Shared.onPopEventHandler(_interstitialAd);
+        return await Shared.onPopEventHandler(
+          _interstitialAd,
+          canShowAd: false,
+        );
       },
       child: Scaffold(
         appBar: GlobalAppBar(

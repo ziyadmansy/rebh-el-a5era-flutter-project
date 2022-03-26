@@ -88,6 +88,7 @@ class _SbhaScreenState extends State<SbhaScreen> {
         onAdLoaded: (InterstitialAd ad) {
           // Keep a reference to the ad so you can show it later.
           this._interstitialAd = ad;
+          print('Interstitial Ad Loaded');
         },
         onAdFailedToLoad: (LoadAdError error) {
           print('InterstitialAd failed to load: $error');

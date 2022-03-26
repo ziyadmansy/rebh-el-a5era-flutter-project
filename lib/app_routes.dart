@@ -26,7 +26,7 @@ Map<String, Widget Function(BuildContext)> appRoutes = {
   /*---------------------------- Praying Time Screen  ----------------------------------*/
   PrayingTime.routeName: (context) => PrayingTime(),
   /*---------------------------- Qibla Page Screen  ----------------------------------*/
-  QiblaPage.routeName: (context) => QiblaPage(),
+  // QiblaPage.routeName: (context) => QiblaPage(),
   /*-------------------------- Azkar Elmoslem Screen  ----------------------------------*/
   AzkarElmoslemMainPage.routeName: (context) => AzkarElmoslemMainPage(),
   /*------------------------ Azkar Elsalah Screen  ----------------------------------*/

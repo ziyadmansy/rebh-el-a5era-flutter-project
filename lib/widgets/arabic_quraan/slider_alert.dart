@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:screen/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:muslim_dialy_guide/globals/globals.dart' as globals;
@@ -50,7 +49,7 @@ class _SliderAlertState extends State<SliderAlert> {
                   setState(() {
                     tempBrightnessLevel = _brightness;
                   });
-                  Screen.setBrightness(tempBrightnessLevel);
+                  // Screen.setBrightness(tempBrightnessLevel);
                 },
                 max: 1,
                 label: "$tempBrightnessLevel",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Constants {
 /*---------------------------------------------------------------------------------------------*/
@@ -18,7 +19,8 @@ final Color primaryColor = Color.fromARGB(255, 0, 27, 68);
 // enum CarouselType { Morning, Night }
 
 const String appName = 'ربح الآخرة';
-const String appPlayStoreUrl = 'https://play.google.com/store/apps/details?id=com.maryamyehya.rebhelakhra';
+const String appPlayStoreUrl =
+    'https://play.google.com/store/apps/details?id=com.maryamyehya.rebhelakhra';
 const String errorMsg =
     'حدث خطأ برجاء التأكد من شبكة الإنترنت و إعادة المحاولة';
 
@@ -32,6 +34,28 @@ const List<Color> gradColors = [
   Color(0xffC2ECF3),
 ];
 
+const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+  prayersChannelId,
+  prayersChannelName,
+  channelDescription: prayersChannelDescription,
+  importance: Importance.max,
+  priority: Priority.high,
+  enableVibration: true,
+  sound: RawResourceAndroidNotificationSound('azan'),
+  playSound: true,
+);
+
+const NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+
+int currentMonth;
+
+const String prayersChannelId = 'prayerTimes';
+const String prayersChannelName = 'Prayer Times';
+const String prayersChannelDescription =
+    'Channel to show prayer times notifications';
+
 const String androidText = 'android';
 const String iosText = 'ios';
 const String webText = 'web';
@@ -39,19 +63,25 @@ const String webText = 'web';
 const String fcmKey = 'FCMToken';
 const String prophitWordsDialogKey = 'prophitWordsDialog';
 const String totalSebhaCountKey = 'totalSebhaCount';
+const String publicTopic = 'publicUsers';
+const String currentMonthKey = 'currentMonth';
 
 const String apiKey = 'Api-Key KGAWYWYU.yidSuXC8xudXlbPo0PO26UritiQVRH8y';
 const String firebaseServerKey =
     'key=AAAAL2b5XLc:APA91bHxxRlrEl6ZqyWbzBUdr0oee9DdXxc_A4OSRCtEUDMTk9UB6x_yX_iJ8TdBlUOmbGyVMcxX74rqHRNP7w_zkOcA6vg8wFvd47Lvt-9ZIgfZeQxK0x-OZAQTcxWWWDnB1SHRxnec';
 
+
+// Admin User can send FCM Notifications to all users
+const bool isAdminUser = false;
+
 // Google admob ad IDs
 const String appID = 'ca-app-pub-4316462914823878~1157582812';
-const String bannerAdId = 'ca-app-pub-3940256099942544/6300978111';
-const String interstitialAdId = 'ca-app-pub-3940256099942544/1033173712';
+const String bannerAdId = 'ca-app-pub-4316462914823878/1913288955';
+const String interstitialAdId = 'ca-app-pub-4316462914823878/3040368483';
 
 // Banner Ad Live ID: ca-app-pub-4316462914823878/1913288955
 // Banner Ad Test ID: ca-app-pub-3940256099942544/6300978111
 
-// Interstitial Ad Test ID: ca-app-pub-4316462914823878/3040368483
+// Interstitial Ad Live ID: ca-app-pub-4316462914823878/3040368483
 // Interstitial Ad Test ID: ca-app-pub-3940256099942544/1033173712
 

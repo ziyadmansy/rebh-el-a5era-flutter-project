@@ -21,7 +21,7 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
   TextEditingController editingController = TextEditingController();
 
   BannerAd myBanner;
-  InterstitialAd _interstitialAd;
+  // InterstitialAd _interstitialAd;
   AdWidget adWidget;
 
   List<Surah> surah = [];
@@ -102,21 +102,6 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
     await myBanner.load();
     adWidget = AdWidget(ad: myBanner);
     setState(() {});
-
-    await InterstitialAd.load(
-      adUnitId: interstitialAdId,
-      request: AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (InterstitialAd ad) {
-          // Keep a reference to the ad so you can show it later.
-          this._interstitialAd = ad;
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          print('InterstitialAd failed to load: $error');
-        },
-      ),
-    );
-    // _interstitialAd.show();
   }
 
   Future<void> getLastViewedPage() async {
@@ -128,9 +113,9 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
   void dispose() {
     super.dispose();
     myBanner.dispose();
-    if (_interstitialAd != null) {
-      _interstitialAd.dispose();
-    }
+    // if (_interstitialAd != null) {
+    //   _interstitialAd.dispose();
+    // }
   }
 
   @override

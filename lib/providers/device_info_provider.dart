@@ -11,63 +11,76 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DeviceInfoProvider with ChangeNotifier {
   Future<void> getDeviceInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String savedFcmToken = prefs.getString(fcmKey);
-    String fcmToken = await getFCMToken();
-    if (savedFcmToken != null) {
-      // User has FCM Token Registered
-      if (savedFcmToken != fcmToken) {
-        // The registered FCM Token has changed
-        savedFcmToken = fcmToken;
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String savedFcmToken = prefs.getString(fcmKey);
+      String fcmToken = await getFCMToken();
+      if (savedFcmToken != null) {
+        // User has FCM Token Registered
+        if (savedFcmToken != fcmToken) {
+          // The registered FCM Token has changed
+          savedFcmToken = fcmToken;
+        } else {
+          // The registered FCM Token hasn't changed
+          // No need to send the request to admin panel
+          return;
+        }
       } else {
-        // The registered FCM Token hasn't changed
-        // No need to send the request to admin panel
-        return;
+        // First time user login
+        // savedFcmToken = null
+        savedFcmToken = fcmToken;
       }
-    } else {
-      // First time user login
-      // savedFcmToken = null
-      savedFcmToken = fcmToken;
+      final deviceInfoPlugin = DeviceInfoPlugin();
+      String platformType = androidText;
+      String uid;
+      if (Platform.isAndroid) {
+        var androidInfo = await deviceInfoPlugin.androidInfo;
+        var release = androidInfo.version.release;
+        var sdkInt = androidInfo.version.sdkInt;
+        var manufacturer = androidInfo.manufacturer;
+        var model = androidInfo.model;
+        uid = androidInfo.androidId;
+        print('Android $release (SDK $sdkInt), $manufacturer $model');
+        // Android 9 (SDK 28), Xiaomi Redmi Note 7
+        platformType = androidText;
+      }
+
+      // if (Platform.isIOS) {
+      //   var iosInfo = await DeviceInfoPlugin().iosInfo;
+      //   var systemName = iosInfo.systemName;
+      //   var version = iosInfo.systemVersion;
+      //   var name = iosInfo.name;
+      //   var model = iosInfo.model;
+      //   print('$systemName $version, $name $model');
+      //   // iOS 13.1, iPhone 11 Pro Max iPhone
+      //   platformType = iosText;
+      // }
+
+      await deviceInfoService(
+        deviceIdentifier: uid,
+        deviceType: platformType,
+        fcmToken: savedFcmToken,
+      );
+    } catch (e) {
+      print(e);
     }
-
-    final deviceInfoPlugin = DeviceInfoPlugin();
-    String platformType = androidText;
-    String uid;
-    if (Platform.isAndroid) {
-      var androidInfo = await deviceInfoPlugin.androidInfo;
-      var release = androidInfo.version.release;
-      var sdkInt = androidInfo.version.sdkInt;
-      var manufacturer = androidInfo.manufacturer;
-      var model = androidInfo.model;
-      uid = androidInfo.androidId;
-      print('Android $release (SDK $sdkInt), $manufacturer $model');
-      // Android 9 (SDK 28), Xiaomi Redmi Note 7
-      platformType = androidText;
-    }
-
-    // if (Platform.isIOS) {
-    //   var iosInfo = await DeviceInfoPlugin().iosInfo;
-    //   var systemName = iosInfo.systemName;
-    //   var version = iosInfo.systemVersion;
-    //   var name = iosInfo.name;
-    //   var model = iosInfo.model;
-    //   print('$systemName $version, $name $model');
-    //   // iOS 13.1, iPhone 11 Pro Max iPhone
-    //   platformType = iosText;
-    // }
-
-    await deviceInfoService(
-      deviceIdentifier: uid,
-      deviceType: platformType,
-      fcmToken: savedFcmToken,
-    );
   }
 
   Future<String> getFCMToken() async {
+    try {
+      final messaging = FirebaseMessaging.instance;
+      final token = await messaging.getToken();
+      await subscribeToTopic(publicTopic);
+      print(token);
+      return token;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> subscribeToTopic(String topicTitle) async {
     final messaging = FirebaseMessaging.instance;
-    final token = await messaging.getToken();
-    print(token);
-    return token;
+    await messaging.subscribeToTopic(topicTitle);
   }
 
   Future<void> deviceInfoService({

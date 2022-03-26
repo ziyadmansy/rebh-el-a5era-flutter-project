@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -16,10 +15,11 @@ class Shared {
     );
   }
 
-  static Future<bool> onPopEventHandler(InterstitialAd ad) async {
-    // if (ad != null) {
-    //   ad.show();
-    // }
+  static Future<bool> onPopEventHandler(InterstitialAd ad,
+      {bool canShowAd = true}) async {
+    if (ad != null && canShowAd) {
+      await ad.show();
+    }
     return true;
   }
 

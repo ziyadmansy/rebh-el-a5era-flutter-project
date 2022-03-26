@@ -42,7 +42,7 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
 
   final int delayedAmount = 500;
   BannerAd myBanner;
-  InterstitialAd _interstitialAd;
+  // InterstitialAd _interstitialAd;
   AdWidget adWidget;
 
   final notificationFormKey = GlobalKey<FormState>();
@@ -94,19 +94,7 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
     adWidget = AdWidget(ad: myBanner);
     setState(() {});
 
-    await InterstitialAd.load(
-      adUnitId: interstitialAdId,
-      request: AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (InterstitialAd ad) {
-          // Keep a reference to the ad so you can show it later.
-          this._interstitialAd = ad;
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          print('InterstitialAd failed to load: $error');
-        },
-      ),
-    );
+    // _interstitialAd = await Shared.getInterstitialAd();
     // _interstitialAd.show();
   }
 
@@ -166,6 +154,7 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
               child: Text('تفعيل الخدمة'),
               onPressed: () async {
                 await prefs.setBool(prophitWordsDialogKey, true);
+                Shared.showToast('تم تفعيل الخدمة بنجاح');
                 Navigator.of(context).pop();
               },
             ),
@@ -173,6 +162,7 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
               child: Text('إلغاء الخدمة'),
               onPressed: () async {
                 await prefs.setBool(prophitWordsDialogKey, false);
+                Shared.showToast('تم إلغاء الخدمة بنجاح');
                 Navigator.of(context).pop();
               },
             ),
@@ -186,11 +176,9 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
   void dispose() {
     super.dispose();
     myBanner.dispose();
-    if (_interstitialAd != null) {
-      if (_interstitialAd != null) {
-        _interstitialAd.dispose();
-      }
-    }
+    // if (_interstitialAd != null) {
+    //   _interstitialAd.dispose();
+    // }
   }
 
   Future<void> _launchInBrowser(String url) async {
@@ -213,198 +201,210 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
         title: 'الصفحة الرئيسية',
       ),
       // backgroundColor: Colors.transparent,
-      drawer: Drawer(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        child: ListView(
-          children: [
-            DrawerHeader(
-              child: Image.asset(
-                'assets/treasure.png',
-                height: 150,
-              ),
-            ),
-            Text(
-              appName,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 30.0,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-              child: Text(
-                'خدمات',
-                style: TextStyle(
-                  color: Colors.grey,
+      drawer: Theme(
+        data: theme.isDarkTheme ? ThemeData.dark() : ThemeData.light(),
+        child: Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(
+                child: Image.asset(
+                  'assets/treasure.png',
+                  height: 150,
                 ),
               ),
-            ),
-            TextButton.icon(
-              onPressed: setHadithDialog,
-              icon: Icon(Icons.message),
-              label: Row(
-                children: [
-                  Text(
-                    'رسائل الأحادث الشريفة',
+              Text(
+                appName,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30.0,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                child: Text(
+                  'خدمات',
+                  style: TextStyle(
+                    color: Colors.grey,
                   ),
-                ],
+                ),
               ),
-              style: TextButton.styleFrom(
-                primary: Colors.white,
+              TextButton.icon(
+                onPressed: setHadithDialog,
+                icon: Icon(Icons.message),
+                label: Row(
+                  children: [
+                    Text(
+                      'رسائل الأحادث الشريفة',
+                    ),
+                  ],
+                ),
+                style: TextButton.styleFrom(
+                  primary: theme.isDarkTheme
+                      ? Theme.of(context).colorScheme.primary
+                      : Colors.black,
+                ),
               ),
-            ),
-            // TextButton.icon(
-            //   onPressed: () {},
-            //   icon: Icon(Icons.battery_saver),
-            //   label: Row(
-            //     children: [
-            //       Text(
-            //         'وضع حفظ الطاقة',
-            //       ),
-            //     ],
-            //   ),
-            //   style: TextButton.styleFrom(
-            //     primary: Colors.white,
-            //   ),
-            // ),
-            TextButton.icon(
-              onPressed: () async {
-                final notificationsData =
-                    Provider.of<Notifications>(context, listen: false);
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text('إرسال إشعار'),
-                      content: Form(
-                        key: notificationFormKey,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              TextFormField(
-                                controller: notificationTitle,
-                                decoration: InputDecoration(
-                                  hintText: 'عنوان الإشعار',
-                                  labelText: 'عنوان الإشعار',
-                                ),
-                                validator: (text) {
-                                  if (text.isEmpty) {
-                                    return 'برجاء إدخال عنوان';
-                                  } else {
-                                    return null;
-                                  }
-                                },
+              // TextButton.icon(
+              //   onPressed: () {},
+              //   icon: Icon(Icons.battery_saver),
+              //   label: Row(
+              //     children: [
+              //       Text(
+              //         'وضع حفظ الطاقة',
+              //       ),
+              //     ],
+              //   ),
+              //   style: TextButton.styleFrom(
+              //     primary: Colors.white,
+              //   ),
+              // ),
+              if (isAdminUser)
+                TextButton.icon(
+                  onPressed: () async {
+                    final notificationsData =
+                        Provider.of<Notifications>(context, listen: false);
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('إرسال إشعار'),
+                          content: Form(
+                            key: notificationFormKey,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextFormField(
+                                    controller: notificationTitle,
+                                    decoration: InputDecoration(
+                                      hintText: 'عنوان الإشعار',
+                                      labelText: 'عنوان الإشعار',
+                                    ),
+                                    validator: (text) {
+                                      if (text.isEmpty) {
+                                        return 'برجاء إدخال عنوان';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  TextFormField(
+                                    controller: notificationBody,
+                                    decoration: InputDecoration(
+                                      hintText: 'محتوى الإشعار',
+                                      labelText: 'محتوى الإشعار',
+                                    ),
+                                    validator: (text) {
+                                      if (text.isEmpty) {
+                                        return 'برجاء إدخال محتوى';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              TextFormField(
-                                controller: notificationBody,
-                                decoration: InputDecoration(
-                                  hintText: 'محتوى الإشعار',
-                                  labelText: 'محتوى الإشعار',
-                                ),
-                                validator: (text) {
-                                  if (text.isEmpty) {
-                                    return 'برجاء إدخال محتوى';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('إلغاء'),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            if (notificationFormKey.currentState.validate() ??
-                                false) {
-                              Shared.showToast('جارى التحميل');
-                              await notificationsData.getFcmTokens();
-                              await notificationsData.sendNotification(
-                                title: notificationTitle.text,
-                                body: notificationBody.text,
-                                tokens: notificationsData.devicesTokens,
-                              );
-                              Navigator.of(context).pop();
-                            }
-                          },
-                          child: Text('إرسال'),
-                        ),
-                      ],
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('إلغاء'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                if (notificationFormKey.currentState
+                                        .validate() ??
+                                    false) {
+                                  Shared.showToast('جارى التحميل');
+                                  await notificationsData.getFcmTokens();
+                                  await notificationsData.sendNotification(
+                                    title: notificationTitle.text,
+                                    body: notificationBody.text,
+                                    tokens: notificationsData.devicesTokens,
+                                  );
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                              child: Text('إرسال'),
+                            ),
+                          ],
+                        );
+                      },
                     );
                   },
-                );
-              },
-              icon: Icon(Icons.notifications),
-              style: TextButton.styleFrom(
-                primary: Colors.white,
-              ),
-              label: Row(
-                children: [
-                  Text(
-                    'إرسال إشعار',
+                  icon: Icon(Icons.notifications),
+                  style: TextButton.styleFrom(
+                    primary: theme.isDarkTheme
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.black,
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-              child: Text(
-                'أخرى',
-                style: TextStyle(
-                  color: Colors.grey,
+                  label: Row(
+                    children: [
+                      Text(
+                        'إرسال إشعار',
+                      ),
+                    ],
+                  ),
+                ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                child: Text(
+                  'أخرى',
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
                 ),
               ),
-            ),
-            TextButton.icon(
-              onPressed: () async {
-                await _launchInBrowser(appPlayStoreUrl);
-              },
-              icon: Icon(Icons.star),
-              label: Row(
-                children: [
-                  Text(
-                    'ضع تقييمك',
-                  ),
-                ],
+              TextButton.icon(
+                onPressed: () async {
+                  await _launchInBrowser(appPlayStoreUrl);
+                },
+                icon: Icon(Icons.star),
+                label: Row(
+                  children: [
+                    Text(
+                      'ضع تقييمك',
+                    ),
+                  ],
+                ),
+                style: TextButton.styleFrom(
+                  primary: theme.isDarkTheme
+                      ? Theme.of(context).colorScheme.primary
+                      : Colors.black,
+                ),
               ),
-              style: TextButton.styleFrom(
-                primary: Colors.white,
+              TextButton.icon(
+                onPressed: () {
+                  SystemNavigator.pop();
+                },
+                icon: Icon(Icons.exit_to_app),
+                label: Row(
+                  children: [
+                    Text(
+                      'خروج',
+                    ),
+                  ],
+                ),
+                style: TextButton.styleFrom(
+                  primary: theme.isDarkTheme
+                      ? Theme.of(context).colorScheme.primary
+                      : Colors.black,
+                ),
               ),
-            ),
-            TextButton.icon(
-              onPressed: () {
-                SystemNavigator.pop();
-              },
-              icon: Icon(Icons.exit_to_app),
-              label: Row(
-                children: [
-                  Text(
-                    'خروج',
-                  ),
-                ],
-              ),
-              style: TextButton.styleFrom(
-                primary: Colors.white,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       body: Container(

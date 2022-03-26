@@ -5,6 +5,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:muslim_dialy_guide/providers/locationProvider.dart';
+import 'package:muslim_dialy_guide/providers/prayers_provider.dart';
 import 'package:muslim_dialy_guide/widgets/app_bar.dart';
 import 'package:muslim_dialy_guide/widgets/praying_time/praying_time_container.dart';
 import 'package:provider/provider.dart';
@@ -50,6 +51,7 @@ class _PrayingTimeState extends State<PrayingTime> {
   /*-------------------------------- get prayer times  -----------------------------------*/
   /*-----------------------------------------------------------------------------------------------*/
   Future<void> getPrayerTimes() async {
+    final prayersData = Provider.of<PrayersProvider>(context, listen: false);
     setState(() {
       isLoading = true;
     });
@@ -57,6 +59,7 @@ class _PrayingTimeState extends State<PrayingTime> {
 
     final latLng = await getLocation();
     if (latLng != null) {
+      await prayersData.getPrayerTimes(latLng.longitude, latLng.latitude);
       print('My Prayer Times');
       final myCoordinates = Coordinates(
         latLng.latitude,
@@ -190,6 +193,7 @@ class _PrayingTimeState extends State<PrayingTime> {
         onAdLoaded: (InterstitialAd ad) {
           // Keep a reference to the ad so you can show it later.
           this._interstitialAd = ad;
+          print('Interstitial Ad Loaded');
         },
         onAdFailedToLoad: (LoadAdError error) {
           print('InterstitialAd failed to load: $error');
@@ -202,9 +206,11 @@ class _PrayingTimeState extends State<PrayingTime> {
   @override
   Widget build(BuildContext context) {
     var theme = Provider.of<ThemeProvider>(context);
+    final prayersData = Provider.of<PrayersProvider>(context);
     return WillPopScope(
       onWillPop: () async {
-        return await Shared.onPopEventHandler(_interstitialAd);
+        return await Shared.onPopEventHandler(_interstitialAd,
+            canShowAd: false);
       },
       child: Scaffold(
         appBar: GlobalAppBar(

@@ -1,0 +1,3 @@
+-keep class androidx.lifecycle.DefaultLifecycleObserver
+-keep public class MyClass
+-keep class com.dexterous.** { *; }

@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_dialy_guide/app_routes.dart';
 import 'package:muslim_dialy_guide/constants.dart';
@@ -9,11 +10,13 @@ import 'package:muslim_dialy_guide/providers/device_info_provider.dart';
 import 'package:muslim_dialy_guide/providers/locationProvider.dart';
 import 'package:muslim_dialy_guide/providers/morning_night_provider.dart';
 import 'package:muslim_dialy_guide/providers/notifications.dart';
+import 'package:muslim_dialy_guide/providers/prayers_provider.dart';
 import 'package:muslim_dialy_guide/providers/prophit_words.dart';
 import 'package:muslim_dialy_guide/providers/sbha_provider.dart';
 import 'package:muslim_dialy_guide/providers/theme_provider.dart';
 import 'package:muslim_dialy_guide/screens/home_app/home.dart';
 import 'package:muslim_dialy_guide/screens/splash_Screen.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,8 +29,40 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // await AndroidAlarmManager.initialize();
+  // initWorkManager();
+  initLocalNotifications();
   initFCM();
   runApp(MyApp());
+}
+
+// Future<void> initWorkManager() async {
+//   Workmanager().initialize(
+//       callbackDispatcher, // The top level function, aka callbackDispatcher
+//       isInDebugMode:
+//           true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+//       );
+// }
+
+// void callbackDispatcher() {
+//   Workmanager().executeTask((task, inputData) {
+//     print(
+//         "Native called background task: $task"); //simpleTask will be emitted here.
+//     return Future.value(true);
+//   });
+// }
+
+Future<void> initLocalNotifications() async {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('treasure');
+
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -70,6 +105,12 @@ void initFCM() async {
       print('Message also contained a notification: ${message.notification}');
       print('Message title: ${message.notification.title}');
       print('Message body: ${message.notification.body}');
+      showSimpleNotification(
+        Text(message.notification.title),
+        subtitle: Text(message.notification.body),
+        duration: Duration(seconds: 3),
+        autoDismiss: true,
+      );
     }
   });
 }
@@ -133,40 +174,48 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<SbhaProvider>(
           create: (context) => SbhaProvider(),
         ),
+        /*-----------------------------------------------------------------------------------------------*/
+        /*---------------------------------------  Prayers Provider  --------------------------------------*/
+        /*-----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider<PrayersProvider>(
+          create: (context) => PrayersProvider(),
+        ),
       ],
       builder: (context, child) {
         /*---------------------------   theme provider  ----------------------------*/
         return Consumer<ThemeProvider>(
           builder: (context, value, child) {
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              locale: const Locale('ar'),
-              supportedLocales: [
-                Locale('ar'),
-                Locale('en'),
-              ],
-              title: appName,
-              theme: ThemeData(
-                brightness: Brightness.dark,
-                useMaterial3: true,
-                colorSchemeSeed: primaryColor,
-                appBarTheme: AppBarTheme(
-                  backgroundColor: primaryColor,
+            return OverlaySupport.global(
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                localizationsDelegates: [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                locale: const Locale('ar'),
+                supportedLocales: [
+                  Locale('ar'),
+                  Locale('en'),
+                ],
+                title: appName,
+                theme: ThemeData(
+                  brightness: Brightness.dark,
+                  useMaterial3: true,
+                  colorSchemeSeed: primaryColor,
+                  appBarTheme: AppBarTheme(
+                    backgroundColor: primaryColor,
+                  ),
                 ),
+                darkTheme: ThemeData(
+                  colorSchemeSeed: primaryColor,
+                  brightness: Brightness.dark,
+                  useMaterial3: true,
+                ),
+                themeMode: (value.theme) ? ThemeMode.dark : ThemeMode.light,
+                initialRoute: SplashScreen.routeName,
+                routes: appRoutes,
               ),
-              darkTheme: ThemeData(
-                colorSchemeSeed: primaryColor,
-                brightness: Brightness.dark,
-                useMaterial3: true,
-              ),
-              themeMode: (value.theme) ? ThemeMode.dark : ThemeMode.light,
-              initialRoute: SplashScreen.routeName,
-              routes: appRoutes,
             );
           },
         );

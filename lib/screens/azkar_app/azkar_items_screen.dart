@@ -47,6 +47,7 @@ class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
         onAdLoaded: (InterstitialAd ad) {
           // Keep a reference to the ad so you can show it later.
           this._interstitialAd = ad;
+          print('Interstitial Ad Loaded');
         },
         onAdFailedToLoad: (LoadAdError error) {
           print('InterstitialAd failed to load: $error');
@@ -60,44 +61,49 @@ class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
   Widget build(BuildContext context) {
     var theme = Provider.of<ThemeProvider>(context);
     ZekrCategory zekr = ModalRoute.of(context).settings.arguments;
-    return Scaffold(
-      backgroundColor: theme.isDarkTheme ? null : Colors.white,
-      appBar: GlobalAppBar(
-        title: zekr.title,
-      ),
-      body: Theme(
-        data: theme.isDarkTheme ? ThemeData.dark() : ThemeData.light(),
-        child: zekr.ad3ya.isEmpty
-            ? Center(
-                child: Text('لا يوجد أذكار متاحة'),
-              )
-            : Column(
-                children: [
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: zekr.ad3ya.length,
-                      itemBuilder: (context, i) {
-                        final doaa = zekr.ad3ya[i];
-                        return AzkarPostDescription(
-                          title: doaa.title,
-                          description: doaa.description,
-                          number: doaa.count,
-                        );
-                      },
-                      separatorBuilder: (context, i) {
-                        return Divider();
-                      },
+    return WillPopScope(
+      onWillPop: () async {
+        return await Shared.onPopEventHandler(_interstitialAd);
+      },
+      child: Scaffold(
+        backgroundColor: theme.isDarkTheme ? null : Colors.white,
+        appBar: GlobalAppBar(
+          title: zekr.title,
+        ),
+        body: Theme(
+          data: theme.isDarkTheme ? ThemeData.dark() : ThemeData.light(),
+          child: zekr.ad3ya.isEmpty
+              ? Center(
+                  child: Text('لا يوجد أذكار متاحة'),
+                )
+              : Column(
+                  children: [
+                    Expanded(
+                      child: ListView.separated(
+                        itemCount: zekr.ad3ya.length,
+                        itemBuilder: (context, i) {
+                          final doaa = zekr.ad3ya[i];
+                          return AzkarPostDescription(
+                            title: doaa.title,
+                            description: doaa.description,
+                            number: doaa.count,
+                          );
+                        },
+                        separatorBuilder: (context, i) {
+                          return Divider();
+                        },
+                      ),
                     ),
-                  ),
-                  if (adWidget != null)
-                    Container(
-                      alignment: Alignment.center,
-                      child: adWidget,
-                      width: myBanner.size.width.toDouble(),
-                      height: myBanner.size.height.toDouble(),
-                    ),
-                ],
-              ),
+                    if (adWidget != null)
+                      Container(
+                        alignment: Alignment.center,
+                        child: adWidget,
+                        width: myBanner.size.width.toDouble(),
+                        height: myBanner.size.height.toDouble(),
+                      ),
+                  ],
+                ),
+        ),
       ),
     );
   }
