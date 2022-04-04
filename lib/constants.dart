@@ -65,6 +65,8 @@ const String prophitWordsDialogKey = 'prophitWordsDialog';
 const String totalSebhaCountKey = 'totalSebhaCount';
 const String publicTopic = 'publicUsers';
 const String currentMonthKey = 'currentMonth';
+const String azkarResponseKey = 'azkarResponseKey';
+const String dailyTasksResponseKey = 'dailyTasksResponseKey';
 
 const String apiKey = 'Api-Key KGAWYWYU.yidSuXC8xudXlbPo0PO26UritiQVRH8y';
 const String firebaseServerKey =
@@ -72,7 +74,7 @@ const String firebaseServerKey =
 
 
 // Admin User can send FCM Notifications to all users
-const bool isAdminUser = false;
+const bool isAdminUser = true;
 
 // Google admob ad IDs
 const String appID = 'ca-app-pub-4316462914823878~1157582812';
