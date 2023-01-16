@@ -28,8 +28,7 @@ class LocationErrorWidget extends StatelessWidget {
               style: TextStyle(color: errorColor, fontWeight: FontWeight.bold),
             ),
             box,
-            // ignore: deprecated_member_use
-            RaisedButton(
+            ElevatedButton(
               child: Text("Retry"),
               onPressed: () {
                 if (callback != null) callback();

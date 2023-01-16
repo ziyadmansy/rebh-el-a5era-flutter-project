@@ -327,11 +327,9 @@ class _MuslimGuideHomePageState extends State<MuslimGuideHomePage> {
                                         .validate() ??
                                     false) {
                                   Shared.showToast('جارى التحميل');
-                                  await notificationsData.getFcmTokens();
                                   await notificationsData.sendNotification(
                                     title: notificationTitle.text,
                                     body: notificationBody.text,
-                                    tokens: notificationsData.devicesTokens,
                                   );
                                   Navigator.of(context).pop();
                                 }

@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:muslim_dialy_guide/globals/globals.dart' as globals;
+
 class SliderAlert extends StatefulWidget {
   @override
   _SliderAlertState createState() => _SliderAlertState();
@@ -59,17 +60,16 @@ class _SliderAlertState extends State<SliderAlert> {
           ),
         ),
         actions: <Widget>[
-          // ignore: deprecated_member_use
-          FlatButton(
-              child: Text(
-                "Cancel",
-                textDirection: TextDirection.rtl,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              }),
-          // ignore: deprecated_member_use
-          FlatButton(
+          TextButton(
+            child: Text(
+              "Cancel",
+              textDirection: TextDirection.rtl,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
             child: Text(
               "Save",
               textDirection: TextDirection.rtl,
