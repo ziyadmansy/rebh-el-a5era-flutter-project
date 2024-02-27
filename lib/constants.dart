@@ -73,8 +73,8 @@ const String firebaseServerKey =
     'key=AAAAL2b5XLc:APA91bHxxRlrEl6ZqyWbzBUdr0oee9DdXxc_A4OSRCtEUDMTk9UB6x_yX_iJ8TdBlUOmbGyVMcxX74rqHRNP7w_zkOcA6vg8wFvd47Lvt-9ZIgfZeQxK0x-OZAQTcxWWWDnB1SHRxnec';
 
 // Admin User can send FCM Notifications to all users
-const bool isAdminUser = true;
-const bool isTesting = true;
+const bool isAdminUser = false;
+const bool isTesting = false;
 
 // Google admob ad IDs
 const String appID = 'ca-app-pub-4316462914823878~1157582812';
