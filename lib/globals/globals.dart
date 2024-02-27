@@ -7,16 +7,16 @@ library quran.globals;
 
 /*---------------------------  Current page ------------------------------------*/
 /// changes when onChanged Callback
-int currentPage;
+int? currentPage;
 
 /*--------------------------  bookmarked page ------------------------------------*/
-int bookmarkedPage;
+int? bookmarkedPage;
 
 /*---------------------------  last page ------------------------------------*/
 int lastViewedPage = 1;
 
 /*----------------------  brightness of the device ------------------------------------*/
-double brightnessLevel;
+double? brightnessLevel;
 
 
 

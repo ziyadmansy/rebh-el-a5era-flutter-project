@@ -89,7 +89,7 @@ class CustomBox extends StatelessWidget {
   final double angulo;
 
   //constructor de la clase
-  const CustomBox({@required this.color, @required this.angulo});
+  const CustomBox({required this.color, required this.angulo});
 
   @override
   Widget build(BuildContext context) {

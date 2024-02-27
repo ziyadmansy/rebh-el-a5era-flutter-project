@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:http/http.dart';
 import 'package:muslim_dialy_guide/common/shared.dart';
 import 'package:muslim_dialy_guide/constants.dart';
@@ -82,7 +82,7 @@ class PrayersProvider with ChangeNotifier {
         FlutterLocalNotificationsPlugin();
 
     final String currentTimeZone =
-        await FlutterNativeTimezone.getLocalTimezone();
+        await FlutterTimezone.getLocalTimezone();
     print('Current Time Zone: $currentTimeZone');
 
     tz.setLocalLocation(tz.getLocation(currentTimeZone));

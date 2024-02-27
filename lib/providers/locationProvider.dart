@@ -4,8 +4,8 @@ import 'package:location/location.dart';
 import '../exceptions.dart/location_exception.dart';
 
 class LocationProvider with ChangeNotifier {
-  String countryCode;
-  String countryName;
+  String? countryCode;
+  String? countryName;
 
   Future<void> checkLocationPermissions() async {
     Location location = Location();

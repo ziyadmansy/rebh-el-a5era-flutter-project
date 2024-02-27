@@ -1,28 +1,16 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  bool isDarkTheme = false ;
-  SharedPreferences preferences;
+  bool isDarkTheme = true;
 
   bool get theme => isDarkTheme;
 
 /*---------------------------------------------------------------------------------------------*/
-/*-------------------------------- loading shared preferences  --------------------------------*/
-/*---------------------------------------------------------------------------------------------*/
-  initPrefs() async {
-    if (preferences == null) {
-      preferences = await SharedPreferences.getInstance();
-    }
-  }
-/*---------------------------------------------------------------------------------------------*/
 /*-------------------------------------- getting theme  --------------------------------------*/
 /*---------------------------------------------------------------------------------------------*/
   _loadPrefs() async {
-    await initPrefs();
+    final preferences = await SharedPreferences.getInstance();
     isDarkTheme = preferences.getBool('theme') ?? false;
     notifyListeners();
   }
@@ -44,7 +32,7 @@ class ThemeProvider extends ChangeNotifier {
 /*--------------------------------- save theme after switching  ---------------------------------*/
 /*---------------------------------------------------------------------------------------------*/
   _savePrefs() async {
-    await initPrefs();
+    final preferences = await SharedPreferences.getInstance();
     preferences.setBool('theme', isDarkTheme);
   }
 }

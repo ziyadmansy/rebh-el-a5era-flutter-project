@@ -9,7 +9,7 @@
 // class MorningNightHome extends StatelessWidget {
 //   static const String routeName = 'MorningNightHome';
 
-//   const MorningNightHome({Key key}) : super(key: key);
+//   const MorningNightHome({Key? key}) : super(key: key);
 
 //   @override
 //   Widget build(BuildContext context) {

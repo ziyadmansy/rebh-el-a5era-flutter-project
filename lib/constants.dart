@@ -26,8 +26,8 @@ const String errorMsg =
 
 const double kBorderRadius = 24.0;
 
-final Color redColor = Colors.red[600];
-final Color greenColor = Colors.greenAccent[700];
+final Color redColor = Colors.red[600]!;
+final Color greenColor = Colors.greenAccent[700]!;
 const List<Color> gradColors = [
   Color(0xff030357),
   Color(0xff1CB5E0),
@@ -49,7 +49,7 @@ const AndroidNotificationDetails androidPlatformChannelSpecifics =
 const NotificationDetails platformChannelSpecifics =
     NotificationDetails(android: androidPlatformChannelSpecifics);
 
-int currentMonth;
+int? currentMonth;
 
 const String prayersChannelId = 'prayerTimes';
 const String prayersChannelName = 'Prayer Times';
@@ -72,14 +72,18 @@ const String apiKey = 'Api-Key KGAWYWYU.yidSuXC8xudXlbPo0PO26UritiQVRH8y';
 const String firebaseServerKey =
     'key=AAAAL2b5XLc:APA91bHxxRlrEl6ZqyWbzBUdr0oee9DdXxc_A4OSRCtEUDMTk9UB6x_yX_iJ8TdBlUOmbGyVMcxX74rqHRNP7w_zkOcA6vg8wFvd47Lvt-9ZIgfZeQxK0x-OZAQTcxWWWDnB1SHRxnec';
 
-
 // Admin User can send FCM Notifications to all users
 const bool isAdminUser = true;
+const bool isTesting = true;
 
 // Google admob ad IDs
 const String appID = 'ca-app-pub-4316462914823878~1157582812';
-const String bannerAdId = 'ca-app-pub-4316462914823878/1913288955';
-const String interstitialAdId = 'ca-app-pub-4316462914823878/3040368483';
+const String bannerAdId = isTesting
+    ? 'ca-app-pub-3940256099942544/6300978111'
+    : 'ca-app-pub-4316462914823878/1913288955';
+const String interstitialAdId = isTesting
+    ? 'ca-app-pub-3940256099942544/1033173712'
+    : 'ca-app-pub-4316462914823878/3040368483';
 
 // Banner Ad Live ID: ca-app-pub-4316462914823878/1913288955
 // Banner Ad Test ID: ca-app-pub-3940256099942544/6300978111

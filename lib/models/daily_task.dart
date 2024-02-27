@@ -1,16 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class DailyTask {
   int id;
   String title;
   String description;
   String createdAt;
   String updatedAt;
-
+  
   DailyTask({
-    this.id,
-    this.title,
-    this.description,
-    this.createdAt,
-    this.updatedAt,
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   factory DailyTask.fromJson(Map<String, dynamic> json) {

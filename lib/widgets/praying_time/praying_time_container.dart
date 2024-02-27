@@ -6,7 +6,11 @@ class PrayingTimeContainer extends StatelessWidget {
   final String icon;
   final String title;
   final String time;
-  PrayingTimeContainer({this.icon, this.title, this.time});
+  PrayingTimeContainer({
+    required this.icon,
+    required this.title,
+    required this.time,
+  });
 
   @override
   Widget build(BuildContext context) {

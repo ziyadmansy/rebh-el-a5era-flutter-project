@@ -10,11 +10,11 @@ class HintCircle extends StatefulWidget {
 
 class _HintCircleState extends State<HintCircle>
     with SingleTickerProviderStateMixin {
-  Animation animation, animation2;
-  AnimationController animationController;
-  double animatedContainerWidth;
-  bool isClicked;
-  Timer time;
+  late Animation<double> animation, animation2;
+  late AnimationController animationController;
+  late double animatedContainerWidth;
+  late bool isClicked;
+  late Timer time;
 
   @override
   void dispose() {
@@ -89,7 +89,7 @@ class _HintCircleState extends State<HintCircle>
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1
-                      .copyWith(color: Colors.white),
+                      ?.copyWith(color: Colors.white),
                 ),
               ),
             ),

@@ -37,9 +37,9 @@ class _PrayingTimeState extends State<PrayingTime> {
     "assets/praying_time/isyah.png",
   ];
 
-  BannerAd myBanner;
-  InterstitialAd _interstitialAd;
-  AdWidget adWidget;
+  BannerAd? myBanner;
+  InterstitialAd? _interstitialAd;
+  AdWidget? adWidget;
 
   String timeZoneName = '';
 
@@ -133,7 +133,7 @@ class _PrayingTimeState extends State<PrayingTime> {
     });
   }
 
-  Future<LatLng> getLocation() async {
+  Future<LatLng?> getLocation() async {
     try {
       final locationData =
           Provider.of<LocationProvider>(context, listen: false);
@@ -143,8 +143,8 @@ class _PrayingTimeState extends State<PrayingTime> {
       print(position.longitude);
       print(position.latitude);
 
-      if (position != null) {
-        return LatLng(position.latitude, position.longitude);
+      if (position.latitude != null) {
+        return LatLng(position.latitude!, position.longitude!);
       } else {
         return null;
       }
@@ -173,17 +173,17 @@ class _PrayingTimeState extends State<PrayingTime> {
   @override
   void dispose() {
     super.dispose();
-    myBanner.dispose();
+    myBanner?.dispose();
     if (_interstitialAd != null) {
-      _interstitialAd.dispose();
+      _interstitialAd?.dispose();
     }
   }
 
   Future<void> initAds() async {
     myBanner =
         await Shared.getBannerAd(MediaQuery.of(context).size.width.toInt());
-    await myBanner.load();
-    adWidget = AdWidget(ad: myBanner);
+    await myBanner!.load();
+    adWidget = AdWidget(ad: myBanner!);
     setState(() {});
 
     await InterstitialAd.load(
@@ -213,8 +213,9 @@ class _PrayingTimeState extends State<PrayingTime> {
             canShowAd: false);
       },
       child: Scaffold(
-        appBar: GlobalAppBar(
+        appBar: buildAppBar(
           title: "مواقيت الصلاة",
+          context: context,
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
@@ -273,8 +274,8 @@ class _PrayingTimeState extends State<PrayingTime> {
                                   Container(
                                     alignment: Alignment.center,
                                     child: adWidget,
-                                    width: myBanner.size.width.toDouble(),
-                                    height: myBanner.size.height.toDouble(),
+                                    width: myBanner?.size.width.toDouble(),
+                                    height: myBanner?.size.height.toDouble(),
                                   )
                               ],
                             ),

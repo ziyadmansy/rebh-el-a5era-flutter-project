@@ -4,13 +4,13 @@ import 'number_buttons.dart';
 
 class AzkarPostDescription extends StatefulWidget {
   final String title;
-  final String description;
+  final String? description;
   final int number;
 
   const AzkarPostDescription({
-    Key key,
-    @required this.title,
-    @required this.number,
+    Key? key,
+    required this.title,
+    required this.number,
     this.description,
   }) : super(key: key);
 

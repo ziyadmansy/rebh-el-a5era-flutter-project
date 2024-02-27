@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class PrayerTime {
   Date date;
   String fajr;
@@ -20,28 +21,27 @@ class PrayerTime {
   int maghribMinute;
   int ishaHour;
   int ishaMinute;
-
   PrayerTime({
-    this.fajr,
-    this.sunrise,
-    this.dhuhr,
-    this.asr,
-    this.sunset,
-    this.maghrib,
-    this.isha,
-    this.imsak,
-    this.midnight,
-    this.date,
-    this.asrHour,
-    this.asrMinute,
-    this.dhuhrHour,
-    this.dhuhrMinute,
-    this.ishaHour,
-    this.ishaMinute,
-    this.maghribHour,
-    this.maghribMinute,
-    this.fajrHour,
-    this.fajrMinute,
+    required this.date,
+    required this.fajr,
+    required this.sunrise,
+    required this.dhuhr,
+    required this.asr,
+    required this.sunset,
+    required this.maghrib,
+    required this.isha,
+    required this.imsak,
+    required this.midnight,
+    required this.fajrHour,
+    required this.fajrMinute,
+    required this.dhuhrHour,
+    required this.dhuhrMinute,
+    required this.asrHour,
+    required this.asrMinute,
+    required this.maghribHour,
+    required this.maghribMinute,
+    required this.ishaHour,
+    required this.ishaMinute,
   });
 
   factory PrayerTime.fromJson(Map<String, dynamic> json) {
@@ -85,24 +85,24 @@ class Date {
   int day;
   int month;
   int year;
-
   Date({
-    this.readable,
-    this.date,
-    this.day,
-    this.month,
-    this.year,
-    this.timestamp,
+    required this.timestamp,
+    required this.readable,
+    required this.date,
+    required this.day,
+    required this.month,
+    required this.year,
   });
+
 
   factory Date.fromJson(Map<String, dynamic> json) {
     return Date(
       readable: json['readable'],
       date: json['gregorian']['date'],
-      day: int.tryParse(json['gregorian']['day'].toString()),
-      month: int.tryParse(json['gregorian']['month']['number'].toString()),
-      year: int.tryParse(json['gregorian']['year'].toString()),
-      timestamp: int.tryParse(json['timestamp'].toString())
+      day: int.tryParse(json['gregorian']['day'].toString()) ?? 1,
+      month: int.tryParse(json['gregorian']['month']['number'].toString()) ?? 1,
+      year: int.tryParse(json['gregorian']['year'].toString()) ?? 1,
+      timestamp: int.tryParse(json['timestamp'].toString()) ?? 1,
     );
   }
 }

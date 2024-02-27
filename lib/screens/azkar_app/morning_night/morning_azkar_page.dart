@@ -4,7 +4,7 @@ import 'package:muslim_dialy_guide/widgets/azkar/azkar_box.dart';
 import '../../../constants.dart';
 
 class AzkarElmorning extends StatefulWidget {
-  const AzkarElmorning({Key key}) : super(key: key);
+  const AzkarElmorning({Key? key}) : super(key: key);
 
   @override
   _AzkarElmorningState createState() => _AzkarElmorningState();

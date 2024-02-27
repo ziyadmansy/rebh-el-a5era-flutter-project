@@ -13,8 +13,8 @@ class DeviceInfoProvider with ChangeNotifier {
   Future<void> getDeviceInfo() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String savedFcmToken = prefs.getString(fcmKey);
-      String fcmToken = await getFCMToken();
+      String? savedFcmToken = prefs.getString(fcmKey);
+      String? fcmToken = await getFCMToken();
       if (savedFcmToken != null) {
         // User has FCM Token Registered
         if (savedFcmToken != fcmToken) {
@@ -32,14 +32,12 @@ class DeviceInfoProvider with ChangeNotifier {
       }
       final deviceInfoPlugin = DeviceInfoPlugin();
       String platformType = androidText;
-      String uid;
       if (Platform.isAndroid) {
         var androidInfo = await deviceInfoPlugin.androidInfo;
         var release = androidInfo.version.release;
         var sdkInt = androidInfo.version.sdkInt;
         var manufacturer = androidInfo.manufacturer;
         var model = androidInfo.model;
-        uid = androidInfo.androidId;
         print('Android $release (SDK $sdkInt), $manufacturer $model');
         // Android 9 (SDK 28), Xiaomi Redmi Note 7
         platformType = androidText;
@@ -57,16 +55,15 @@ class DeviceInfoProvider with ChangeNotifier {
       // }
 
       await deviceInfoService(
-        deviceIdentifier: uid,
         deviceType: platformType,
-        fcmToken: savedFcmToken,
+        fcmToken: savedFcmToken ?? '',
       );
     } catch (e) {
       print(e);
     }
   }
 
-  Future<String> getFCMToken() async {
+  Future<String?> getFCMToken() async {
     try {
       final messaging = FirebaseMessaging.instance;
       final token = await messaging.getToken();
@@ -84,9 +81,8 @@ class DeviceInfoProvider with ChangeNotifier {
   }
 
   Future<void> deviceInfoService({
-    @required String deviceIdentifier,
-    @required String deviceType,
-    @required String fcmToken,
+    required String deviceType,
+    required String fcmToken,
   }) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -95,7 +91,7 @@ class DeviceInfoProvider with ChangeNotifier {
         Uri.parse(ApiRoutes.deviceInfo),
         body: {
           'registration_id': fcmToken,
-          'device_id': deviceIdentifier,
+          'device_id': '',
           'type': deviceType
         },
         headers: {

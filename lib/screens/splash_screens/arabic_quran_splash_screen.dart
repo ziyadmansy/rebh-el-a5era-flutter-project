@@ -13,8 +13,6 @@ class ArabicQuranSplashScreen extends StatefulWidget {
 }
 
 class _ArabicQuranSplashScreenState extends State<ArabicQuranSplashScreen> {
-  SharedPreferences prefs;
-
   /*-----------------------------------------------------------------------------------------------*/
   /*---------------------------- get bookmarkPage from sharedPreferences ------------------------------*/
   /*-----------------------------------------------------------------------------------------------*/
@@ -23,7 +21,7 @@ class _ArabicQuranSplashScreenState extends State<ArabicQuranSplashScreen> {
     if (prefs.containsKey(globals.LAST_VIEWED_PAGE)) {
       var _lastViewedPage = prefs.getInt(globals.LAST_VIEWED_PAGE);
       setState(() {
-        globals.lastViewedPage = _lastViewedPage;
+        globals.lastViewedPage = _lastViewedPage!;
       });
     }
   }
@@ -32,7 +30,7 @@ class _ArabicQuranSplashScreenState extends State<ArabicQuranSplashScreen> {
   /*------------ Get saved Brightness or the default value if Brightness level is not defined  ----*/
   /*-----------------------------------------------------------------------------------------------*/
   Future<void> getBrightnessLevel() async {
-    prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(globals.BRIGHTNESS_LEVEL)) {
       var _brightnessLevel = prefs.getDouble(globals.BRIGHTNESS_LEVEL);
       setState(() {
@@ -47,7 +45,7 @@ class _ArabicQuranSplashScreenState extends State<ArabicQuranSplashScreen> {
   /*---------------------------- get bookmarkPage from sharedPreferences ------------------------------*/
   /*-----------------------------------------------------------------------------------------------*/
   Future<void> getBookmark() async {
-    prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(globals.BOOKMARKED_PAGE)) {
       var bookmarkedPage = prefs.getInt(globals.BOOKMARKED_PAGE);
       setState(() {

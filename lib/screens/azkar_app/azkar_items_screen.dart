@@ -11,16 +11,16 @@ import '../../widgets/azkar/azkar_box.dart';
 
 class AzkarItemsScreen extends StatefulWidget {
   static const String routeName = '/azkarItems';
-  const AzkarItemsScreen({Key key}) : super(key: key);
+  const AzkarItemsScreen({Key? key}) : super(key: key);
 
   @override
   _AzkarItemsScreenState createState() => _AzkarItemsScreenState();
 }
 
 class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
-  BannerAd myBanner;
-  InterstitialAd _interstitialAd;
-  AdWidget adWidget;
+  BannerAd? myBanner;
+  InterstitialAd? _interstitialAd;
+  AdWidget? adWidget;
 
   @override
   void initState() {
@@ -36,8 +36,8 @@ class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
   Future<void> initAds() async {
     myBanner =
         await Shared.getBannerAd(MediaQuery.of(context).size.width.toInt());
-    await myBanner.load();
-    adWidget = AdWidget(ad: myBanner);
+    await myBanner?.load();
+    adWidget = AdWidget(ad: myBanner!);
     setState(() {});
 
     await InterstitialAd.load(
@@ -60,15 +60,17 @@ class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Provider.of<ThemeProvider>(context);
-    ZekrCategory zekr = ModalRoute.of(context).settings.arguments;
+    ZekrCategory zekr =
+        ModalRoute.of(context)!.settings.arguments as ZekrCategory;
     return WillPopScope(
       onWillPop: () async {
         return await Shared.onPopEventHandler(_interstitialAd);
       },
       child: Scaffold(
         backgroundColor: theme.isDarkTheme ? null : Colors.white,
-        appBar: GlobalAppBar(
+        appBar: buildAppBar(
           title: zekr.title,
+          context: context,
         ),
         body: Theme(
           data: theme.isDarkTheme ? ThemeData.dark() : ThemeData.light(),
@@ -98,8 +100,8 @@ class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
                       Container(
                         alignment: Alignment.center,
                         child: adWidget,
-                        width: myBanner.size.width.toDouble(),
-                        height: myBanner.size.height.toDouble(),
+                        width: myBanner!.size.width.toDouble(),
+                        height: myBanner!.size.height.toDouble(),
                       ),
                   ],
                 ),

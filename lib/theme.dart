@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 ThemeData darkTheme = ThemeData.dark().copyWith(
   /*------------------------------------  Primary color  ---------------------------------------*/
   primaryColor: commonTheme.primaryColor,
-  /*------------------------------------  accent color  ---------------------------------------*/
-  accentColor: commonTheme.accentColor,
   /*------------------------------  scaffold Background color  ---------------------------------------*/
   scaffoldBackgroundColor: Color(0xFF1A1627),
   /*------------------------------------  visual density  ---------------------------------------*/
@@ -22,8 +20,6 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
 ThemeData lightTheme = ThemeData.light().copyWith(
   /*------------------------------------  Primary color  ---------------------------------------*/
   primaryColor: commonTheme.primaryColor,
-  /*------------------------------------  accent color  ---------------------------------------*/
-  accentColor: commonTheme.accentColor,
   /*------------------------------  scaffold Background color  ---------------------------------------*/
   scaffoldBackgroundColor: Color(0xFFFBFCFF),
   visualDensity: commonTheme.visualDensity,
@@ -36,8 +32,6 @@ ThemeData lightTheme = ThemeData.light().copyWith(
 var commonTheme = ThemeData(
   /*------------------------------------  Primary color  ---------------------------------------*/
   primaryColor: Colors.blueAccent[400],
-  /*------------------------------------  accent color  ---------------------------------------*/
-  accentColor: Colors.redAccent,
   /*------------------------------------  visual density  ---------------------------------------*/
   visualDensity: VisualDensity.adaptivePlatformDensity,
 );

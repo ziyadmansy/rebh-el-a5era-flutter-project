@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class ZekrItem {
   int id;
   String qesm;
@@ -8,15 +9,16 @@ class ZekrItem {
   String createdAt;
   String updatedAt;
 
-  ZekrItem(
-      {this.id,
-      this.qesm,
-      this.title,
-      this.description,
-      this.isActive,
-      this.count,
-      this.createdAt,
-      this.updatedAt});
+  ZekrItem({
+    required this.id,
+    required this.qesm,
+    required this.title,
+    required this.description,
+    required this.isActive,
+    required this.count,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
   factory ZekrItem.fromJson(Map<String, dynamic> json) {
     return ZekrItem(

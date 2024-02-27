@@ -5,17 +5,17 @@ import '../constants.dart';
 
 class Shared {
   static Future<BannerAd> getBannerAd(int width) async {
-    AnchoredAdaptiveBannerAdSize size =
+    AnchoredAdaptiveBannerAdSize? size =
         await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(width);
     return BannerAd(
       adUnitId: bannerAdId,
-      size: size,
+      size: size ?? AdSize.banner,
       request: AdRequest(),
       listener: BannerAdListener(),
     );
   }
 
-  static Future<bool> onPopEventHandler(InterstitialAd ad,
+  static Future<bool> onPopEventHandler(InterstitialAd? ad,
       {bool canShowAd = true}) async {
     if (ad != null && canShowAd) {
       await ad.show();

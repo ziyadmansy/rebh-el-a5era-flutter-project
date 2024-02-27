@@ -44,7 +44,7 @@ class DailyTasksProvider with ChangeNotifier {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       dailyTasks = prefs.getString(dailyTasksResponseKey) == null
           ? []
-          : (json.decode(prefs.getString(dailyTasksResponseKey)) as List)
+          : (json.decode(prefs.getString(dailyTasksResponseKey)!) as List)
               .map((task) => DailyTask.fromJson(task))
               .toList();
       notifyListeners();

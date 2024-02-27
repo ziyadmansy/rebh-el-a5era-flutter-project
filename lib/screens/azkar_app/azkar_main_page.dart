@@ -19,16 +19,16 @@ import 'morning_night/home.dart';
 class AzkarElmoslemMainPage extends StatefulWidget {
   static const String routeName = 'Azkarpage';
 
-  const AzkarElmoslemMainPage({Key key}) : super(key: key);
+  const AzkarElmoslemMainPage({Key? key}) : super(key: key);
 
   @override
   _AzkarElmoslemMainPageState createState() => _AzkarElmoslemMainPageState();
 }
 
 class _AzkarElmoslemMainPageState extends State<AzkarElmoslemMainPage> {
-  BannerAd myBanner;
-  InterstitialAd _interstitialAd;
-  AdWidget adWidget;
+  BannerAd? myBanner;
+  InterstitialAd? _interstitialAd;
+  AdWidget? adWidget;
 
   bool isLoading = false;
   bool hasCrashed = false;
@@ -69,8 +69,8 @@ class _AzkarElmoslemMainPageState extends State<AzkarElmoslemMainPage> {
   Future<void> initAds() async {
     myBanner =
         await Shared.getBannerAd(MediaQuery.of(context).size.width.toInt());
-    await myBanner.load();
-    adWidget = AdWidget(ad: myBanner);
+    await myBanner!.load();
+    adWidget = AdWidget(ad: myBanner!);
     setState(() {});
 
     await InterstitialAd.load(
@@ -93,9 +93,9 @@ class _AzkarElmoslemMainPageState extends State<AzkarElmoslemMainPage> {
   @override
   void dispose() {
     super.dispose();
-    myBanner.dispose();
+    myBanner?.dispose();
     if (_interstitialAd != null) {
-      _interstitialAd.dispose();
+      _interstitialAd!.dispose();
     }
   }
 
@@ -109,8 +109,9 @@ class _AzkarElmoslemMainPageState extends State<AzkarElmoslemMainPage> {
         return await Shared.onPopEventHandler(_interstitialAd);
       },
       child: Scaffold(
-        appBar: GlobalAppBar(
+        appBar: buildAppBar(
           title: "أذكار المسلم",
+          context: context,
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
@@ -190,8 +191,8 @@ class _AzkarElmoslemMainPageState extends State<AzkarElmoslemMainPage> {
                               Container(
                                 alignment: Alignment.center,
                                 child: adWidget,
-                                width: myBanner.size.width.toDouble(),
-                                height: myBanner.size.height.toDouble(),
+                                width: myBanner?.size.width.toDouble(),
+                                height: myBanner?.size.height.toDouble(),
                               ),
                           ],
                         ),

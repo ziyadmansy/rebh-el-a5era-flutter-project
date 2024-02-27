@@ -12,13 +12,12 @@ class SliderAlert extends StatefulWidget {
 }
 
 class _SliderAlertState extends State<SliderAlert> {
-  SharedPreferences prefs;
-  double tempBrightnessLevel;
+  double? tempBrightnessLevel;
 
   setBrightnessLevel(double level) async {
     globals.brightnessLevel = level;
-    prefs = await SharedPreferences.getInstance();
-    prefs.setDouble(globals.BRIGHTNESS_LEVEL, globals.brightnessLevel);
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setDouble(globals.BRIGHTNESS_LEVEL, globals.brightnessLevel!);
   }
 
   @override
@@ -45,7 +44,7 @@ class _SliderAlertState extends State<SliderAlert> {
                 size: 24,
               ),
               Slider(
-                value: tempBrightnessLevel,
+                value: tempBrightnessLevel ?? 0.5,
                 onChanged: (_brightness) {
                   setState(() {
                     tempBrightnessLevel = _brightness;
@@ -75,7 +74,7 @@ class _SliderAlertState extends State<SliderAlert> {
               textDirection: TextDirection.rtl,
             ),
             onPressed: () {
-              setBrightnessLevel(tempBrightnessLevel);
+              setBrightnessLevel(tempBrightnessLevel ?? 0.5);
               Navigator.of(context).pop();
               Fluttertoast.showToast(
                   msg: "Saved Successfully",

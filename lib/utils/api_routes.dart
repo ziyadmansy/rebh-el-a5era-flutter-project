@@ -9,10 +9,10 @@ class ApiRoutes {
   static const String fcmSendNotifications =
       'https://fcm.googleapis.com/fcm/send';
   static String prayerTimes({
-    @required double lng,
-    @required double lat,
-    @required int year,
-    @required int month,
+    required double lng,
+    required double lat,
+    required int year,
+    required int month,
   }) =>
       'http://api.aladhan.com/v1/calendar?latitude=$lat&longitude=$lng&month=$month&year=$year';
 }

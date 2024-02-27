@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:muslim_dialy_guide/models/zekr_item.dart';
 
 class ZekrCategory {
@@ -7,14 +8,14 @@ class ZekrCategory {
   String description;
   String createdAt;
   String updatedAt;
-
-  ZekrCategory(
-      {this.id,
-      this.title,
-      this.ad3ya,
-      this.description,
-      this.createdAt,
-      this.updatedAt});
+  ZekrCategory({
+    required this.id,
+    required this.title,
+    required this.ad3ya,
+    required this.description,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
   factory ZekrCategory.fromJson(Map<String, dynamic> json) {
     return ZekrCategory(

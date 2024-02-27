@@ -27,11 +27,9 @@ class QuranArabic extends StatefulWidget {
 }
 
 class _QuranArabicState extends State<QuranArabic> {
-  BannerAd myBanner;
-  InterstitialAd _interstitialAd;
-  AdWidget adWidget;
-
-  SharedPreferences prefs;
+  BannerAd? myBanner;
+  InterstitialAd? _interstitialAd;
+  AdWidget? adWidget;
 
   /*-----------------------------------------------------------------------------------------------*/
   /*------------------------------ List of sur parse from json  -----------------------------------*/
@@ -81,8 +79,8 @@ class _QuranArabicState extends State<QuranArabic> {
   Future<void> initAds() async {
     myBanner =
         await Shared.getBannerAd(MediaQuery.of(context).size.width.toInt());
-    await myBanner.load();
-    adWidget = AdWidget(ad: myBanner);
+    await myBanner?.load();
+    adWidget = AdWidget(ad: myBanner!);
     setState(() {});
 
     await InterstitialAd.load(
@@ -105,9 +103,9 @@ class _QuranArabicState extends State<QuranArabic> {
   @override
   void dispose() {
     super.dispose();
-    myBanner.dispose();
+    myBanner?.dispose();
     if (_interstitialAd != null) {
-      _interstitialAd.dispose();
+      _interstitialAd?.dispose();
     }
   }
 
@@ -132,8 +130,9 @@ class _QuranArabicState extends State<QuranArabic> {
         );
       },
       child: Scaffold(
-        appBar: GlobalAppBar(
+        appBar: buildAppBar(
           title: 'القرآن الكريم',
+          context: context,
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,

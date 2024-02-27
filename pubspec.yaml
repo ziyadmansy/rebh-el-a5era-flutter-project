@@ -1,69 +1,69 @@
 name: muslim_dialy_guide
 description: A new Flutter application.
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 2.1.1+7
 
 environment:
-  sdk: ">=2.9.0 <3.0.0"
+  sdk: ">=3.2.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+
+  #####------  Localization to support arabic  -------#####
   flutter_localizations:
     sdk: flutter
+
   cupertino_icons: ^1.0.2
   #####--------------------------------  Provider  ----------------------------#####
-  provider: ^6.0.2
+  provider: ^6.1.1
   #####----------------------------  SharedPreferences  -----------------------#####
-  shared_preferences: ^2.0.13
+  shared_preferences: ^2.2.2
   #####------------------------------- native pdf view  ----------------------------#####
-  native_pdf_view: ^6.0.0+1
-  #####-------------------------------- device info  ----------------------------#####
-  device_info: ^2.0.3
+  pdfx: ^2.6.0
   #####--------------------------------  screen  ----------------------------#####
   # screen: ^0.0.5
   #####------------------------------- Flutter toast  ----------------------------#####
-  fluttertoast: ^8.0.8
+  fluttertoast: ^8.2.4
   #####--------------------------------  lottie  ----------------------------#####
-  lottie: ^1.2.2
+  lottie: ^3.1.0
   #####----------------------------  Flutter Qiblah  ----------------------------#####
   # flutter_qiblah: ^2.0.2
   #####--------------------------------  SVG  ----------------------------#####
-  flutter_svg: ^1.0.3
+  flutter_svg: ^2.0.10+1
   #####------------------------------- Google Maps  ----------------------------#####
-  google_maps_flutter: ^2.1.1
+  google_maps_flutter: ^2.5.3
   #####-----------------------------  Google Fonts  ----------------------------#####
-  google_fonts: ^2.3.1
+  google_fonts: ^6.1.0
   #####--------------------------------  linkwell  ----------------------------#####
   # linkwell: ^2.0.6
   #####-----------------------------  Location  ----------------------------#####
-  location: ^4.3.0
+  location: ^5.0.3
   #####-----------------------------  HTTP  ----------------------------#####
-  http: ^0.13.4
+  http: ^1.1.0
 
-  adhan: ^1.1.16
-  intl: ^0.17.0
-  device_info_plus: ^3.2.2
-  url_launcher: ^6.0.20
-  overlay_support: ^1.2.1
+  adhan: ^2.0.0+1
+  intl: any
+  device_info_plus: ^9.1.2
+  url_launcher: ^6.2.5
+  overlay_support: ^2.1.0
   # android_alarm_manager_plus: ^2.0.5
   # workmanager: ^0.4.1
-  flutter_local_notifications: ^9.4.0
-  flutter_native_timezone: ^2.0.0
+  flutter_local_notifications: ^16.3.2
+  flutter_timezone: ^1.0.8
 
   #####-----------------------------  Ads  ----------------------------#####
-  google_mobile_ads: ^1.1.0
-  
+  google_mobile_ads: ^4.0.0
+
   #####-----------------------------  Firebase  ----------------------------#####
-  firebase_core: ^2.4.1
-  firebase_messaging: ^14.2.1
+  firebase_core: ^2.25.4
+  firebase_messaging: ^14.7.16
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 flutter:
   uses-material-design: true

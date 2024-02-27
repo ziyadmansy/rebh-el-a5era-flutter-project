@@ -18,9 +18,9 @@ import 'package:muslim_dialy_guide/screens/home_app/home.dart';
 import 'package:muslim_dialy_guide/screens/splash_Screen.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,8 +66,8 @@ Future<void> initLocalNotifications() async {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background title: ${message.notification.title}");
-  print("Handling a background body: ${message.notification.body}");
+  print("Handling a background title: ${message.notification?.title}");
+  print("Handling a background body: ${message.notification?.body}");
   print("Handling a background additional data: ${message.data}");
 }
 
@@ -103,11 +103,11 @@ void initFCM() async {
 
     if (message.notification != null) {
       print('Message also contained a notification: ${message.notification}');
-      print('Message title: ${message.notification.title}');
-      print('Message body: ${message.notification.body}');
+      print('Message title: ${message.notification?.title}');
+      print('Message body: ${message.notification?.body}');
       showSimpleNotification(
-        Text(message.notification.title),
-        subtitle: Text(message.notification.body),
+        Text(message.notification?.title ?? ''),
+        subtitle: Text(message.notification?.body ?? ''),
         duration: Duration(seconds: 3),
         autoDismiss: true,
       );
@@ -201,7 +201,6 @@ class MyApp extends StatelessWidget {
                 title: appName,
                 theme: ThemeData(
                   brightness: Brightness.dark,
-                  useMaterial3: true,
                   colorSchemeSeed: primaryColor,
                   appBarTheme: AppBarTheme(
                     backgroundColor: primaryColor,
@@ -210,7 +209,6 @@ class MyApp extends StatelessWidget {
                 darkTheme: ThemeData(
                   colorSchemeSeed: primaryColor,
                   brightness: Brightness.dark,
-                  useMaterial3: true,
                 ),
                 themeMode: (value.theme) ? ThemeMode.dark : ThemeMode.light,
                 initialRoute: SplashScreen.routeName,

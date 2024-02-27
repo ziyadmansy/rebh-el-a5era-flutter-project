@@ -1,11 +1,10 @@
-
 import 'package:flutter/widgets.dart';
 import 'package:muslim_dialy_guide/utils/export.dart';
 
 class Spinner extends StatefulWidget {
   const Spinner({
-    Key key,
-    @required this.color,
+    Key? key,
+    required this.color,
     this.size = 300,
     this.ringWidth = 5.0,
     this.ringCount = 7,
@@ -20,15 +19,15 @@ class Spinner extends StatefulWidget {
   final int ringCount;
 
   final Duration duration;
-  final AnimationController controller;
+  final AnimationController? controller;
 
   @override
   _SpinnerState createState() => _SpinnerState();
 }
 
 class _SpinnerState extends State<Spinner> with SingleTickerProviderStateMixin {
-   AnimationController _controller;
-   Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
@@ -52,7 +51,7 @@ class _SpinnerState extends State<Spinner> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Center(
       child: AnimatedBuilder(
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return CustomPaint(
             child: SizedBox.fromSize(size: Size.square(widget.size)),
             painter: _SpinnerPainter(
@@ -71,14 +70,14 @@ class _SpinnerState extends State<Spinner> with SingleTickerProviderStateMixin {
 
 class _SpinnerPainter extends CustomPainter {
   _SpinnerPainter(
-      this.rotateValue, {
-        @required Color color,
-        @required this.ringWidth,
-        @required this.ringCount,
-      }) : spinnerPaint = Paint()
-    ..color = color
-    ..strokeWidth = 1
-    ..style = PaintingStyle.fill;
+    this.rotateValue, {
+    required Color color,
+    required this.ringWidth,
+    required this.ringCount,
+  }) : spinnerPaint = Paint()
+          ..color = color
+          ..strokeWidth = 1
+          ..style = PaintingStyle.fill;
 
   final Paint spinnerPaint;
   final double rotateValue;
@@ -139,7 +138,7 @@ class _SpinnerPainter extends CustomPainter {
   @override
   bool shouldRepaint(_SpinnerPainter oldDelegate) =>
       oldDelegate.rotateValue != rotateValue ||
-          oldDelegate.ringWidth != ringWidth ||
-          oldDelegate.ringCount != ringCount ||
-          oldDelegate.spinnerPaint != spinnerPaint;
+      oldDelegate.ringWidth != ringWidth ||
+      oldDelegate.ringCount != ringCount ||
+      oldDelegate.spinnerPaint != spinnerPaint;
 }

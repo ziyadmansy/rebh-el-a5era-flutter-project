@@ -1,20 +1,19 @@
-import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:muslim_dialy_guide/models/surah.dart';
 import 'package:muslim_dialy_guide/widgets/app_bar.dart';
 import 'package:muslim_dialy_guide/widgets/arabic_quraan/bookmarks.dart';
-import 'package:native_pdf_view/native_pdf_view.dart';
+import 'package:pdfx/pdfx.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:muslim_dialy_guide/globals/globals.dart' as globals;
 
 class SurahViewBuilder extends StatefulWidget {
   SurahViewBuilder({
-    Key key,
+    Key? key,
     this.readingMode = false,
-    @required this.surah,
+    required this.surah,
   }) : super(key: key);
   final Surah surah;
   final bool readingMode;
@@ -25,18 +24,18 @@ class SurahViewBuilder extends StatefulWidget {
 
 class _SurahViewBuilderState extends State<SurahViewBuilder> {
   // PdfControllerPinch quranPdfController;
-  PdfController quranPdfController;
+  late PdfController quranPdfController;
 
   /// My Document
   // PDFDocument _document;
   static const List<double> _doubleTapScales = <double>[1.0, 1.1];
-  int currentPage;
+  int? currentPage;
   // PageController pageController;
 
   bool isBookmarked = false;
   Widget _bookmarkWidget = Container();
 
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   /*-----------------------------------------------------------------------------------------------*/
   /*----------------------------- Load PDF Documents -----------------------*/
@@ -72,7 +71,7 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
       print("toSave: ${globals.bookmarkedPage}");
     });
     if (globals.bookmarkedPage != null) {
-      setBookmark(globals.bookmarkedPage);
+      setBookmark(globals.bookmarkedPage!);
     }
   }
 
@@ -136,12 +135,12 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
   Widget build(BuildContext context) {
     // pageController = _pageControllerBuilder();
     return Scaffold(
-      appBar: GlobalAppBar(
+      appBar: buildAppBar(
         title: 'المصحف الشريف',
         actions: [
           IconButton(
             onPressed: () {
-              if (globals.currentPage < 569) {
+              if (globals.currentPage! < 569) {
                 quranPdfController.nextPage(
                   duration: Duration(
                     milliseconds: 500,
@@ -156,6 +155,7 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
             ),
           ),
         ],
+        context: context,
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
@@ -176,12 +176,16 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
               backgroundDecoration: BoxDecoration(
                 color: Colors.white,
               ),
-              documentLoader: Center(
-                child: CircularProgressIndicator.adaptive(),
+              builders: PdfViewBuilders<DefaultBuilderOptions>(
+                options: DefaultBuilderOptions(),
+                documentLoaderBuilder: (context) => Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+                pageLoaderBuilder: (context) => Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
               ),
-              pageLoader: Center(
-                child: CircularProgressIndicator.adaptive(),
-              ),
+
               onDocumentError: (e) {
                 print(e);
                 Navigator.of(context).pop();
@@ -193,7 +197,7 @@ class _SurahViewBuilderState extends State<SurahViewBuilder> {
               //   backgroundColor: '#FFFFFF',
               // ),
               onDocumentLoaded: (PdfDocument doc) {
-                globals.lastViewedPage = widget.surah.pageIndex;
+                globals.lastViewedPage = widget.surah.pageIndex!;
                 setLastViewedPage(globals.lastViewedPage);
                 // if (currentPage == globals.bookmarkedPage) {
                 //   isBookmarked = true;

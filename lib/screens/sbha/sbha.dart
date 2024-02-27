@@ -17,9 +17,9 @@ class SbhaScreen extends StatefulWidget {
 }
 
 class _SbhaScreenState extends State<SbhaScreen> {
-  BannerAd myBanner;
-  InterstitialAd _interstitialAd;
-  AdWidget adWidget;
+  BannerAd? myBanner;
+  InterstitialAd? _interstitialAd;
+  AdWidget? adWidget;
 
   bool isClick = true;
   _dismissDialog() {
@@ -77,8 +77,8 @@ class _SbhaScreenState extends State<SbhaScreen> {
   Future<void> initAds() async {
     myBanner =
         await Shared.getBannerAd(MediaQuery.of(context).size.width.toInt());
-    await myBanner.load();
-    adWidget = AdWidget(ad: myBanner);
+    await myBanner?.load();
+    adWidget = AdWidget(ad: myBanner!);
     setState(() {});
 
     await InterstitialAd.load(
@@ -101,9 +101,9 @@ class _SbhaScreenState extends State<SbhaScreen> {
   @override
   void dispose() {
     super.dispose();
-    myBanner.dispose();
+    myBanner?.dispose();
     if (_interstitialAd != null) {
-      _interstitialAd.dispose();
+      _interstitialAd?.dispose();
     }
   }
 
@@ -115,7 +115,10 @@ class _SbhaScreenState extends State<SbhaScreen> {
         return await Shared.onPopEventHandler(_interstitialAd);
       },
       child: Scaffold(
-        appBar: GlobalAppBar(title: "السبحة"),
+        appBar: buildAppBar(
+          title: "السبحة",
+          context: context,
+        ),
         body: Theme(
           data: theme.isDarkTheme ? ThemeData.dark() : ThemeData.light(),
           child: Container(
@@ -231,9 +234,8 @@ class _SbhaScreenState extends State<SbhaScreen> {
                                             ),
                                           ),
                                           style: ElevatedButton.styleFrom(
-                                            primary: Colors.transparent,
+                                            backgroundColor: Colors.transparent,
                                             shadowColor: Colors.transparent,
-                                            onSurface: Colors.transparent,
                                             padding: const EdgeInsets.all(0),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -271,8 +273,8 @@ class _SbhaScreenState extends State<SbhaScreen> {
                     Container(
                       alignment: Alignment.center,
                       child: adWidget,
-                      width: myBanner.size.width.toDouble(),
-                      height: myBanner.size.height.toDouble(),
+                      width: myBanner?.size.width.toDouble(),
+                      height: myBanner?.size.height.toDouble(),
                     ),
                 ],
               ),

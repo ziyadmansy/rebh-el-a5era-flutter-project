@@ -41,7 +41,7 @@ class AzkarProvider with ChangeNotifier {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       azkar = prefs.getString(azkarResponseKey) == null
           ? []
-          : (json.decode(prefs.getString(azkarResponseKey)) as List)
+          : (json.decode(prefs.getString(azkarResponseKey)!) as List)
               .map((zekr) => ZekrCategory.fromJson(zekr))
               .toList();
       notifyListeners();

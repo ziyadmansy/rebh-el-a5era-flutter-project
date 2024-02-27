@@ -11,7 +11,7 @@ class AnimatedTextHeader extends StatefulWidget {
   final double paddingHeight;
 
   const AnimatedTextHeader(
-      {Key key,
+      {Key? key,
       this.firstWord = "Azkar ",
       this.secondWord = "Elmoslem",
       this.isSocial = true,
@@ -24,9 +24,9 @@ class AnimatedTextHeader extends StatefulWidget {
 
 class _AnimatedTextHeaderState extends State<AnimatedTextHeader>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation animation1, animation2;
-  Timer timer;
+  late AnimationController _controller;
+  late Animation<double> animation1, animation2;
+  late Timer timer;
 
   @override
   void initState() {

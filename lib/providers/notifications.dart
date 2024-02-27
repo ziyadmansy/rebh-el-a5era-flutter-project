@@ -38,8 +38,8 @@ class Notifications with ChangeNotifier {
   // }
 
   Future<void> sendNotification({
-    @required String title,
-    @required String body,
+    required String title,
+    required String body,
   }) async {
     try {
       print(title);

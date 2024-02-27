@@ -11,7 +11,7 @@ import '../../constants.dart';
 class SurahListBuilder extends StatefulWidget {
   final List<Surah> surah;
 
-  SurahListBuilder({Key key, this.surah}) : super(key: key);
+  SurahListBuilder({Key? key, required this.surah}) : super(key: key);
 
   @override
   _SurahListBuilderState createState() => _SurahListBuilderState();
@@ -20,9 +20,9 @@ class SurahListBuilder extends StatefulWidget {
 class _SurahListBuilderState extends State<SurahListBuilder> {
   TextEditingController editingController = TextEditingController();
 
-  BannerAd myBanner;
+  BannerAd? myBanner;
   // InterstitialAd _interstitialAd;
-  AdWidget adWidget;
+  AdWidget? adWidget;
 
   List<Surah> surah = [];
 
@@ -41,20 +41,20 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
 
     /// SearchList contains every surah
     // ignore: deprecated_member_use
-    List<Surah> searchList = List<Surah>();
+    List<Surah> searchList = [];
     searchList.addAll(surah);
 
     /// Contains matching surah(s)
     // ignore: deprecated_member_use
-    List<Surah> listData = List<Surah>();
+    List<Surah> listData = [];
     if (query.isNotEmpty) {
       /// Loop all surah(s)
       searchList.forEach((item) {
         /*-----------------------------------------------------------------------------------------------*/
         /*----------------------------- Filter by (titleAr:exact,title:partial,pageIndex) -----------------------*/
         /*-----------------------------------------------------------------------------------------------*/
-        if (item.titleAr.contains(query) ||
-            item.title.toLowerCase().contains(query.toLowerCase()) ||
+        if (item.titleAr!.contains(query) ||
+            item.title!.toLowerCase().contains(query.toLowerCase()) ||
             item.pageIndex.toString().contains(query)) {
           listData.add(item);
         }
@@ -99,8 +99,8 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
   Future<void> initAds() async {
     myBanner =
         await Shared.getBannerAd(MediaQuery.of(context).size.width.toInt());
-    await myBanner.load();
-    adWidget = AdWidget(ad: myBanner);
+    await myBanner!.load();
+    adWidget = AdWidget(ad: myBanner!);
     setState(() {});
   }
 
@@ -112,7 +112,7 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
   @override
   void dispose() {
     super.dispose();
-    myBanner.dispose();
+    myBanner?.dispose();
     // if (_interstitialAd != null) {
     //   _interstitialAd.dispose();
     // }
@@ -175,8 +175,8 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
             child: ListView.builder(
               itemCount: surah.length,
               itemBuilder: (BuildContext context, int index) => ListTile(
-                  title: Text(surah[index].titleAr),
-                  subtitle: Text(surah[index].title),
+                  title: Text(surah[index].titleAr ?? ''),
+                  subtitle: Text(surah[index].title ?? ''),
                   leading: Image(
                     image: AssetImage(
                         "assets/arabic_quran/${surah[index].place}.png"),
@@ -202,8 +202,8 @@ class _SurahListBuilderState extends State<SurahListBuilder> {
             Container(
               alignment: Alignment.center,
               child: adWidget,
-              width: myBanner.size.width.toDouble(),
-              height: myBanner.size.height.toDouble(),
+              width: myBanner?.size.width.toDouble(),
+              height: myBanner?.size.height.toDouble(),
             ),
         ],
       ),

@@ -5,8 +5,8 @@ class PostBtn extends StatefulWidget {
   int n;
 
   PostBtn({
-    Key key,
-    this.n,
+    Key? key,
+    required this.n,
   }) : super(key: key);
 
   @override
